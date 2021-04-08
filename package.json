@@ -1,0 +1,22 @@
+{
+  "name": "tienda-olimpo-api",
+  "version": "1.0.0",
+  "description": "API proyecto tienda olimpo",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/saurmo/desarrollo-web-backend.git"
+  },
+  "author": "saurmo-udem",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/saurmo/desarrollo-web-backend/issues"
+  },
+  "homepage": "https://github.com/saurmo/desarrollo-web-backend#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
