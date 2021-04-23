@@ -22,3 +22,16 @@ CREATE TABLE public.roles (
 	description text NULL,
 	CONSTRAINT roles_pk PRIMARY KEY (id)
 );
+
+
+CREATE TABLE public.products (
+id serial NOT NULL PRIMARY key,
+"name" varchar NOT NULL,
+price money NOT NULL,
+brand varchar  NOT NULL,
+size varchar  NOT NULL,
+colors varchar  NOT NULL,
+description text  NOT NULL,
+category  varchar  NOT NULL,
+system_state varchar  NOT NULL
+);

@@ -4,14 +4,14 @@
 
 - CRUD productos
 
-  - Código
-  - Nombre
-  - Precio
-  - Descripción
-  - Categoria
-  - Marca
-  - Talla
-  - Colores
+  - Código : `id`
+  - Nombre : `name`
+  - Precio : `price`
+  - Marca : `brand`
+  - Talla : `size`
+  - Colores : `colors`
+  - Descripción : `description`
+  - Categoria : `category`
 
 - CRUD usuarios
 

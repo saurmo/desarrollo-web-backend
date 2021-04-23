@@ -1,6 +1,13 @@
+//Servicio de Postgres
 const PostgresService = require("../../services/postgres.service");
 const _pg = new PostgresService();
 
+/**
+ * Método de consultar todos los usuarios
+ * @param {Request} req
+ * @param {Response} res
+ * @returns
+ */
 const getUsers = async (req, res) => {
   let sql = "select * from users";
   ////RESOLVIENDO LA PROMESA CON ASYNC-AWAIT
@@ -32,9 +39,9 @@ const getUsers = async (req, res) => {
 };
 
 /**
- *
- * @param {*} req
- * @param {*} res
+ * Método para consultar un usuario
+ * @param {Request} req
+ * @param {Response} res
  * @returns
  */
 const getUser = async (req, res) => {
@@ -57,6 +64,12 @@ const getUser = async (req, res) => {
   }
 };
 
+/**
+ * Método para crear un usuario
+ * @param {Request} req
+ * @param {Response} res
+ * @returns
+ */
 const createUser = async (req, res) => {
   try {
     let user = req.body;
@@ -76,6 +89,12 @@ const createUser = async (req, res) => {
   }
 };
 
+/**
+ * Método para actualizar un usuario
+ * @param {Request} req
+ * @param {Response} res
+ * @returns
+ */
 const updateUser = async (req, res) => {
   try {
     let id = req.params.id;
@@ -101,6 +120,12 @@ const updateUser = async (req, res) => {
   }
 };
 
+/**
+ * Método para eliminar usuario
+ * @param {Request} req
+ * @param {Response} res
+ * @returns
+ */
 const deleteUser = async (req, res) => {
   try {
     let id = req.params.id;
