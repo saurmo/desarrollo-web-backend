@@ -18,11 +18,11 @@ router
   // Descrifrar y verificar token
   .get("/verify", _authController.verifyToken)
   //CRUD de usuarios
-  .get("/usuarios/:id", _userController.getUser)
-  .get("/usuarios", _userController.getUsers)
-  .post("/usuarios", _userController.createUser)
-  .put("/usuarios/:id", _userController.updateUser)
-  .delete("/usuarios/:id", _userController.deleteUser)
+  .get("/users/:id", _userController.getUser)
+  .get("/users", _userController.getUsers)
+  .post("/users", _userController.createUser)
+  .put("/users/:id", _userController.updateUser)
+  .delete("/users/:id", _userController.deleteUser)
   //CRUD de roles
   .get("/roles/:id", _rolesController.getRol)
   .get("/roles", _rolesController.getRoles)
