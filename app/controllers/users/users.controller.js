@@ -73,7 +73,8 @@ const getUser = async (req, res) => {
 const createUser = async (req, res) => {
   try {
     let user = req.body;
-    let sql = `INSERT INTO public.users (email, "password", id, name, rol) VALUES('${user.email}', md5('${user.password}'), '${user.id}', '${user.name}', ${user.rol});`;
+    let sql = `INSERT INTO public.users (email, "password", id, name, rol) 
+    VALUES('${user.email}', md5('${user.password}'), '${user.id}', '${user.name}', ${user.rol});`;
     let result = await _pg.executeSql(sql);
     return res.send({
       ok: result.rowCount == 1,

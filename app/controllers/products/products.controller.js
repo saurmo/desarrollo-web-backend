@@ -65,10 +65,15 @@ const createProduct = async (req, res) => {
     let sql = `INSERT INTO public.products ("name", price, brand, "size", colors, description, category, system_state) 
     VALUES($1, $2, $3, $4, $5, $6, $7, 'NORMAL')`;
     let data = [];
-    for (const key in product) {
-      data.push(product[key]);
-    }
-    let result = await _pg.executeSql(sql);
+    data[0] = product.name;
+    data[1] = product.price;
+    data[2] = product.brand;
+    data[3] = product.size;
+    data[4] = product.colors;
+    data[5] = product.description;
+    data[6] = product.category;
+
+    let result = await _pg.executeSqlData(sql, data);
     let status = result.rowCount == 1 ? 201 : 400;
     return res.status(status).send({
       ok: result.rowCount == 1,
@@ -76,7 +81,7 @@ const createProduct = async (req, res) => {
       content: product,
     });
   } catch (error) {
-    return res.send({
+    return res.status(500).send({
       ok: false,
       message: "Ha ocurrido un error creando el producto",
       content: error,
@@ -97,9 +102,15 @@ const updateProduct = async (req, res) => {
     let sql = `UPDATE public.products SET "name"=$1, price=$2, brand=$3, 
     "size"=$4, colors=$5, description=$6, category=$7 WHERE id=$8`;
     let data = [];
-    for (const key in product) {
-      data.push(product[key]);
-    }
+    data[0] = product.name;
+    data[1] = product.price;
+    data[2] = product.brand;
+    data[3] = product.size;
+    data[4] = product.colors;
+    data[5] = product.description;
+    data[6] = product.category;
+    data[7] = id;
+
     let result = await _pg.executeSqlData(sql, data);
     return res.send({
       ok: result.rowCount == 1,

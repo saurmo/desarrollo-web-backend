@@ -4,6 +4,7 @@ const router = express.Router();
 
 const _userController = require("../controllers/users/users.controller");
 const _rolesController = require("../controllers/roles/roles.controller");
+const _productsController = require("../controllers/products/products.controller");
 const _authController = require("../controllers/users/auth.controller");
 
 // RUTAS PUBLICAS
@@ -28,6 +29,12 @@ router
   .get("/roles", _rolesController.getRoles)
   .post("/roles", _rolesController.createRol)
   .put("/roles/:id", _rolesController.updateRol)
-  .delete("/roles/:id", _rolesController.deleteRol);
+  .delete("/roles/:id", _rolesController.deleteRol)
+  //CRUD de productos
+  .get("/products/:id", _productsController.getProduct)
+  .get("/products", _productsController.getProducts)
+  .post("/products", _productsController.createProduct)
+  .put("/products/:id", _productsController.updateProduct)
+  .delete("/products/:id", _productsController.deleteProduct);
 
 module.exports = router;
