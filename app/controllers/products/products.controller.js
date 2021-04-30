@@ -1,6 +1,7 @@
 //Servicio de Postgres
 const PostgresService = require("../../services/postgres.service");
 const _pg = new PostgresService();
+const fs = require("fs");
 
 /**
  * Método de consultar todos los productos
@@ -153,4 +154,33 @@ const deleteProduct = async (req, res) => {
   }
 };
 
-module.exports = { getProducts, createProduct, updateProduct, deleteProduct, getProduct };
+const saveFiles = async (req, res) => {
+  try {
+    let id = req.params.id;
+    console.log(id);
+    let files = req.files;
+    console.log(files);
+    let image = files.imagen;
+    fs.writeFileSync("./docs/" + image.name, image.data);
+    return res.send({
+      ok: true,
+      message: "Archivos cargados.",
+      content: {},
+    });
+  } catch (error) {
+    return res.status(500).send({
+      ok: false,
+      message: "Ha ocurrido un error subiendo el archivo",
+      content: error,
+    });
+  }
+};
+
+module.exports = {
+  getProducts,
+  createProduct,
+  updateProduct,
+  deleteProduct,
+  getProduct,
+  saveFiles,
+};

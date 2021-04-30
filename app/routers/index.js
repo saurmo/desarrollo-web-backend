@@ -35,6 +35,8 @@ router
   .get("/products", _productsController.getProducts)
   .post("/products", _productsController.createProduct)
   .put("/products/:id", _productsController.updateProduct)
-  .delete("/products/:id", _productsController.deleteProduct);
+  .delete("/products/:id", _productsController.deleteProduct)
+  // AGREGAR ARCHIVOS A UN PRODUCTO
+  .post("/products/:id/archivos", _productsController.saveFiles);
 
 module.exports = router;
