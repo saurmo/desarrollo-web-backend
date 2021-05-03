@@ -10,10 +10,11 @@ const _authController = require("../controllers/users/auth.controller");
 // RUTAS PUBLICAS
 // Rutas no necesitan un token
 router.post("/login", _authController.getUserLogin);
+router.get("/public/products", _productsController.getPublicProducts);
+router.use("/public/static", express.static("docs"));
 
 //REGISTRO DEL MIDDLEWARE
 router.use([_authController.verifyTokenMiddleware]);
-
 // RUTAS PRIVADAS
 router
   // Descrifrar y verificar token

@@ -1,7 +1,7 @@
 //Servicio de Postgres
 const PostgresService = require("../../services/postgres.service");
 const _pg = new PostgresService();
-const fs = require("fs");
+const { createFolder, saveFile, readDirectory } = require("../../services/fs.service");
 
 /**
  * Método de consultar todos los productos
@@ -157,11 +157,12 @@ const deleteProduct = async (req, res) => {
 const saveFiles = async (req, res) => {
   try {
     let id = req.params.id;
-    console.log(id);
     let files = req.files;
-    console.log(files);
     let image = files.imagen;
-    fs.writeFileSync("./docs/" + image.name, image.data);
+    let pathProducts = `./docs/products/${id}/`;
+    createFolder(pathProducts);
+    saveFile(`${pathProducts}${image.name}`, image.data);
+
     return res.send({
       ok: true,
       message: "Archivos cargados.",
@@ -176,6 +177,32 @@ const saveFiles = async (req, res) => {
   }
 };
 
+const getPublicProducts = async (req, res) => {
+  try {
+    let sql =
+      "select id, name, price, description from products WHERE system_state='NORMAL'";
+    let result = await _pg.executeSql(sql);
+    let rows = result.rows;
+
+    // Recorrer los productos para agregarle las imagenes
+    rows = rows.map((product) => {
+      let path = `./docs/products/${product.id}`;
+      product.images = readDirectory(path);
+      return product;
+    });
+    return res.send({
+      ok: true,
+      message: "Productos consultados",
+      content: rows,
+    });
+  } catch (error) {
+    return res.status(500).send({
+      ok: false,
+      message: "Ha ocurrido un error consultando los archivos.",
+      content: error,
+    });
+  }
+};
 module.exports = {
   getProducts,
   createProduct,
@@ -183,4 +210,5 @@ module.exports = {
   deleteProduct,
   getProduct,
   saveFiles,
+  getPublicProducts,
 };
