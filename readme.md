@@ -12,7 +12,7 @@ Las tecnologias que usamos son:
 
 ## Curso 2021-2
 
-- Introducción básica
+- Introducción básica [Link](https://github.com/saurmo/desarrollo-web-backend/tree/curso-2021-2-intro)
 
 ## Curso 2021-1
 
