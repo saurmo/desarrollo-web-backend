@@ -1,5 +1,5 @@
 //***************************************************************************************************************************************************
-//Agregar comentarios
+//AGREGAR COMENTARIOS
 
 //Comentaria de linea
 
@@ -29,7 +29,7 @@ const VERSION = "1.0.0";
 let nombre = "Santiago";
 
 //***************************************************************************************************************************************************
-// Contexto - Scope
+// CONTEXTO - SCOPE
 // Contexto global
 // La variable edad esta en un contexto global
 
@@ -66,19 +66,19 @@ console.log(typeof numero_estudiantes);
 console.log(typeof decano_facultad);
 
 //***************************************************************************************************************************************************
-//Funciones
+//FUNCIONES
 
 /**
  *
  * @param {*} estudiante
  */
-const imprimirEstudiante = (estudiante) => {};
+const imprimirEstudiante = (estudiante) => { };
 
 /**
  *
  * @param {*} estudiante
  */
-function imprimirEstudianteYCarrera(estudiante) {}
+function imprimirEstudianteYCarrera(estudiante) { }
 
 /**
  *
@@ -88,7 +88,7 @@ class Estudiante {
    *
    * @param {*} estudiante
    */
-  imprimirEstudiante(estudiante) {}
+  imprimirEstudiante(estudiante) { }
 }
 
 const FUNCIONES = {
@@ -96,17 +96,17 @@ const FUNCIONES = {
    *
    * @param {*} estudiante
    */
-  imprimirEstudiante(estudiante) {},
+  imprimirEstudiante(estudiante) { },
 
   /**
    *
    * @param {*} estudiante
    */
-  calcularPromerdio(estudiante) {},
+  calcularPromerdio(estudiante) { },
 };
 
 //***************************************************************************************************************************************************
-//Objetos
+//OBJETOS
 // JSON (Javascript Object Notation)
 // key:value
 let estudiante = {
@@ -140,11 +140,77 @@ estudiante.calcularPrecioSemestre();
 estudiante.calcularPromedioGeneral();
 
 let carrera = new Object();
+//***************************************************************************************************************************************************
+//CONVERSIONES (parseInt, parseFloat)
+let edad1 = 50
+console.log(parseInt(edad1), parseFloat(edad1));
 
-//Conversiones (parseInt, parseFloat)
+// Direfencias entre el == & ===
+let edad2 = '50'
+console.log(edad1 == edad2); // (True) El doble igual compara los valores.
+console.log(edad1 === edad2); // (False): El triple igual compara valor y tipo de dato.
+
+
+//***************************************************************************************************************************************************
 //Operadores (>,>=,<,<=.==,===,%,!=,!==,++,--)
-//Concatenación
-//Operador ternario
+
+//***************************************************************************************************************************************************
+//CONCATENACIÓN
+
+let nombre_profesor = 'Santiago'
+let apellido_profesor = 'Urrego'
+let nombre_completo = nombre_profesor + " " + apellido_profesor
+let nombre_completo2 = `${nombre_profesor} ${apellido_profesor}`
+
+console.log(nombre_completo);
+console.log(nombre_completo2);
+
+let numero1 = 1
+let numero2 = '1'
+console.log(numero1 + numero2);
+
+//***************************************************************************************************************************************************
+//OPERADOR TERNARIO
+let es_mayor_de_edad = false
+let edad_persona = 50
+if (edad_persona >= 18) {
+  es_mayor_de_edad = true
+} else {
+  es_mayor_de_edad = false
+}
+
+// Condicion ? resultado verdadero : resultado false
+es_mayor_de_edad = edad_persona >= 18 ? true : false
+
+//***************************************************************************************************************************************************
 //Sentencias condicionales (if, if-else, switch)
+
+//***************************************************************************************************************************************************
 //Ciclo e iteraciones (for, while, do while)
-//Arrays
+
+let persona = {nombre:'Santiago', curso:'DlloWeb'}
+// Iterar un Objeto
+for (const key in persona) {
+  console.log(key);
+}
+let carreras=['sistemas', 'derecho', 'comunicacion',{name:01}]
+// Iterar un array 
+for (const carrera of carreras) {
+  console.log(carrera);
+}
+
+// Iterar un array
+carreras.forEach(x => {
+  console.log('Foreach',x);
+})
+
+//***************************************************************************************************************************************************
+//ARRAYS: https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Array
+let numeros=[1,23,25,5,6,]
+let cadenas =['sas','sa','li']
+let objetos = [{id:0, name:'O'}, {id:1, name:'1'}, {id:2, name:'3'}, {id:4, name:'4'}]
+let matriz=[numeros, cadenas, objetos]
+console.log(matriz);
+
+
+
