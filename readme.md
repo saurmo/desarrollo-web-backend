@@ -12,6 +12,7 @@ Las tecnologias que usamos son:
 
 ## Curso 2021-2
 
+- Proyecto de reservas [Link](https://github.com/saurmo/desarrollo-web-backend/tree/curso-2021-2-api)
 - Introducción básica [Link](https://github.com/saurmo/desarrollo-web-backend/tree/curso-2021-2-intro)
 
 ## Curso 2021-1
