@@ -17,8 +17,9 @@ router.put('/usuarios', (req, res)=>{
 })
 
 // Eliminar usuario
-router.delete('/usuarios', (req, res)=>{
-    let info = controller.eliminarUsuario()
+router.delete('/usuarios/:id', (req, res)=>{
+    let id = req.params.id
+    let info = controller.eliminarUsuario(id)
     return res.send(info)
 
 })
