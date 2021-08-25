@@ -11,12 +11,19 @@
     - Consultar
     - Modificar
     - Eliminar
-- Usuarios
-    - Registro o creacion
+## Usuarios
+### Endpoints
+    - Registro o creacion `http://localhost:3000/usuarios`
     - Modificar usuario
     - Eliminar usuario 
     - Consultar usuario
     - Login
+### Informacion
+    - Nombre
+    - Apellido
+    - Id
+    - Clave
+
 
 - Lugares de destino
     - Consultas de lugares

@@ -8,7 +8,7 @@ const _pg = new PostgresService()
  * @returns Informacion de la ejecucion en base de datos
  */
 const crearUsuario = async (usuario) => {
-    const sql = 'INSERT INTO public.usuarios (nombre, id, apellidos, rol, clave) VALUES($1, $2, $3, $4, $5);'
+    const sql = 'INSERT INTO public.usuarios (nombre, id, apellidos, rol, clave) VALUES($1, $2, $3, $4, md5($5));'
     const datos = [usuario.nombre, usuario.id, usuario.apellidos, usuario.rol, usuario.clave]
     return await _pg.ejecutarQuery(sql, datos)
 }
@@ -16,9 +16,15 @@ const crearUsuario = async (usuario) => {
 /**
  * Consultar todos los usuarios de la base de datos
  */
-const consultarUsuarios = async () => {
-    const sql = 'SELECT nombre, apellidos, rol, id  FROM usuarios'
-    return await _pg.ejecutarQuery(sql)
+const consultarUsuarios = async (id) => {
+    let sql = 'SELECT nombre, apellidos, rol, id  FROM usuarios'
+    if (id) {
+        sql += ` WHERE id = $1`
+        const datos = [id]
+        return await _pg.ejecutarQuery(sql, datos)
+    } else {
+        return await _pg.ejecutarQuery(sql)
+    }
 }
 
 /**
@@ -32,15 +38,16 @@ const eliminarUsuario = async (id) => {
     return await _pg.ejecutarQuery(sql, datos)
 }
 
-const modificarUsuario = (usuario) => {
-    let id = usuario.id
-    let posicion = usuarios.findIndex(x => x.id == id)
-    return usuarios.splice(posicion, 1, usuario)
-
+const modificarUsuario = async (usuario) => {
+    const sql = `UPDATE public.usuarios SET nombre=$1, apellidos=$2, rol=$3  WHERE id=$4;`
+    const datos = [usuario.nombre, usuario.apellidos, usuario.rol, usuario.id]
+    return await _pg.ejecutarQuery(sql, datos)
 }
 
-const login = (credenciales) => {
-    return "LOGIN"
+const login = async (credenciales) => {
+    let sql = 'SELECT nombre, apellidos, rol, id  FROM usuarios WHERE id=$1 and clave=md5($2)'
+    const datos = [credenciales.id, credenciales.clave]
+    return await _pg.ejecutarQuery(sql, datos)
 }
 
 module.exports = { login, modificarUsuario, eliminarUsuario, crearUsuario, consultarUsuarios }

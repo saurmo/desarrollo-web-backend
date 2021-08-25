@@ -15,6 +15,7 @@ class PostgresService {
             database: config.PGDATABASE,
             password: config.PGPASSWORD,
             port: config.PGPORT,
+            // ssl: true
         })
     }
 
