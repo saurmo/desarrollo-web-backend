@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router()
 
-const controller = require('../controllers/usuarios.controller')
+const controller = require('../controllers/usuarios.controller');
+const { validarToken } = require('../services/jwt.service');
 
 // Crear usuario
 router.post('/usuarios', async (req, res) => {
@@ -61,25 +62,26 @@ router.get('/usuarios/:id?', (req, res) => {
         console.log(error);
         return res.status(500).send({ ok: false, message: 'Ha ocurrido un error no controlado', info: null })
     })
-
 })
 
-
-// Consultar usuario login
-router.post('/login', async (req, res) => {
-    let credenciales = req.body
+// Consultar usuario
+router.get('/validar-token/:token', (req, res) => {
     try {
-        let respuesta_db = await controller.login(credenciales)
-        let info = respuesta_db.rowCount == 1 
-        let message = respuesta_db.rowCount == 1 ? 'Usuario consultado' : 'No se encontro el usuario.'
-        return res.send({ ok: respuesta_db.rowCount == 1, message, info })
-    
+        let token = req.params.token
+        if (token == 'null')
+            return res.status(401).send({ ok: false, message: 'Token no valido', info: null })
+
+
+        let usuario_decodificado = validarToken(token)
+
+        return res.send({ ok: true, message: 'Token valido', info: usuario_decodificado })
+
     } catch (error) {
-        console.log(error);
-        return res.status(500).send({ ok: false, message: 'Ha ocurrido un error no controlado', info: null })
-  
+        return res.status(401).send({ ok: false, message: 'Token no valido', info: null })
+
     }
 
 })
+
 
 module.exports = router

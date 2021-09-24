@@ -1,6 +1,8 @@
 
+const { crearToken } = require('../services/jwt.service');
 const PostgresService = require('../services/postgres.service');
 const _pg = new PostgresService()
+
 
 /**
  * Crear un usuario en base de datos
@@ -47,7 +49,16 @@ const modificarUsuario = async (usuario) => {
 const login = async (credenciales) => {
     let sql = 'SELECT nombre, apellidos, rol, id  FROM usuarios WHERE id=$1 and clave=md5($2)'
     const datos = [credenciales.id, credenciales.clave]
-    return await _pg.ejecutarQuery(sql, datos)
+    let respuesta_db = await _pg.ejecutarQuery(sql, datos)
+    let usuario = respuesta_db.rowCount == 1 ? respuesta_db.rows[0] : null
+    if (usuario) {
+        let token = crearToken(usuario)
+
+        return { token, nombre_completo: usuario.nombre + ' ' + usuario.apellidos }
+
+    } else {
+        return undefined
+    }
 }
 
 module.exports = { login, modificarUsuario, eliminarUsuario, crearUsuario, consultarUsuarios }
