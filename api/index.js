@@ -15,6 +15,10 @@ const router_public_usuario =  require('./routers/usuarios.public.router');
 app.use(router_public_usuario)
 
 
+//*********** MIDDLEWARE JWT */
+const auth_middleware = require('./controllers/auth.middleware');
+app.use('/', auth_middleware.validarTokenMiddleware)
+
 // ****************** IMPORTAR RUTAS PRIVADAS ******************
 const router_usuario =  require('./routers/usuarios.router');
 app.use(router_usuario)
