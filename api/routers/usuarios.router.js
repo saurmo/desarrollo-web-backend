@@ -65,9 +65,9 @@ router.get('/usuarios/:id?', (req, res) => {
 })
 
 // Consultar usuario
-router.get('/validar-token/:token', (req, res) => {
+router.get('/validar-token', (req, res) => {
     try {
-        let token = req.params.token
+        let token = req.query.token
         if (token == 'null')
             return res.status(401).send({ ok: false, message: 'Token no valido', info: null })
 
