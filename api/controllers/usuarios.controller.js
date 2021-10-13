@@ -54,7 +54,12 @@ const login = async (credenciales) => {
     if (usuario) {
         let token = crearToken(usuario)
 
-        return { token, nombre_completo: usuario.nombre + ' ' + usuario.apellidos }
+        return {
+            token,
+            nombre_completo: usuario.nombre + ' ' + usuario.apellidos,
+            rol: usuario.rol
+
+        }
 
     } else {
         return undefined

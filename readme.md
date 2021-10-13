@@ -29,5 +29,11 @@
     - Consultas de lugares
     - Crear lugar de destino
     - Eliminar 
+### Informacion
+- Precio
+- Descripción del lugar
+- Fotos
+- Nombre 
+
 
 
