@@ -16,6 +16,7 @@ module.exports = {
     PGHOST,
     PGPASSWORD,
     PGDATABASE,
-    PGPORT
+    PGPORT,
+    HOST_API:"http://localhost:3001"
 }
 

@@ -2,12 +2,16 @@
 // IMPORTAR FRAMEWORK DE EXPRESS
 const express = require('express')
 const cors = require('cors')
+const fileUpload = require('express-fileupload')
 
 // Inicializar el express
 const app = express()
 
 app.use(express.json())
 app.use(cors())
+app.use(fileUpload());
+
+app.use("/files",express.static('./temp'));
 
 
 // ****************** IMPORTAR RUTAS PUBLICAS *************
@@ -25,6 +29,9 @@ app.use(router_usuario)
 
 const router_destino =  require('./routers/destinos.router');
 app.use(router_destino)
+
+const router_archivos =  require('./routers/archivos.router');
+app.use(router_archivos)
 
 
 app.use('/', (req, res)=>{
