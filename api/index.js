@@ -3,7 +3,7 @@
 const express = require('express')
 const cors = require('cors')
 const fileUpload = require('express-fileupload')
-
+require('./config/env');
 // Inicializar el express
 const app = express()
 
@@ -32,6 +32,10 @@ app.use(router_destino)
 
 const router_archivos =  require('./routers/archivos.router');
 app.use(router_archivos)
+
+
+const router_correos =  require('./routers/correos.router');
+app.use(router_correos)
 
 
 app.use('/', (req, res)=>{

@@ -5,6 +5,10 @@ const PGPASSWORD='admin123'
 const PGDATABASE='reservas' 
 const PGPORT='5433' 
 
+const EMAIL_USER=process.env.EMAIL_USER
+const EMAIL_PASSWORD=process.env.EMAIL_PASSWORD
+
+
 
 // const PGUSER='ogcgelvqbdcezr' 
 // const PGHOST='ec2-18-235-45-217.compute-1.amazonaws.com'
@@ -17,6 +21,8 @@ module.exports = {
     PGPASSWORD,
     PGDATABASE,
     PGPORT,
-    HOST_API:"http://localhost:3001"
+    HOST_API:"http://localhost:3001",
+    EMAIL_USER,
+    EMAIL_PASSWORD
 }
 
