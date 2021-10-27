@@ -1,6 +1,7 @@
 
 const { crearToken } = require('../services/jwt.service');
 const PostgresService = require('../services/postgres.service');
+const { enviarCorreoBienvenida } = require('./correos.controller');
 const _pg = new PostgresService()
 
 
@@ -10,16 +11,22 @@ const _pg = new PostgresService()
  * @returns Informacion de la ejecucion en base de datos
  */
 const crearUsuario = async (usuario) => {
-    const sql = 'INSERT INTO public.usuarios (nombre, id, apellidos, rol, clave) VALUES($1, $2, $3, $4, md5($5));'
-    const datos = [usuario.nombre, usuario.id, usuario.apellidos, usuario.rol, usuario.clave]
-    return await _pg.ejecutarQuery(sql, datos)
+    const sql = 'INSERT INTO public.usuarios (nombre, id, apellidos, rol, clave, correo) VALUES($1, $2, $3, $4, md5($5), $6);'
+    const datos = [usuario.nombre, usuario.id, usuario.apellidos, usuario.rol, usuario.clave, usuario.correo]
+    let respuesta_db = await _pg.ejecutarQuery(sql, datos)
+    enviarCorreoBienvenida(usuario).then(response => {
+        console.log('Correo de bienvenida enviado');
+    }).catch(error => {
+        console.error('Error al enviar el correo', error);
+    })
+    return respuesta_db
 }
 
 /**
  * Consultar todos los usuarios de la base de datos
  */
 const consultarUsuarios = async (id) => {
-    let sql = 'SELECT nombre, apellidos, rol, id  FROM usuarios'
+    let sql = 'SELECT nombre, apellidos, rol, id, correo  FROM usuarios'
     if (id) {
         sql += ` WHERE id = $1`
         const datos = [id]
@@ -41,13 +48,13 @@ const eliminarUsuario = async (id) => {
 }
 
 const modificarUsuario = async (usuario) => {
-    const sql = `UPDATE public.usuarios SET nombre=$1, apellidos=$2, rol=$3  WHERE id=$4;`
-    const datos = [usuario.nombre, usuario.apellidos, usuario.rol, usuario.id]
+    const sql = `UPDATE public.usuarios SET nombre=$1, apellidos=$2, rol=$3, correo=$5  WHERE id=$4;`
+    const datos = [usuario.nombre, usuario.apellidos, usuario.rol, usuario.id, usuario.correo]
     return await _pg.ejecutarQuery(sql, datos)
 }
 
 const login = async (credenciales) => {
-    let sql = 'SELECT nombre, apellidos, rol, id  FROM usuarios WHERE id=$1 and clave=md5($2)'
+    let sql = 'SELECT nombre, apellidos, rol, id, correo  FROM usuarios WHERE id=$1 and clave=md5($2)'
     const datos = [credenciales.id, credenciales.clave]
     let respuesta_db = await _pg.ejecutarQuery(sql, datos)
     let usuario = respuesta_db.rowCount == 1 ? respuesta_db.rows[0] : null
