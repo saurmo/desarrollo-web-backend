@@ -1,25 +1,29 @@
-# DESARROLLO DE SOFTWARE EN LA WEB - BACKEND
+# API Restaurante
 
-> Hola, en este repositorio se encuentra todos los códigos que vemos en clase. Acá vas a encontrar:
+> API sobre restaurante para el proyecto de desarrollo web.
 
-- Introducción a javascript
-- Proyecto de un API Rest
+```
+|
+|--src
+|----controllers
+|----routers
+|----services
+|----index.js
+|--.gitignore
+```
+1. Controllers: Controlar el tráfico de información
+2. routers: Declarar las rutas del API
+3. services: Servicios que se van a utilizar
+4. index.js Inicio del API
+5. .gitignore: Ignorar la carga de archivos y/o carpetas al repositorio.
 
-Las tecnologias que usamos son:
 
-- Nodejs
-- Postgres
+# NOTAS
+## Comandos 
+- `npm init`: Inicializar el proyecto con el package.json
+- `npm install NOMBRE`: Instalar las librerías o frameworks en especifico
+- `npm install`: Instalar TODAS las librerías o frameworks registradas en el package.json
 
-## Curso 2022-1
-
-- API restaurante [Link](https://github.com/saurmo/desarrollo-web-backend/tree/curso-2022-1-api-restaurante)
-
-## Curso 2021-2
-
-- Proyecto de reservas [Link](https://github.com/saurmo/desarrollo-web-backend/tree/curso-2021-2-api)
-- Introducción básica [Link](https://github.com/saurmo/desarrollo-web-backend/tree/curso-2021-2-intro)
-
-## Curso 2021-1
-
-- Introducción básica a javascript [Link]
-- Tienda Olimpo API [Link](https://github.com/saurmo/desarrollo-web-backend/tree/2021-1-tienda-olimpo-api)
+## Librerías y frameworks
+1. Express: `npm install express --save`  Framework para crear la API
+2. nodemon: `npm i nodemon` Herramienta de desarrollo para recargar auto el proyecto
