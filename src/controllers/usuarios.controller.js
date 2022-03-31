@@ -1,6 +1,6 @@
 
 // Importar los servicio
-const run = require('../services/mongodb.service');
+const { leerDocumentos, agregarDocumento } = require('../services/mongodb.service');
 
 
 // Controlador de usuarios
@@ -10,10 +10,25 @@ const run = require('../services/mongodb.service');
  * @param {Request} req 
  * @param {Response} res 
  */
-const crearUsuario = (req, res) => {
+const crearUsuario = async (req, res) => {
 
+    let respuesta = {}
+    try {
+        respuesta.ok = true
+        respuesta.message = "Usuario agregado correctamente."
+        // Agregar a la base de datos
+        let informacion= req.body
+        let resultado = await agregarDocumento("usuarios", informacion)
+        console.log(resultado);
+        respuesta.info = resultado
+        res.send(respuesta)
 
-    res.send("Crear usuario")
+    } catch (error) {
+        respuesta.ok = false
+        respuesta.message = "Ha ocurrido un error agregando el usuario."
+        respuesta.info = error
+        res.status(500).send(respuesta)
+    }
 
 }
 
@@ -42,7 +57,7 @@ const eliminarUsuario = (req, res) => {
  */
 const consultarUsuario = (req, res) => {
     let id = req.params.id
-    res.send("consultar usuario "  + JSON.stringify(req.params))
+    res.send("consultar usuario " + JSON.stringify(req.params))
 }
 
 /**
@@ -50,15 +65,15 @@ const consultarUsuario = (req, res) => {
  * @param {Request} req 
  * @param {Response} res 
  */
-const consultarUsuarios = (req, res) => {
+const consultarUsuarios = async (req, res) => {
     let respuesta = {}
     try {
         respuesta.ok = true
         respuesta.message = "Usuarios consultados correctamente."
         // Consulta a la base de datos de usuarios
-        run().catch(console.dir);
-
-        respuesta.info = [{ nombre: "Juan" }]
+        let resultado = await leerDocumentos("usuarios")
+        console.log(resultado);
+        respuesta.info = resultado
         res.send(respuesta)
 
     } catch (error) {
