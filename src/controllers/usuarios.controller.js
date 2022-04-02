@@ -1,6 +1,7 @@
 
 // Importar los servicio
-const { leerDocumentos, agregarDocumento } = require('../services/mongodb.service');
+const { leerDocumentos, agregarDocumento, modificarDocumento,
+     eliminarDocumento } = require('../services/mongodb.service');
 
 
 // Controlador de usuarios
@@ -11,25 +12,22 @@ const { leerDocumentos, agregarDocumento } = require('../services/mongodb.servic
  * @param {Response} res 
  */
 const crearUsuario = async (req, res) => {
-
     let respuesta = {}
     try {
         respuesta.ok = true
         respuesta.message = "Usuario agregado correctamente."
         // Agregar a la base de datos
-        let informacion= req.body
+        let informacion = req.body
         let resultado = await agregarDocumento("usuarios", informacion)
         console.log(resultado);
         respuesta.info = resultado
         res.send(respuesta)
-
     } catch (error) {
         respuesta.ok = false
         respuesta.message = "Ha ocurrido un error agregando el usuario."
         respuesta.info = error
         res.status(500).send(respuesta)
     }
-
 }
 
 /**
@@ -37,8 +35,25 @@ const crearUsuario = async (req, res) => {
  * @param {Request} req 
  * @param {Response} res 
  */
-const modificarUsuario = (req, res) => {
-    res.send("Modificar usuario")
+const modificarUsuario = async (req, res) => {
+    let respuesta = {}
+    try {
+        let _id = req.params["id"]
+        respuesta.ok = true
+        respuesta.message = "Usuario modificado correctamente."
+        // Modificar usuario en la base de datos
+        let informacion = req.body
+        let resultado = await modificarDocumento("usuarios", { _id }, informacion)
+        console.log(resultado);
+        respuesta.info = resultado
+        res.send(respuesta)
+    } catch (error) {
+        console.log(error);
+        respuesta.ok = false
+        respuesta.message = "Ha ocurrido un error modificando el usuario."
+        respuesta.info = error
+        res.status(500).send(respuesta)
+    }
 }
 
 /**
@@ -46,8 +61,24 @@ const modificarUsuario = (req, res) => {
  * @param {Request} req 
  * @param {Response} res 
  */
-const eliminarUsuario = (req, res) => {
-    res.send("Eliminar usuario")
+const eliminarUsuario = async (req, res) => {
+    let respuesta = {}
+    try {
+        let _id = req.params["id"]
+        respuesta.ok = true
+        respuesta.message = "Usuario eliminado correctamente."
+        // Eliminar usuario en la base de datos
+        let resultado = await eliminarDocumento("usuarios", { _id })
+        console.log(resultado);
+        respuesta.info = resultado
+        res.send(respuesta)
+    } catch (error) {
+        console.log(error);
+        respuesta.ok = false
+        respuesta.message = "Ha ocurrido un error eliminando el usuario."
+        respuesta.info = error
+        res.status(500).send(respuesta)
+    }
 }
 
 /**
@@ -55,9 +86,24 @@ const eliminarUsuario = (req, res) => {
  * @param {Request} req 
  * @param {Response} res 
  */
-const consultarUsuario = (req, res) => {
-    let id = req.params.id
-    res.send("consultar usuario " + JSON.stringify(req.params))
+const consultarUsuario = async (req, res) => {
+    let respuesta = {}
+    try {
+        let _id = req.params["id"]
+        respuesta.ok = true
+        respuesta.message = "Usuario consultado correctamente."
+        // COnsultar usuario en la base de datos
+        let resultado = await leerDocumentos("usuarios", { _id })
+        console.log(resultado);
+        respuesta.info = resultado
+        res.send(respuesta)
+    } catch (error) {
+        console.log(error);
+        respuesta.ok = false
+        respuesta.message = "Ha ocurrido un error eliminando el usuario."
+        respuesta.info = error
+        res.status(500).send(respuesta)
+    }
 }
 
 /**
@@ -77,6 +123,7 @@ const consultarUsuarios = async (req, res) => {
         res.send(respuesta)
 
     } catch (error) {
+        console.log(error);
         respuesta.ok = false
         respuesta.message = "Ha ocurrido un error consultando los usuarios."
         respuesta.info = error
