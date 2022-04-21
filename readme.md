@@ -38,3 +38,19 @@
 2. nodemon: `npm i nodemon` Herramienta de desarrollo para recargar auto el proyecto
 
 
+# MODULOS
+
+- Usuarios (CRUD) {id, nombre, correo, universidad, clave}
+- Administradores (CRUD) {id, nombre, correo, clave}
+- Login () {correo, clave}
+- Platos (CRUD) {id, precio, categoria, nombre, vegetariano, descripcion}
+- Pedidos  (CRUD) {id, direccion, telefono, medio_pago, platos}
+- Seguridad (JWT) { Generacion token }
+
+# Reglas de negocio
+- Los usuarios deben de estar registrados para realizar un pedido
+- Los usuarios no pueden agregar platos 
+-  Los administradores puede gestionar platos
+
+
+
