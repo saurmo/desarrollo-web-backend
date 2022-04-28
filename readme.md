@@ -40,9 +40,10 @@
 
 # MODULOS
 
-- Usuarios (CRUD) {id, nombre, correo, universidad, clave}
-- Administradores (CRUD) {id, nombre, correo, clave}
+- Usuarios (CRUD) {id, nombre, correo, universidad, clave, rol (Cliente-Administrador ) }
+
 - Login () {correo, clave}
+
 - Platos (CRUD) {id, precio, categoria, nombre, vegetariano, descripcion}
 - Pedidos  (CRUD) {id, direccion, telefono, medio_pago, platos}
 - Seguridad (JWT) { Generacion token }

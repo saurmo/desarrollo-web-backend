@@ -7,11 +7,18 @@ const router = express.Router()
 // Importar controladores
 const usuario_ctr = require("../controllers/usuarios.controller")
 const platos_ctr = require("../controllers/platos.controller")
+const auth_ctr = require("../controllers/auth.controller")
+const { verificarPeticion } = require('../middlewares/token.middleware')
+const { notFound } = require('../middlewares/404.middleware')
 
 
 // Definicion de los endpoints - rutas
 
 const vs = "/api/v1"
+
+router.post(`${vs}/login`, auth_ctr.login)
+
+router.use(verificarPeticion)
 
 router.get(vs + "/usuarios", usuario_ctr.consultarUsuarios)
     .post(vs + "/usuarios", usuario_ctr.crearUsuario)
@@ -25,7 +32,7 @@ router.get(vs + "/platos", platos_ctr.consultarPlatos)
     .get(vs + "/platos/:id", platos_ctr.consultarPlato)
     .delete(vs + "/platos/:id", platos_ctr.eliminarPlato)
 
-
+router.use(notFound)
 
 module.exports = router
 

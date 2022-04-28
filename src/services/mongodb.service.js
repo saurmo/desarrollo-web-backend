@@ -22,6 +22,12 @@ const leerDocumentos = async (nombreColeccion, filtro) => {
   return coleccion.find(filtro).toArray()
 }
 
+const leerDocumento = async (nombreColeccion, filtro) => {
+  let db = await conectarDB()
+  let coleccion = db.collection(nombreColeccion)
+  return coleccion.findOne(filtro)
+}
+
 /**
  * Convirtirtiendo el filtro._id en un objetoId
  * @param {*} filtro 
@@ -70,4 +76,4 @@ const modificarDocumento = async (nombreColeccion, filtro, nuevoDocumento) => {
   return await coleccion.replaceOne(filtro, nuevoDocumento)
 }
 
-module.exports = { agregarDocumento, modificarDocumento, eliminarDocumento, leerDocumentos }
+module.exports = { agregarDocumento, modificarDocumento, eliminarDocumento, leerDocumentos, leerDocumento }
