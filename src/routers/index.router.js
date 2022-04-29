@@ -18,10 +18,11 @@ const vs = "/api/v1"
 
 router.post(`${vs}/login`, auth_ctr.login)
 
+router.post(vs + "/usuarios", usuario_ctr.crearUsuario)
+
 router.use(verificarPeticion)
 
 router.get(vs + "/usuarios", usuario_ctr.consultarUsuarios)
-    .post(vs + "/usuarios", usuario_ctr.crearUsuario)
     .put(vs + "/usuarios/:id", usuario_ctr.modificarUsuario)
     .get(vs + "/usuarios/:id", usuario_ctr.consultarUsuario)
     .delete(vs + "/usuarios/:id", usuario_ctr.eliminarUsuario)

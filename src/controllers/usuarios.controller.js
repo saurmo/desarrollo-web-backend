@@ -1,6 +1,6 @@
 
 // Importar los servicio
-const { cifrar } = require('../services/bcrypt.service');
+const {  crearHash } = require('../services/bcrypt.service');
 const { leerDocumentos, agregarDocumento, modificarDocumento,
      eliminarDocumento } = require('../services/mongodb.service');
 
@@ -22,7 +22,7 @@ const crearUsuario = async (req, res) => {
 
         //TODO: Verificación de los datos
 
-        informacion.clave = cifrar(informacion.clave)
+        informacion.clave = crearHash(informacion.clave)
 
         let resultado = await agregarDocumento("usuarios", informacion)
         console.log(resultado);
