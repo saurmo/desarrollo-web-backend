@@ -22,6 +22,7 @@ router.post(vs + "/usuarios", usuario_ctr.crearUsuario)
 
 router.use(verificarPeticion)
 
+router.get(vs + "/validate", auth_ctr.validarToken)
 router.get(vs + "/usuarios", usuario_ctr.consultarUsuarios)
     .put(vs + "/usuarios/:id", usuario_ctr.modificarUsuario)
     .get(vs + "/usuarios/:id", usuario_ctr.consultarUsuario)

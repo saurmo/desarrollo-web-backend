@@ -17,7 +17,7 @@ const crearToken = (data) => {
  */
 const verificarToken = (token) => {
     try {
-        return Object.keys(jwt.verify(token, PRIVATE_KEY)).length>0
+        return Object.keys(jwt.verify(token, PRIVATE_KEY)).length > 0
     } catch (error) {
         return false
     }
@@ -29,6 +29,8 @@ const verificarToken = (token) => {
  * @param {*} token 
  */
 const decodificarToken = (token) => {
+
+    return jwt.verify(token, PRIVATE_KEY)
 
 }
 

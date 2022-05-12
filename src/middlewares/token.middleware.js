@@ -6,8 +6,6 @@ const verificarPeticion = (req, res, next) => {
 
     try {
 
-        console.log(req.headers);
-
         const token = req.headers.token
 
         if (token) {
