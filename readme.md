@@ -10,6 +10,11 @@ Las tecnologias que usamos son:
 - Nodejs
 - Postgres
 
+## Curso 2022-2
+
+- API Tienda Frutas y Verduras [Link](https://github.com/saurmo/desarrollo-web-backend/tree/curso-2022-2-api-tienda)
+
+
 ## Curso 2022-1
 
 - API restaurante [Link](https://github.com/saurmo/desarrollo-web-backend/tree/curso-2022-1-api-restaurante)
