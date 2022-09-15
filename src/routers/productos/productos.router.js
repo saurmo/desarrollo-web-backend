@@ -1,7 +1,10 @@
 // Importar el framework
 const express = require('express')
 
-// Crear una instancia 
+// Importar clase para manipular los archivos
+const FileProvider = require('../../controllers/FileProvider')
+
+// Crear una instancia del router
 const router = express.Router()
 
 router.post('/productos', (req, res) => {
@@ -9,7 +12,27 @@ router.post('/productos', (req, res) => {
 })
 
 router.get('/productos', (req, res) => {
-    res.send('Consultar el listado de productos')
+    try {
+        const path = "./src/data/productos.json"
+        const fileProvider = new FileProvider()
+        const buffer = fileProvider.readFile(path)
+        // Usar clase JSON de javascript para convertir 
+        // el contenido del archivo en json
+        const productos = JSON.parse(buffer.toString())
+        res.send({
+            ok: true,
+            message: "Productos consultados",
+            data: productos
+        })
+    } catch (error) {
+        const message = "Ha ocurrido un error en la lectura del archivo."
+        res.status(500).send({
+            ok: false,
+            message,
+            data: error.toString()
+        })
+    }
+
 })
 
 router.put('/productos/:id', (req, res) => {
