@@ -1,7 +1,16 @@
 [
     {
-        "id": "001",
+        "id": "F001",
         "name": "Mango",
-        "type": "Fruta"
+        "description":"Mnago tomy",
+        "type": "Fruta",
+        "image":"https://dam.cocinafacil.com.mx/wp-content/uploads/2019/09/ATAULFO.jpg"
+    },
+    {
+        "id": "F002",
+        "name": "Fresa",
+        "description":"Fresa",
+        "type": "Fruta",
+        "image":"https://static1.abc.es/media/bienestar/2021/03/14/fresas-fresones-kSKI--1200x630@abc.jpg"
     }
 ]

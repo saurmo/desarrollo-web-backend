@@ -22,14 +22,14 @@ router.get('/productos', (req, res) => {
         res.send({
             ok: true,
             message: "Productos consultados",
-            data: productos
+            info: productos
         })
     } catch (error) {
         const message = "Ha ocurrido un error en la lectura del archivo."
         res.status(500).send({
             ok: false,
             message,
-            data: error.toString()
+            info: error.toString()
         })
     }
 
