@@ -18,6 +18,15 @@ class FileProvider {
         return buffer
     }
 
+    /**
+     * Método para guardar un archivo
+     * @param {*} path 
+     * @param {*} data 
+     */
+    saveFile(path, data){
+        fs.writeFileSync(path, data)
+    }
+
 }
 
 module.exports = FileProvider

@@ -13,7 +13,10 @@ const routerBuys = require("./src/routers/compras/compras.router")
 // USAR CORS 
 app.use(cors())
 
-// DEFINICION DE ENDPOINSTS
+// USAR JSON EN EL BODY
+app.use(express.json())
+
+// DEFINICION Y USO DE ENDPOINSTS
 app.use(routerProducts)
 app.use(routerBuys)
 

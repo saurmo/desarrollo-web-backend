@@ -2,15 +2,78 @@
     {
         "id": "F001",
         "name": "Mango",
-        "description":"Mnago tomy",
+        "description": "Mnago tomy",
         "type": "Fruta",
-        "image":"https://dam.cocinafacil.com.mx/wp-content/uploads/2019/09/ATAULFO.jpg"
+        "image": "https://dam.cocinafacil.com.mx/wp-content/uploads/2019/09/ATAULFO.jpg"
     },
     {
         "id": "F002",
         "name": "Fresa",
-        "description":"Fresa",
+        "description": "Fresa",
         "type": "Fruta",
-        "image":"https://static1.abc.es/media/bienestar/2021/03/14/fresas-fresones-kSKI--1200x630@abc.jpg"
+        "image": "https://static1.abc.es/media/bienestar/2021/03/14/fresas-fresones-kSKI--1200x630@abc.jpg"
+    },
+    {
+        "id": "F003",
+        "name": "Mango",
+        "description": "Mnago tomy",
+        "type": "Fruta",
+        "image": "https://dam.cocinafacil.com.mx/wp-content/uploads/2019/09/ATAULFO.jpg"
+    },
+    {
+        "id": "F004",
+        "name": "Fresa",
+        "description": "Fresa",
+        "type": "Fruta",
+        "image": "https://static1.abc.es/media/bienestar/2021/03/14/fresas-fresones-kSKI--1200x630@abc.jpg"
+    },
+    {
+        "id": "F005",
+        "name": "Mango",
+        "description": "Mnago tomy",
+        "type": "Fruta",
+        "image": "https://dam.cocinafacil.com.mx/wp-content/uploads/2019/09/ATAULFO.jpg"
+    },
+    {
+        "id": "F006",
+        "name": "Fresa",
+        "description": "Fresa",
+        "type": "Fruta",
+        "image": "https://static1.abc.es/media/bienestar/2021/03/14/fresas-fresones-kSKI--1200x630@abc.jpg"
+    },
+    {
+        "id": "F007",
+        "name": "Mango",
+        "description": "Mnago tomy",
+        "type": "Fruta",
+        "image": "https://dam.cocinafacil.com.mx/wp-content/uploads/2019/09/ATAULFO.jpg"
+    },
+    {
+        "id": "F008",
+        "name": "Fresa",
+        "description": "Fresa",
+        "type": "Fruta",
+        "image": "https://static1.abc.es/media/bienestar/2021/03/14/fresas-fresones-kSKI--1200x630@abc.jpg"
+    },
+    {
+        "id": "F009",
+        "name": "Mango",
+        "description": "Mnago tomy",
+        "type": "Fruta",
+        "image": "https://dam.cocinafacil.com.mx/wp-content/uploads/2019/09/ATAULFO.jpg"
+    },
+    {
+        "id": "F010",
+        "name": "Fresa",
+        "description": "Fresa",
+        "type": "Fruta",
+        "image": "https://static1.abc.es/media/bienestar/2021/03/14/fresas-fresones-kSKI--1200x630@abc.jpg"
+    },
+    {
+        "id": "F0013",
+        "name": "Kiwi",
+        "image": "http://www.frutas-hortalizas.com/img/fruites_verdures/presentacio/14.jpg",
+        "type": "Fruta",
+        "price": 1000
     }
 ]
