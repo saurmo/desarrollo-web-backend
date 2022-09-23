@@ -3,6 +3,7 @@ const express = require('express')
 
 // Importar clase para manipular los archivos
 const FileProvider = require('../../controllers/FileProvider')
+const Product = require('../../models/Product')
 
 // Crear una instancia del router
 const router = express.Router()
@@ -18,6 +19,8 @@ router.post('/productos', (req, res) => {
         const buffer = fileProvider.readFile(path)
         const products = JSON.parse(buffer.toString())
 
+        const productClass = Product.createProductFromObject(product)
+
         // Agregar el producto
         products.push(product)
         // Guardar el json en el archivo
@@ -29,11 +32,16 @@ router.post('/productos', (req, res) => {
             info: product
         })
     } catch (error) {
-        res.status(500).send({
-            ok: true,
-            message: "Producto NO creado.",
-            info: error.toString()
-        })
+
+        if (Object.keys(error).length > 0) {
+            res.status(500).send(error)
+        } else {
+            res.status(500).send({
+                ok: true,
+                message: "Producto NO creado.",
+                info: error.toString()
+            })
+        }
     }
 
 })

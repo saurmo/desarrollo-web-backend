@@ -75,5 +75,15 @@
         "image": "http://www.frutas-hortalizas.com/img/fruites_verdures/presentacio/14.jpg",
         "type": "Fruta",
         "price": 1000
+    },
+    {
+        "id": "FR0020",
+        "name": "Banano",
+        "type": "Fruta",
+        "price": "5000",
+        "date": "2022-09-22",
+        "expiration_date": "2022-09-22",
+        "description": "banano"
     }
+    
 ]
