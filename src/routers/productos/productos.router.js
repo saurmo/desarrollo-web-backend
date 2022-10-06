@@ -69,7 +69,46 @@ router.get('/productos', (req, res) => {
 })
 
 router.put('/productos/:id', (req, res) => {
-    res.send('Hello World!')
+    try {
+        const path = "./src/data/productos.json"
+        // Leer el json del archivo
+        const fileProvider = new FileProvider()
+        const buffer = fileProvider.readFile(path)
+        const products = JSON.parse(buffer.toString())
+
+        // Leer el parametro id
+        const id = req.params.id
+
+        // Buscar el producto
+        const posicion = products.findIndex((p) => p.id === id)
+
+        const product = req.body
+
+
+        if (posicion === -1) {
+            res.status(404).send({
+                ok: false,
+                message: "El producto no existe.",
+                info: ""
+            })
+        } else {
+            products.splice(posicion, 1, product)
+            // Guardar el json en el archivo
+            fileProvider.saveFile(path, JSON.stringify(products))
+            res.status(200).send({
+                ok: true,
+                message: "Producto actualizado.",
+                info: ""
+            })
+        }
+    } catch (error) {
+        const message = "Ha ocurrido un error en la lectura del archivo."
+        res.status(500).send({
+            ok: false,
+            message,
+            info: error.toString()
+        })
+    }
 })
 
 router.delete('/productos/:id', (req, res) => {
