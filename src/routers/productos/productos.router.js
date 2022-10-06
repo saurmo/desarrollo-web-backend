@@ -79,7 +79,6 @@ router.delete('/productos/:id', (req, res) => {
         const fileProvider = new FileProvider()
         const buffer = fileProvider.readFile(path)
         const products = JSON.parse(buffer.toString())
-
         const id = req.params.id
         const posicion = products.findIndex((p) => p.id === id)
         if (posicion === -1) {
@@ -90,6 +89,8 @@ router.delete('/productos/:id', (req, res) => {
             })
         } else {
             products.splice(posicion, 1)
+            // Guardar el json en el archivo
+            fileProvider.saveFile(path, JSON.stringify(products))
             res.status(200).send({
                 ok: true,
                 message: "Producto eliminado",
