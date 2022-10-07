@@ -5,6 +5,8 @@ const express = require('express')
 const FileProvider = require('../../controllers/FileProvider')
 const Product = require('../../models/Product')
 
+const { getDocuments } = require('../../controllers/MongoDb');
+
 // Crear una instancia del router
 const router = express.Router()
 
@@ -44,14 +46,10 @@ router.post('/productos', (req, res) => {
 
 })
 
-router.get('/productos', (req, res) => {
+router.get('/productos', async (req, res) => {
     try {
-        const path = "./src/data/productos.json"
-        const fileProvider = new FileProvider()
-        const buffer = fileProvider.readFile(path)
-        // Usar clase JSON de javascript para convertir 
-        // el contenido del archivo en json
-        const productos = JSON.parse(buffer.toString())
+
+        const productos = await getDocuments('tienda', 'productos')
         res.send({
             ok: true,
             message: "Productos consultados",

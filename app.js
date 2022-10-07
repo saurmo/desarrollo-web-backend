@@ -20,7 +20,7 @@ app.use(express.json())
 app.use(routerProducts)
 app.use(routerBuys)
 
-
+require('./src/controllers/MongoDb')
 const PORT = 3001
 app.listen(PORT, () => {
     console.log(`Ejecución del API: http://localhost:${PORT}`)
