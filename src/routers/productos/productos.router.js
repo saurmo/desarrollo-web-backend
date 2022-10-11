@@ -5,7 +5,7 @@ const express = require('express')
 const FileProvider = require('../../controllers/FileProvider')
 const Product = require('../../models/Product')
 
-const { getDocuments, insertDocument } = require('../../controllers/MongoDb');
+const { getDocuments, insertDocument, getDocumentById } = require('../../controllers/MongoDb');
 
 // Crear una instancia del router
 const router = express.Router()
@@ -43,6 +43,26 @@ router.get('/productos', async (req, res) => {
             ok: true,
             message: "Productos consultados",
             info: productos
+        })
+    } catch (error) {
+        const message = "Ha ocurrido un error en la lectura del archivo."
+        res.status(500).send({
+            ok: false,
+            message,
+            info: error.toString()
+        })
+    }
+
+})
+
+router.get('/productos/:id', async (req, res) => {
+    try {
+        const id = req.params.id
+        const producto = await getDocumentById('tienda', 'productos', id)
+        res.send({
+            ok: true,
+            message: "Producto consultado",
+            info: producto
         })
     } catch (error) {
         const message = "Ha ocurrido un error en la lectura del archivo."
