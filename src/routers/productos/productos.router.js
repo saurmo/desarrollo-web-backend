@@ -5,34 +5,23 @@ const express = require('express')
 const FileProvider = require('../../controllers/FileProvider')
 const Product = require('../../models/Product')
 
-const { getDocuments } = require('../../controllers/MongoDb');
+const { getDocuments, insertDocument } = require('../../controllers/MongoDb');
 
 // Crear una instancia del router
 const router = express.Router()
 
-router.post('/productos', (req, res) => {
+router.post('/productos', async (req, res) => {
     try {
+
         const product = req.body
-        const path = "./src/data/productos.json"
-        // Leer el json del archivo
-        const fileProvider = new FileProvider()
-        const buffer = fileProvider.readFile(path)
-        const products = JSON.parse(buffer.toString())
-
-        const productClass = Product.createProductFromObject(product)
-
-        // Agregar el producto
-        products.push(product)
-        // Guardar el json en el archivo
-        fileProvider.saveFile(path, JSON.stringify(products))
-
+        //Product.createProductFromObject(product)
+        const responseDb = await insertDocument('tienda', 'productos', product)
         res.send({
             ok: true,
             message: "Producto creado.",
-            info: product
+            info: responseDb
         })
     } catch (error) {
-
         if (Object.keys(error).length > 0) {
             res.status(500).send(error)
         } else {
