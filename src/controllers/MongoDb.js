@@ -3,7 +3,10 @@ const { MongoClient, ObjectId } = require('mongodb')
 
 // const URI = "mongodb+srv://USER:PASSWORD@HOST"
 const uri = "mongodb+srv://saurmo-udem:9nVhp5fsbdKQRBLf@clusterudem.3l9e6.mongodb.net/?retryWrites=true&w=majority";
-
+// HOST: clusterudem.3l9e6.mongodb.net
+// USER: saurmo-udem
+// PASSWORD: 9nVhp5fsbdKQRBLf
+// DATABASE: tienda
 const getDocuments = async (dbName, collectionName) => {
     const mongoClient = new MongoClient(uri)
     const db = mongoClient.db(dbName)
@@ -35,5 +38,24 @@ const insertDocument = async (dbName, collectionName, data) => {
     return result
 }
 
+const updateDocumentById = async (dbName, collectionName, { id, data }) => {
+    const mongoClient = new MongoClient(uri)
+    const idMongo = new ObjectId(id)
+    const db = mongoClient.db(dbName)
+    const collection = db.collection(collectionName)
+    delete data._id
+    const result = await collection.replaceOne({ _id: idMongo }, data);
+    return result
+}
 
-module.exports = { getDocuments, insertDocument, getDocumentById }
+const deleteDocumentById = async (dbName, collectionName, id) => {
+    const idMongo = new ObjectId(id)
+    const mongoClient = new MongoClient(uri)
+    const db = mongoClient.db(dbName)
+    const collection = db.collection(collectionName)
+    const result = await collection.deleteOne({ _id: idMongo });
+    return result
+}
+
+
+module.exports = { getDocuments, insertDocument, getDocumentById, deleteDocumentById, updateDocumentById }

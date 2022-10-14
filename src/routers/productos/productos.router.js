@@ -1,20 +1,14 @@
 // Importar el framework
 const express = require('express')
 
-// Importar clase para manipular los archivos
-const FileProvider = require('../../controllers/FileProvider')
-const Product = require('../../models/Product')
-
-const { getDocuments, insertDocument, getDocumentById } = require('../../controllers/MongoDb');
+const { getDocuments, insertDocument, getDocumentById, deleteDocumentById, updateDocumentById } = require('../../controllers/MongoDb');
 
 // Crear una instancia del router
 const router = express.Router()
 
 router.post('/productos', async (req, res) => {
     try {
-
         const product = req.body
-        //Product.createProductFromObject(product)
         const responseDb = await insertDocument('tienda', 'productos', product)
         res.send({
             ok: true,
@@ -32,12 +26,10 @@ router.post('/productos', async (req, res) => {
             })
         }
     }
-
 })
 
 router.get('/productos', async (req, res) => {
     try {
-
         const productos = await getDocuments('tienda', 'productos')
         res.send({
             ok: true,
@@ -52,7 +44,6 @@ router.get('/productos', async (req, res) => {
             info: error.toString()
         })
     }
-
 })
 
 router.get('/productos/:id', async (req, res) => {
@@ -75,36 +66,21 @@ router.get('/productos/:id', async (req, res) => {
 
 })
 
-router.put('/productos/:id', (req, res) => {
+router.put('/productos/:id', async (req, res) => {
     try {
-        const path = "./src/data/productos.json"
-        // Leer el json del archivo
-        const fileProvider = new FileProvider()
-        const buffer = fileProvider.readFile(path)
-        const products = JSON.parse(buffer.toString())
-
-        // Leer el parametro id
         const id = req.params.id
-
-        // Buscar el producto
-        const posicion = products.findIndex((p) => p.id === id)
-
         const product = req.body
-
-
-        if (posicion === -1) {
+        const responseDb = await updateDocumentById('tienda', 'productos', { id, data: product })
+        if (responseDb.modifiedCount > 0) {
+            return res.status(200).send({
+                ok: true,
+                message: "Producto actualizado.",
+                info: product
+            })
+        } else {
             res.status(404).send({
                 ok: false,
                 message: "El producto no existe.",
-                info: ""
-            })
-        } else {
-            products.splice(posicion, 1, product)
-            // Guardar el json en el archivo
-            fileProvider.saveFile(path, JSON.stringify(products))
-            res.status(200).send({
-                ok: true,
-                message: "Producto actualizado.",
                 info: ""
             })
         }
@@ -118,29 +94,21 @@ router.put('/productos/:id', (req, res) => {
     }
 })
 
-router.delete('/productos/:id', (req, res) => {
+router.delete('/productos/:id', async (req, res) => {
     try {
-        const path = "./src/data/productos.json"
-        // Leer el json del archivo
-        const fileProvider = new FileProvider()
-        const buffer = fileProvider.readFile(path)
-        const products = JSON.parse(buffer.toString())
         const id = req.params.id
-        const posicion = products.findIndex((p) => p.id === id)
-        if (posicion === -1) {
-            res.status(404).send({
-                ok: false,
-                message: "El producto no existe.",
-                info: ""
-            })
-        } else {
-            products.splice(posicion, 1)
-            // Guardar el json en el archivo
-            fileProvider.saveFile(path, JSON.stringify(products))
+        const responseDb = await deleteDocumentById('tienda', 'productos', id)
+        if (responseDb.deletedCount === 1) {
             res.status(200).send({
                 ok: true,
                 message: "Producto eliminado",
                 info: ""
+            })
+        } else {
+            res.status(404).send({
+                ok: false,
+                message: "El producto no existe.",
+                info: responseDb
             })
         }
     } catch (error) {
