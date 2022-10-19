@@ -7,6 +7,8 @@ const uri = "mongodb+srv://saurmo-udem:9nVhp5fsbdKQRBLf@clusterudem.3l9e6.mongod
 // USER: saurmo-udem
 // PASSWORD: 9nVhp5fsbdKQRBLf
 // DATABASE: tienda
+
+
 const getDocuments = async (dbName, collectionName) => {
     const mongoClient = new MongoClient(uri)
     const db = mongoClient.db(dbName)
@@ -14,12 +16,22 @@ const getDocuments = async (dbName, collectionName) => {
     const result = await collection.find({}).toArray();
     return result
 }
+
+const getDocumentsWithFilter = async (dbName, collectionName, filter) => {
+    const mongoClient = new MongoClient(uri)
+    const db = mongoClient.db(dbName)
+    const collection = db.collection(collectionName)
+    const result = await collection.find(filter).toArray();
+    return result
+}
+
+
 const getDocumentById = async (dbName, collectionName, id) => {
     const idMongo = new ObjectId(id)
     const mongoClient = new MongoClient(uri)
     const db = mongoClient.db(dbName)
     const collection = db.collection(collectionName)
-    const result = await collection.find({ _id: idMongo }).toArray();
+    const result = await collection.findOne({ _id: idMongo });
     return result
 }
 
@@ -58,4 +70,4 @@ const deleteDocumentById = async (dbName, collectionName, id) => {
 }
 
 
-module.exports = { getDocuments, insertDocument, getDocumentById, deleteDocumentById, updateDocumentById }
+module.exports = { getDocuments, insertDocument, getDocumentById, deleteDocumentById, updateDocumentById, getDocumentsWithFilter }

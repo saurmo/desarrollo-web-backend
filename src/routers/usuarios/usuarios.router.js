@@ -3,6 +3,7 @@
 const express = require('express')
 
 const { getDocuments, insertDocument, getDocumentById, deleteDocumentById, updateDocumentById } = require('../../controllers/MongoDb');
+const Users = require('../../models/Users');
 
 // Crear una instancia del router
 const router = express.Router()
@@ -10,7 +11,8 @@ const router = express.Router()
 router.post('/usuarios', async (req, res) => {
     try {
         const userObject = req.body
-        const responseDb = await insertDocument('tienda', 'usuarios', userObject)
+        const user = new Users(userObject)
+        const responseDb = await insertDocument('tienda', 'usuarios', user.initUser())
         res.send({
             ok: true,
             message: "Usuario creado.",
@@ -32,10 +34,11 @@ router.post('/usuarios', async (req, res) => {
 router.get('/usuarios', async (req, res) => {
     try {
         const responseDb = await getDocuments('tienda', 'usuarios')
+        const users = Users.removePassword(responseDb)
         res.send({
             ok: true,
             message: "Usuarios consultados",
-            info: responseDb
+            info: users
         })
     } catch (error) {
         const message = "Ha ocurrido un error en la consulta de usuarios."
@@ -51,6 +54,7 @@ router.get('/usuarios/:id', async (req, res) => {
     try {
         const id = req.params.id
         const responseDb = await getDocumentById('tienda', 'usuarios', id)
+       delete responseDb.password
         res.send({
             ok: true,
             message: "Usuario consultado",
@@ -71,7 +75,9 @@ router.put('/usuarios/:id', async (req, res) => {
     try {
         const id = req.params.id
         const userObject = req.body
-        const responseDb = await updateDocumentById('tienda', 'usuarios', { id, data: userObject })
+        const user = new Users(userObject)
+
+        const responseDb = await updateDocumentById('tienda', 'usuarios', { id, data: user.initUser() })
         if (responseDb.modifiedCount > 0) {
             return res.status(200).send({
                 ok: true,

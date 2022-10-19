@@ -10,6 +10,7 @@ const app = express()
 const routerProducts = require('./src/routers/productos/productos.router');
 const routerUsers = require('./src/routers/usuarios/usuarios.router');
 const routerBuys = require("./src/routers/compras/compras.router")
+const routerAuth = require("./src/routers/auth/auth.router")
 
 // USAR CORS 
 app.use(cors())
@@ -21,6 +22,7 @@ app.use(express.json())
 app.use(routerProducts)
 app.use(routerBuys)
 app.use(routerUsers)
+app.use(routerAuth)
 
 
 const PORT = 3001
