@@ -10,7 +10,8 @@ const app = express()
 const routerProducts = require('./src/routers/productos/productos.router');
 const routerUsers = require('./src/routers/usuarios/usuarios.router');
 const routerBuys = require("./src/routers/compras/compras.router")
-const routerAuth = require("./src/routers/auth/auth.router")
+const routerAuth = require("./src/routers/auth/auth.router");
+const { middlewareToken } = require('./src/middleware/jwt.middleware');
 
 // USAR CORS 
 app.use(cors())
@@ -18,11 +19,21 @@ app.use(cors())
 // USAR JSON EN EL BODY
 app.use(express.json())
 
+
 // DEFINICION Y USO DE ENDPOINSTS
+
+// PUBLICOS
+app.use(routerAuth)
+app.use(routerUsers)
+
+app.use(middlewareToken)
+
+// PRIVADOS
+
 app.use(routerProducts)
 app.use(routerBuys)
-app.use(routerUsers)
-app.use(routerAuth)
+
+
 
 
 const PORT = 3001

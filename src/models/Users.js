@@ -3,10 +3,12 @@ const { createHash } = require("../controllers/bcrypt");
 
 class Users {
 
-    constructor({ code, name, email, password }) {
+    constructor({ code, name, email, password, role, create_by }) {
         this.code = code;
         this.name = name;
         this.email = email;
+        this.role = role;
+        this.create_by=create_by;
         this.password = password;
     }
 
@@ -16,7 +18,9 @@ class Users {
         return {
             code: this.code,
             name: this.name,
+            role: this.role,
             email: this.email,
+            create_by:this.create_by,
             password,
         }
     }

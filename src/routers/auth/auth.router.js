@@ -1,6 +1,7 @@
 
 const express = require('express');
 const { compareHash } = require('../../controllers/bcrypt');
+const { createJsonWebToken } = require('../../controllers/jwt');
 const { getDocumentsWithFilter } = require('../../controllers/MongoDb');
 
 const router = express.Router()
@@ -18,7 +19,10 @@ router.post("/login", async (req, res) => {
             user = user[0]
             const passwordIsEqual = compareHash(password, user.password)
             delete user.password
-            if (passwordIsEqual===true) {
+            if (passwordIsEqual === true) {
+                // Generando un token con toda la info del usuarios
+                const token = createJsonWebToken(user)
+                user.token = token
                 res.send({
                     ok: true,
                     message: "Usuario consultado.",
@@ -28,11 +32,11 @@ router.post("/login", async (req, res) => {
                 res.status(400).send({
                     ok: true,
                     message: "Usuario y/o Contraseña incorrecta.",
-                    info:{}
+                    info: {}
                 })
             }
-        }else{
-            res.status(400).send({
+        } else {
+            res.status(404).send({
                 ok: true,
                 message: "Usuario y/o Contraseña incorrecta",
                 info: {}

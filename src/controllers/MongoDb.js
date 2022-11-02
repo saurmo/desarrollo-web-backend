@@ -7,10 +7,9 @@ const uri = "mongodb+srv://saurmo-udem:9nVhp5fsbdKQRBLf@clusterudem.3l9e6.mongod
 // USER: saurmo-udem
 // PASSWORD: 9nVhp5fsbdKQRBLf
 // DATABASE: tienda
-
+const mongoClient = new MongoClient(uri)
 
 const getDocuments = async (dbName, collectionName) => {
-    const mongoClient = new MongoClient(uri)
     const db = mongoClient.db(dbName)
     const collection = db.collection(collectionName)
     const result = await collection.find({}).toArray();
@@ -18,7 +17,6 @@ const getDocuments = async (dbName, collectionName) => {
 }
 
 const getDocumentsWithFilter = async (dbName, collectionName, filter) => {
-    const mongoClient = new MongoClient(uri)
     const db = mongoClient.db(dbName)
     const collection = db.collection(collectionName)
     const result = await collection.find(filter).toArray();
@@ -28,7 +26,6 @@ const getDocumentsWithFilter = async (dbName, collectionName, filter) => {
 
 const getDocumentById = async (dbName, collectionName, id) => {
     const idMongo = new ObjectId(id)
-    const mongoClient = new MongoClient(uri)
     const db = mongoClient.db(dbName)
     const collection = db.collection(collectionName)
     const result = await collection.findOne({ _id: idMongo });
@@ -43,7 +40,6 @@ const getDocumentById = async (dbName, collectionName, id) => {
  * @returns Promise 
  */
 const insertDocument = async (dbName, collectionName, data) => {
-    const mongoClient = new MongoClient(uri)
     const db = mongoClient.db(dbName)
     const collection = db.collection(collectionName)
     const result = await collection.insertOne(data);
@@ -51,7 +47,6 @@ const insertDocument = async (dbName, collectionName, data) => {
 }
 
 const updateDocumentById = async (dbName, collectionName, { id, data }) => {
-    const mongoClient = new MongoClient(uri)
     const idMongo = new ObjectId(id)
     const db = mongoClient.db(dbName)
     const collection = db.collection(collectionName)
@@ -62,7 +57,6 @@ const updateDocumentById = async (dbName, collectionName, { id, data }) => {
 
 const deleteDocumentById = async (dbName, collectionName, id) => {
     const idMongo = new ObjectId(id)
-    const mongoClient = new MongoClient(uri)
     const db = mongoClient.db(dbName)
     const collection = db.collection(collectionName)
     const result = await collection.deleteOne({ _id: idMongo });

@@ -3,14 +3,16 @@
 const express = require('express')
 
 const { getDocuments, insertDocument, getDocumentById, deleteDocumentById, updateDocumentById } = require('../../controllers/MongoDb');
+const { middlewareToken } = require('../../middleware/jwt.middleware');
 const Users = require('../../models/Users');
 
 // Crear una instancia del router
 const router = express.Router()
 
-router.post('/usuarios', async (req, res) => {
+router.post('/usuarios', middlewareToken, async (req, res) => {
     try {
         const userObject = req.body
+        userObject.create_by = req.user_logged.name
         const user = new Users(userObject)
         const responseDb = await insertDocument('tienda', 'usuarios', user.initUser())
         res.send({
