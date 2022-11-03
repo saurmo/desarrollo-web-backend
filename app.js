@@ -35,9 +35,9 @@ app.use(routerBuys)
 
 
 
-console.log(process.env);
 
-const PORT = process.env.PORT || 3000
+
+const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
     console.log(`Ejecución del API: http://localhost:${PORT}`)
 })
