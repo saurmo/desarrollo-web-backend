@@ -9,7 +9,7 @@ const Users = require('../../models/Users');
 // Crear una instancia del router
 const router = express.Router()
 
-router.post('/usuarios', middlewareToken, async (req, res) => {
+router.post('/usuarios', async (req, res) => {
     try {
         const userObject = req.body
         userObject.create_by = req.user_logged.name
@@ -33,7 +33,7 @@ router.post('/usuarios', middlewareToken, async (req, res) => {
     }
 })
 
-router.get('/usuarios', async (req, res) => {
+router.get('/usuarios', middlewareToken, async (req, res) => {
     try {
         const responseDb = await getDocuments('tienda', 'usuarios')
         const users = Users.removePassword(responseDb)
@@ -52,11 +52,11 @@ router.get('/usuarios', async (req, res) => {
     }
 })
 
-router.get('/usuarios/:id', async (req, res) => {
+router.get('/usuarios/:id', middlewareToken, async (req, res) => {
     try {
         const id = req.params.id
         const responseDb = await getDocumentById('tienda', 'usuarios', id)
-       delete responseDb.password
+        delete responseDb.password
         res.send({
             ok: true,
             message: "Usuario consultado",
@@ -73,7 +73,7 @@ router.get('/usuarios/:id', async (req, res) => {
 
 })
 
-router.put('/usuarios/:id', async (req, res) => {
+router.put('/usuarios/:id', middlewareToken, async (req, res) => {
     try {
         const id = req.params.id
         const userObject = req.body
@@ -103,7 +103,7 @@ router.put('/usuarios/:id', async (req, res) => {
     }
 })
 
-router.delete('/usuarios/:id', async (req, res) => {
+router.delete('/usuarios/:id',middlewareToken, async (req, res) => {
     try {
         const id = req.params.id
         const responseDb = await deleteDocumentById('tienda', 'usuarios', id)

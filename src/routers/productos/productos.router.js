@@ -2,11 +2,12 @@
 const express = require('express')
 
 const { getDocuments, insertDocument, getDocumentById, deleteDocumentById, updateDocumentById } = require('../../controllers/MongoDb');
+const { middlewareToken } = require('../../middleware/jwt.middleware');
 
 // Crear una instancia del router
 const router = express.Router()
 
-router.post('/productos', async (req, res) => {
+router.post('/productos', middlewareToken, async (req, res) => {
     try {
         const product = req.body
         const responseDb = await insertDocument('tienda', 'productos', product)
@@ -66,7 +67,7 @@ router.get('/productos/:id', async (req, res) => {
 
 })
 
-router.put('/productos/:id', async (req, res) => {
+router.put('/productos/:id', middlewareToken, async (req, res) => {
     try {
         const id = req.params.id
         const product = req.body
@@ -94,7 +95,7 @@ router.put('/productos/:id', async (req, res) => {
     }
 })
 
-router.delete('/productos/:id', async (req, res) => {
+router.delete('/productos/:id',middlewareToken, async (req, res) => {
     try {
         const id = req.params.id
         const responseDb = await deleteDocumentById('tienda', 'productos', id)

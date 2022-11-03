@@ -22,18 +22,19 @@ app.use(express.json())
 
 // DEFINICION Y USO DE ENDPOINSTS
 
-// PUBLICOS
 app.use(routerAuth)
 app.use(routerUsers)
-
-app.use(middlewareToken)
-
-// PRIVADOS
-
+//app.use(middlewareToken)
 app.use(routerProducts)
 app.use(routerBuys)
 
-
+app.use((req, res)=>{
+    res.status(404).send({
+        ok: false,
+        message: "Endpoint no encontrado.",
+        info:null
+    })
+})
 
 
 
