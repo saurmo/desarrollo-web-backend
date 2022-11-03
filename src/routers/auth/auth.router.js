@@ -3,6 +3,7 @@ const express = require('express');
 const { compareHash } = require('../../controllers/bcrypt');
 const { createJsonWebToken } = require('../../controllers/jwt');
 const { getDocumentsWithFilter } = require('../../controllers/MongoDb');
+const { middlewareToken } = require('../../middleware/jwt.middleware');
 
 const router = express.Router()
 
@@ -55,6 +56,16 @@ router.post("/login", async (req, res) => {
 
 
 
+})
+
+router.get("/valid-user", middlewareToken, (req, res) => {
+    res.send(
+        {
+            ok: true,
+            message: "Usuario verificado.",
+            info: req.user_logged
+        }
+    )
 })
 
 
