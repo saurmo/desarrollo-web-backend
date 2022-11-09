@@ -18,8 +18,7 @@ app.use(cors())
 
 // USAR JSON EN EL BODY
 app.use(express.json())
-
-
+ require('./src/controllers/mongo.watch');
 // DEFINICION Y USO DE ENDPOINSTS
 
 app.use(routerAuth)
