@@ -1,13 +1,17 @@
 
 import { Router } from "express";
 import {
-    createUser, deleteUser,
-    getUsers, updateUser
-} from "../controllers/users.controller";
+    createTask, deleteTask,
+    getOneTasks,
+    getTasks, updateTask
+} from "../controllers/tasks.controller";
 
-const userRouter: Router = Router().get("/users", getUsers)
-    .post("/users", createUser)
-    .put("/users", updateUser)
-    .delete("/users", deleteUser)
+const taskRouter: Router = Router();
 
-export default userRouter;
+taskRouter.get("/tasks", getTasks)
+    .get("/tasks/:id", getOneTasks)
+    .post("/tasks", createTask)
+    .put("/tasks/:id", updateTask)
+    .delete("/tasks/:id", deleteTask)
+
+export default taskRouter;
