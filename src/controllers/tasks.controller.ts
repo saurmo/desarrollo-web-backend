@@ -1,7 +1,33 @@
 import { Request, Response } from "express";
+import { ResponseModel } from "../business/models/response.model";
+import { MongoService } from "../business/services/mongo.service";
+import { IDataAccess } from "../business/services/IDataAccess";
+import { PostgressService } from "../business/services/pg.service";
 
-export const getTasks = (req: Request, res: Response) => {
-    return res.send("getTasks")
+class Adapter {
+    constructor() {
+
+    }
+    static getDataAccess(): IDataAccess {
+        return new PostgressService()
+    }
+}
+
+export const getTasks = async (req: Request, res: Response) => {
+    const responseModel = new ResponseModel(true, "Consulta exitosa", []);
+
+    try {
+
+        const service = Adapter.getDataAccess()
+        const tasks: any[] = await service.getItems("tasks");
+        responseModel.info = tasks
+        return res.send(responseModel)
+    } catch (error) {
+        console.log(error);
+        responseModel.ok = false
+        responseModel.message = "Error al consultar las tareas"
+        return res.send(responseModel)
+    }
 }
 
 export const getOneTasks = (req: Request, res: Response) => {
