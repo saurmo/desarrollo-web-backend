@@ -11,6 +11,18 @@ export class PostgressService implements IDataAccess {
         this.conectionString = ""
         this.database = "";
     }
+    getOneItem(collectionName: string, id: string): Promise<any[]> {
+        throw new Error('Method not implemented.');
+    }
+    deleteItem(collectionName: string, id: string): Promise<any[]> {
+        throw new Error('Method not implemented.');
+    }
+    createItem(collectionName: string, payload: Object): Promise<any[]> {
+        throw new Error('Method not implemented.');
+    }
+    updateItem(collectionName: string, id: string, payload: Object): Promise<any[]> {
+        throw new Error('Method not implemented.');
+    }
 
     async getItems(collectionName: string) {
         const client = this.connectionDb()

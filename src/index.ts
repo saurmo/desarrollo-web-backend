@@ -7,6 +7,8 @@ import authRouter from "./routers/auth.router";
 const app: Express = AppExpress()
 const PORT: number = 3001
 
+app.use(AppExpress.json())
+
 app.get("/", (req, res) => {
     return res.send("Hola Mundo")
 })
