@@ -3,9 +3,16 @@ import AppExpress, { Express } from "express";
 import userRouter from "./routers/users.router";
 import taskRouter from "./routers/tasks.router";
 import authRouter from "./routers/auth.router";
+import { setConfig } from "./config/settings";
+
 
 const app: Express = AppExpress()
 const PORT: number = 3001
+setConfig()
+console.log(
+
+    process.env
+)
 
 app.use(AppExpress.json())
 

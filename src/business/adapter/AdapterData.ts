@@ -7,8 +7,8 @@ export class AdarterData {
 
     }
 
-    static getDataAccess(): IDataAccess  {
-        let database = "mongo"
+    static getDataAccess(databaseName?:string): IDataAccess  {
+        let database = databaseName || "mongo"
         switch (database) {
             case "mongo":
                 return new MongoService();
