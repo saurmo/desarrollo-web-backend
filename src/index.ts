@@ -4,15 +4,22 @@ import userRouter from "./routers/users.router";
 import taskRouter from "./routers/tasks.router";
 import authRouter from "./routers/auth.router";
 import { setConfig } from "./config/settings";
+import myDataSource from "./app-data-source";
+import subjectRouter from "./routers/subjects.router";
 
 
 const app: Express = AppExpress()
 const PORT: number = 3001
 setConfig()
-console.log(
 
-    process.env
-)
+myDataSource
+    .initialize()
+    .then(() => {
+        console.log("Data Source has been initialized!")
+    })
+    .catch((err) => {
+        console.error("Error during Data Source initialization:", err)
+    })
 
 app.use(AppExpress.json())
 
@@ -23,6 +30,7 @@ app
     .use(authRouter)
     .use(userRouter)
     .use(taskRouter)
+    .use(subjectRouter)
 
 
 // Middleware 404
