@@ -38,13 +38,17 @@ export const createUser = async (req: Request, res: Response) => {
     const responseModel = new ResponseModel(true, "Creación exitosa", []);
     try {
         const payload = req.body
-        const user = await service.createItem(TABLE, payload);
-        responseModel.info = user
+        const payloadArray = [
+            payload.id, payload.firstname, payload.lastname, 
+            payload.email, payload.pass, payload.role
+        ]
+        const userResponse = await service.createItem(TABLE, payloadArray);
+        responseModel.info = userResponse ? payload : false;
         return res.send(responseModel)
-    } catch (error) {
+    } catch (error:any) {
         console.log(error);
         responseModel.ok = false
-        responseModel.message = "Error al consultar el usuario"
+        responseModel.message = error.message
         return res.status(500).send(responseModel)
     }
 }
@@ -54,7 +58,11 @@ export const updateUser = async (req: Request, res: Response) => {
     try {
         const { id } = req.params
         const payload = req.body
-        await service.updateItem(TABLE, id, payload);
+        const payloadArray = [
+            payload.firstname, payload.lastname, 
+            payload.email,  payload.role, payload.id
+        ]
+        await service.updateItem(TABLE, id, payloadArray);
         responseModel.info = payload
         return res.send(responseModel)
     } catch (error) {

@@ -11,8 +11,9 @@ export class PostgressService implements IDataAccess {
         try {
             const client = await this.getClient();
             const query = sqlAdapter(tableName, "getOne")
+            if (!query) return null
             const result = await client.query(query, [id])
-            return result;
+            return result.rowCount > 0 ? result.rows : [];
         } catch (error) {
             return null;
         }
@@ -22,27 +23,34 @@ export class PostgressService implements IDataAccess {
         try {
             const client = await this.getClient();
             const query = sqlAdapter(tableName, "delete")
+            if (!query) return null
             const result = await client.query(query, [id])
             return result;
         } catch (error) {
             return null;
         }
     }
-    async createItem(tableName: string, payload: Object): Promise<any> {
+    async createItem(tableName: string, payload: Array<any>): Promise<any> {
         try {
             const client = await this.getClient();
             const query = sqlAdapter(tableName, "post")
-            const result = await client.query(query, [payload])
-            return result;
-        } catch (error) {
-            return null;
+            if (!query) return null
+            const result = await client.query(query, payload)
+            return result.rowCount == 1;
+        } catch (error: any) {
+            console.log(error);
+            if (error.code === "23505") {
+                throw new Error("El item ya existe")
+            }
+            throw new Error("Error al crear un item")
         }
     }
-    async updateItem(tableName: string, id: string, payload: Object): Promise<any> {
+    async updateItem(tableName: string, id: string, payload: Array<any>): Promise<any> {
         try {
             const client = await this.getClient();
             const query = sqlAdapter(tableName, "put")
-            const result = await client.query(query, [payload])
+            if (!query) return null
+            const result = await client.query(query, payload)
             return result;
         } catch (error) {
             return null;
@@ -53,10 +61,9 @@ export class PostgressService implements IDataAccess {
         try {
             const client = await this.getClient();
             const query = sqlAdapter(tableName, "get")
-            console.log(query);
-            
+            if (!query) return null
             const result = await client.query(query)
-            return result;
+            return result.rowCount > 0 ? result.rows : [];
         } catch (error) {
             return null;
         }
