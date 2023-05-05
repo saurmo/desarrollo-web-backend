@@ -1,12 +1,13 @@
 
 import AppExpress, { Express } from "express";
+import cors from "cors"
+
 import userRouter from "./routers/users.router";
 import taskRouter from "./routers/tasks.router";
 import authRouter from "./routers/auth.router";
 import { setConfig } from "./config/settings";
 import myDataSource from "./app-data-source";
 import subjectRouter from "./routers/subjects.router";
-
 
 const app: Express = AppExpress()
 const PORT: number = 3001
@@ -21,7 +22,10 @@ myDataSource
         console.error("Error during Data Source initialization:", err)
     })
 
+app.use(cors())
+
 app.use(AppExpress.json())
+
 
 app.get("/", (req, res) => {
     return res.send("Hola Mundo")

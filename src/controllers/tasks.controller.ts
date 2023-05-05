@@ -72,7 +72,7 @@ export const deleteTask = async (req: Request, res: Response) => {
     try {
         const { id } = req.params
         const payload = req.body
-        await service.updateItem(COLLECTION, id, payload,);
+        await service.deleteItem(COLLECTION, id);
         responseModel.info = id
         return res.send(responseModel)
     } catch (error) {
