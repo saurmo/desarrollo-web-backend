@@ -12,6 +12,11 @@ export class MongoService implements IDataAccess {
         this.conectionString = "mongodb+srv://saurmo-udem:5ECcNsgpXOYOlKG6@clusterudem.3l9e6.mongodb.net/api_tasks"
         this.database = "api_tasks";
     }
+    
+    getUserByCredentiales(id: string, pass: string): Promise<object> {
+        throw new Error('Method not implemented.');
+    }
+
     async getOneItem(collectionName: string, id: string): Promise<any> {
         const client = this.connectionDb()
         try {

@@ -19,6 +19,18 @@ export class PostgressService implements IDataAccess {
         }
     }
 
+    async getUserByCredentiales(id: string, pass:string): Promise<object> {
+        try {
+            const client = await this.getClient();
+            const query = sqlAdapter("users", "login")
+            if (!query) return {}
+            const result = await client.query(query, [id, pass])
+            return result.rowCount > 0 ? result.rows[0] : {};
+        } catch (error) {
+            return {};
+        }
+    }
+
     async deleteItem(tableName: string, id: string): Promise<any> {
         try {
             const client = await this.getClient();

@@ -1,7 +1,7 @@
 
 import { readFileSync } from 'fs'
 
-type Methods = "post" | "put" | "delete" | "getOne" | "get"
+type Methods = "post" | "put" | "delete" | "getOne" | "get" | "login"
 
 const sqlAdapter = (table: string, method: Methods) => {
     try {
@@ -16,6 +16,8 @@ const sqlAdapter = (table: string, method: Methods) => {
                 return readFileSync(`./src/business/templates/sql/${table}-delete.sql`).toString();
             case "getOne":
                 return readFileSync(`./src/business/templates/sql/${table}-get-one.sql`).toString();
+            case "login":
+                return readFileSync(`./src/business/templates/sql/${table}-login.sql`).toString();
             default:
                 return readFileSync(`./src/business/templates/sql/${table}-get.sql`).toString();
 
