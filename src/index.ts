@@ -8,7 +8,7 @@ import authRouter from "./routers/auth.router";
 import { setConfig } from "./config/settings";
 import myDataSource from "./app-data-source";
 import subjectRouter from "./routers/subjects.router";
-import { verifyToken } from "./controllers/auth.controller";
+import { isValidToken, verifyToken } from "./controllers/auth.controller";
 import { JwtService } from "./business/services/jwt.services";
 
 const app: Express = AppExpress()
@@ -35,31 +35,11 @@ app.get("/", (req, res) => {
 })
 
 
-app
-    .use(authRouter)
-// Middleware valid token
-app.use((req, res, next) => {
-    try {
-        const token = req.headers.authorization?.replace('Bearer ', '')
-        if (token) {
-            const user = new JwtService().verifyToken(token)
-            next()
-        }
-        else {
-            res.status(400).send("No pass middleware")
-        }
-    } catch (error: any) {
-        if (error.message === "invalid token" || error.message === 'jwt expired') {
-            return res.status(401).send({})
-        }
-        return res.status(500).send({})
-    }
-
-})
-
-app
+app.use(authRouter)
     .use(userRouter)
-    .use(taskRouter)
+
+app.use(isValidToken)
+app.use(taskRouter)
     .use(subjectRouter)
 
 

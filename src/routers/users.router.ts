@@ -5,13 +5,15 @@ import {
     getOneUser,
     getUsers, updateUser
 } from "../controllers/users.controller";
+import { isValidToken } from "../controllers/auth.controller";
 
 const userRouter: Router = Router()
 
-userRouter.get("/users", getUsers)
-    .get("/users/:id", getOneUser)
+userRouter
     .post("/users", createUser)
-    .put("/users/:id", updateUser)
-    .delete("/users/:id", deleteUser)
+    .get("/users", isValidToken, getUsers)
+    .get("/users/:id", isValidToken, getOneUser)
+    .put("/users/:id", isValidToken, updateUser)
+    .delete("/users/:id", isValidToken, deleteUser)
 
 export default userRouter;

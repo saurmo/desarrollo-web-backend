@@ -1,8 +1,11 @@
 import { Request, Response } from "express";
 import { AdarterData } from "../business/adapter/AdapterData";
 import { ResponseModel } from "../business/models/response.model";
+import { BCrypt } from "../business/services/bcrypt";
+
 
 const service = AdarterData.getDataAccess("pg")
+const bcrypt = new BCrypt()
 const TABLE = "users"
 
 export const getUsers = async (req: Request, res: Response) => {
@@ -38,13 +41,17 @@ export const createUser = async (req: Request, res: Response) => {
     const responseModel = new ResponseModel(true, "Creación exitosa", []);
     try {
         const payload = req.body
+        const passHash =bcrypt.createHash(payload.pass)
         const payloadArray = [
             payload.id, payload.firstname, payload.lastname, 
-            payload.email, payload.pass, payload.role
+            payload.email, passHash, payload.role
         ]
+        const userInfo = {...payload}
+        delete userInfo.pass
         const userResponse = await service.createItem(TABLE, payloadArray);
-        responseModel.info = userResponse ? payload : false;
-        return res.send(responseModel)
+        responseModel.info = userResponse ? userInfo : false;
+        const status = userResponse ? 201 : 400;
+        return res.status(status).send(responseModel)
     } catch (error:any) {
         console.log(error);
         responseModel.ok = false

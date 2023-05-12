@@ -1,1 +1,1 @@
-select firstname, lastname, id, email, role from users where id=$1 and pass=$2
+select firstname, lastname, id, email, role, pass from users where id=$1

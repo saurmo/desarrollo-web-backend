@@ -1,13 +1,13 @@
 
 import { Router } from "express";
-import { login, verifyToken } from "../controllers/auth.controller";
+import { isValidToken, login, verifyToken } from "../controllers/auth.controller";
 
 
 const authRouter: Router = Router();
 
-authRouter
-    .post("/login", login)
-    .get("/verify", verifyToken)
+authRouter.post("/login", login);
+
+authRouter.get("/verify", isValidToken, verifyToken)
 
 
 export default authRouter;

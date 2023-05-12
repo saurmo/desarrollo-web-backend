@@ -24,7 +24,7 @@ export class PostgressService implements IDataAccess {
             const client = await this.getClient();
             const query = sqlAdapter("users", "login")
             if (!query) return {}
-            const result = await client.query(query, [id, pass])
+            const result = await client.query(query, [id])
             return result.rowCount > 0 ? result.rows[0] : {};
         } catch (error) {
             return {};
