@@ -4,7 +4,7 @@ import { ResponseModel } from "../business/models/response.model";
 import { BCrypt } from "../business/services/bcrypt";
 
 
-const service = AdarterData.getDataAccess("pg")
+const service = AdarterData.getDataAccess()
 const bcrypt = new BCrypt()
 const TABLE = "users"
 
@@ -42,13 +42,14 @@ export const createUser = async (req: Request, res: Response) => {
     try {
         const payload = req.body
         const passHash =bcrypt.createHash(payload.pass)
-        const payloadArray = [
-            payload.id, payload.firstname, payload.lastname, 
-            payload.email, passHash, payload.role
-        ]
+        payload.pass = passHash
+        // const payloadArray = [
+        //     payload.id, payload.firstname, payload.lastname, 
+        //     payload.email, passHash, payload.role
+        // ]
         const userInfo = {...payload}
         delete userInfo.pass
-        const userResponse = await service.createItem(TABLE, payloadArray);
+        const userResponse = await service.createItem(TABLE, payload);
         responseModel.info = userResponse ? userInfo : false;
         const status = userResponse ? 201 : 400;
         return res.status(status).send(responseModel)
@@ -65,11 +66,11 @@ export const updateUser = async (req: Request, res: Response) => {
     try {
         const { id } = req.params
         const payload = req.body
-        const payloadArray = [
-            payload.firstname, payload.lastname, 
-            payload.email,  payload.role, payload.id
-        ]
-        await service.updateItem(TABLE, id, payloadArray);
+        // const payloadArray = [
+        //     payload.firstname, payload.lastname, 
+        //     payload.email,  payload.role, payload.id
+        // ]
+        await service.updateItem(TABLE, id, payload);
         responseModel.info = payload
         return res.send(responseModel)
     } catch (error) {

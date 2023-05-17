@@ -6,7 +6,7 @@ import { JsonWebTokenError } from "jsonwebtoken";
 import { BCrypt } from "../business/services/bcrypt";
 
 const jwtService = new JwtService()
-const service = AdarterData.getDataAccess("pg")
+const service = AdarterData.getDataAccess()
 const bcrypt = new BCrypt()
 
 export const login = (req: Request, res: Response) => {
@@ -17,9 +17,9 @@ export const login = (req: Request, res: Response) => {
         return res.status(400).send(responseModel)
     }
 
-    const { id, pass } = req.body
+    const { email, pass } = req.body
 
-    service.getUserByCredentiales(id, pass).then((user: any) => {
+    service.getUserByCredentiales(email, pass).then((user: any) => {
         if (Object.keys(user).length > 0) {
             const isPasswordValid = bcrypt.compareHash(pass, user.pass)
             if (isPasswordValid) {
@@ -47,13 +47,14 @@ export const login = (req: Request, res: Response) => {
     })
 }
 
-export const isValidToken = async (req: Request, res: Response, next?: NextFunction) => {
+export const isValidToken = async (req: any, res: Response, next?: NextFunction) => {
     const responseModel = new ResponseModel(true, "Consulta exitosa.");
     try {
         const token = req.headers.authorization?.replace('Bearer ', '')
         if (token) {
             const user = jwtService.verifyToken(token)
             if (next) {
+                req.info_user = user
                 next()
             } else {
                 return user;

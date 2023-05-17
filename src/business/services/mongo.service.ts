@@ -13,8 +13,16 @@ export class MongoService implements IDataAccess {
         this.database = "api_tasks";
     }
     
-    getUserByCredentiales(id: string, pass: string): Promise<object> {
-        throw new Error('Method not implemented.');
+   async getUserByCredentiales(email: string): Promise<any> {
+    const client = this.connectionDb()
+    try {
+        const db = client.db(this.database)
+        const collection = db.collection('users')
+        const item = await collection.findOne({ email })
+        return item
+    } finally {
+        await client.close()
+    }
     }
 
     async getOneItem(collectionName: string, id: string): Promise<any> {
@@ -46,7 +54,6 @@ export class MongoService implements IDataAccess {
         try {
             const db = client.db(this.database)
             const collection = db.collection(collectionName)
-
             const item = await collection.insertOne(payload)
             return item
         } finally {

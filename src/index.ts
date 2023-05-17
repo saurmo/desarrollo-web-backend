@@ -1,7 +1,7 @@
 
 import AppExpress, { Express } from "express";
 import cors from "cors"
-
+import fileUpload from "express-fileupload";
 import userRouter from "./routers/users.router";
 import taskRouter from "./routers/tasks.router";
 import authRouter from "./routers/auth.router";
@@ -10,24 +10,28 @@ import myDataSource from "./app-data-source";
 import subjectRouter from "./routers/subjects.router";
 import { isValidToken, verifyToken } from "./controllers/auth.controller";
 import { JwtService } from "./business/services/jwt.services";
+import uploadRouter from "./routers/upload.router";
 
 const app: Express = AppExpress()
 const PORT: number = 3001
 setConfig()
 
-myDataSource
-    .initialize()
-    .then(() => {
-        console.log("Data Source has been initialized!")
-    })
-    .catch((err) => {
-        console.error("Error during Data Source initialization:", err)
-    })
+// myDataSource
+//     .initialize()
+//     .then(() => {
+//         console.log("Data Source has been initialized!")
+//     })
+//     .catch((err) => {
+//         console.error("Error during Data Source initialization:", err)
+//     })
 
 app.use(cors())
 
 app.use(AppExpress.json())
 
+app.use(fileUpload(
+    
+))
 
 app.get("/", (req, res) => {
     return res.send("Hola Mundo")
@@ -41,6 +45,8 @@ app.use(authRouter)
 app.use(isValidToken)
 app.use(taskRouter)
     .use(subjectRouter)
+    .use(uploadRouter)
+    
 
 
 // Middleware 404
