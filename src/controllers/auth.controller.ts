@@ -20,7 +20,7 @@ export const login = (req: Request, res: Response) => {
     const { email, pass } = req.body
 
     service.getUserByCredentiales(email, pass).then((user: any) => {
-        if (Object.keys(user).length > 0) {
+        if (user && Object.keys(user).length > 0) {
             const isPasswordValid = bcrypt.compareHash(pass, user.pass)
             if (isPasswordValid) {
                 delete user.pass

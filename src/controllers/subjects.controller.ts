@@ -1,93 +1,95 @@
+
 import { Request, Response } from "express";
-import myDataSource from "../app-data-source";
-import { Subject } from "../entities/subject.entity";
 import { ResponseModel } from "../business/models/response.model";
+import { AdarterData } from "../business/adapter/AdapterData";
+import { SubjectDto } from "../business/models/Subject.dto";
 
-
+const service = AdarterData.getDataAccess()
+const COLLECTION = "subjects"
 export const getSubjects = async (req: Request, res: Response) => {
-    const responseModel = new ResponseModel(true, "Get exitoso", []);
+    const responseModel = new ResponseModel(true, "Consulta exitosa", []);
     try {
-        const subjects = await myDataSource.getRepository(Subject).find()
+        const subjects: any[] = await service.getItems(COLLECTION);
         responseModel.info = subjects
         return res.send(responseModel)
     } catch (error) {
         console.log(error);
         responseModel.ok = false
-        responseModel.message = "Error al obtener TODAS LAS materia."
+        responseModel.message = "Error al consultar las materias"
         return res.status(500).send(responseModel)
     }
 }
 
 export const getOneSubject = async (req: Request, res: Response) => {
-    const responseModel = new ResponseModel(true, "GetOne exitoso", []);
+    const responseModel = new ResponseModel(true, "Consulta exitosa", []);
     try {
-        const results = await myDataSource.getRepository(Subject).findOneBy({
-            id: parseInt(req.params.id),
-        })
-        responseModel.info = results
-        if (results) {
+        const { id } = req.params
+        const subject = await service.getOneItem(COLLECTION, id);
+        responseModel.info = subject
+        if (subject) {
+
             return res.send(responseModel)
         }
-        responseModel.ok=false
         return res.status(404).send(responseModel)
-     
+
     } catch (error) {
         console.log(error);
         responseModel.ok = false
-        responseModel.message = "Error al obtener una materia."
+        responseModel.message = "Error al consultar la materia"
         return res.status(500).send(responseModel)
     }
-
 }
 
 export const createSubject = async (req: Request, res: Response) => {
     const responseModel = new ResponseModel(true, "Creación exitosa", []);
     try {
-        const subject = req.body
-        const subjectEntity = await myDataSource.getRepository(Subject).create(subject)
-        const results = await myDataSource.getRepository(Subject).save(subjectEntity)
-        responseModel.info = results
+        const payload = req.body
+        const subjectDto = SubjectDto.createInstace(payload)
+        const hasErrors = await subjectDto.isValid()
+        if (hasErrors?.errors) {
+            responseModel.ok = false
+            responseModel.message = "Error en los datos"
+            responseModel.info = hasErrors.errors
+            return res.status(400).send(responseModel)
+        }
+        const subject = await service.createItem(COLLECTION, payload);
+        responseModel.info = { ...payload, _id: subject.insertedId }
+        return res.status(201).send(responseModel)
+    } catch (error) {
+        console.log(error);
+        responseModel.ok = false
+        responseModel.message = "Error al crear la materia"
+        return res.status(500).send(responseModel)
+    }
+}
+
+export const updateSubject = async (req: Request, res: Response) => {
+    const responseModel = new ResponseModel(true, "Actualización exitosa", []);
+    try {
+        const { id } = req.params
+        const payload = req.body
+        await service.updateItem(COLLECTION, id, payload);
+        responseModel.info = payload
         return res.send(responseModel)
     } catch (error) {
         console.log(error);
         responseModel.ok = false
-        responseModel.message = "Error al crear una materia."
-        return res.status(500).send(responseModel)
-    }
-
-}
-
-export const updateSubject = async (req: Request, res: Response) => {
-    const responseModel = new ResponseModel(true, "Update exitoso", []);
-    try {
-        const { id } = req.params
-        const subject = await myDataSource.getRepository(Subject).findOneBy({
-            id: parseInt(id),
-        })
-        if (subject) {
-            myDataSource.getRepository(Subject).merge(subject, req.body)
-            const results = await myDataSource.getRepository(Subject).save(subject)
-            responseModel.info = results
-            return res.send(responseModel)
-        }
-    } catch (error) {
-        console.log(error);
-        responseModel.ok = false
-        responseModel.message = "Error al modificar una materia"
+        responseModel.message = "Error al actualizar la materia"
         return res.status(500).send(responseModel)
     }
 }
 
 export const deleteSubject = async (req: Request, res: Response) => {
-    const responseModel = new ResponseModel(true, "Delete exitoso", []);
+    const responseModel = new ResponseModel(true, "Eliminación exitosa", []);
     try {
-        const results = await myDataSource.getRepository(Subject).delete(req.params.id)
-        responseModel.info = results
+        const { id } = req.params
+        await service.deleteItem(COLLECTION, id);
+        responseModel.info = id
         return res.send(responseModel)
     } catch (error) {
         console.log(error);
         responseModel.ok = false
-        responseModel.message = "Error al eliminar una materia"
+        responseModel.message = "Error al eliminar la materia"
         return res.status(500).send(responseModel)
     }
 }

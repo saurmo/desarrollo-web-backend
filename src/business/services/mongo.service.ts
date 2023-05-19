@@ -74,12 +74,12 @@ export class MongoService implements IDataAccess {
         }
     }
 
-    async getItems(collectionName: string) {
+    async getItems(collectionName: string, filter?:any) {
         const client = this.connectionDb()
         try {
             const db = client.db(this.database)
             const collection = db.collection(collectionName)
-            const items = await collection.find().toArray()
+            const items = await collection.find(filter).toArray()
             return items
         } finally {
             await client.close()

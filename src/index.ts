@@ -11,6 +11,7 @@ import subjectRouter from "./routers/subjects.router";
 import { isValidToken, verifyToken } from "./controllers/auth.controller";
 import { JwtService } from "./business/services/jwt.services";
 import uploadRouter from "./routers/upload.router";
+import path from "path";
 
 const app: Express = AppExpress()
 const PORT: number = 3001
@@ -33,6 +34,8 @@ app.use(fileUpload(
     
 ))
 
+
+
 app.get("/", (req, res) => {
     return res.send("Hola Mundo")
 
@@ -41,7 +44,7 @@ app.get("/", (req, res) => {
 
 app.use(authRouter)
     .use(userRouter)
-
+    app.use("/uploads", AppExpress.static('docs'))
 app.use(isValidToken)
 app.use(taskRouter)
     .use(subjectRouter)
