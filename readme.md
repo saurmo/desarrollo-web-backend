@@ -10,6 +10,10 @@ Las tecnologias que usamos son:
 - Nodejs
 - Postgres o mongo
 
+## Curso 2023-2
+
+- API Tasks [Link](https://github.com/saurmo/desarrollo-web-backend/tree/2023-2-tasks)
+
 ## Curso 2023-1
 
 - API Tasks [Link](https://github.com/saurmo/desarrollo-web-backend/tree/curso-2023-1-tasks)
