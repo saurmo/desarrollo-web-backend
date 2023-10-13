@@ -11,4 +11,7 @@ router.post("/", _taskController.createTask)
 router.put("/:id", _taskController.updateTask)
 router.delete("/:id", _taskController.deleteTask)
 
+// Archivos para la tarea
+router.post("/:id/documents", _taskController.createDocumentTask)
+
 module.exports = router

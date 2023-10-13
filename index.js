@@ -1,8 +1,11 @@
 const express = require("express");
+const fileupload = require("express-fileupload");
 
 const app = express();
-app.use(express.json());
 
+// MIDDLEWARE
+app.use(express.json());
+app.use(fileupload({ tempFileDir: "./tmp" }));
 
 // IMPORTAR ROUTER
 const router = require("./src/routers");

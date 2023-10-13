@@ -9,7 +9,7 @@ class TasksController {
   constructor() {}
 
   /**
-   * PENDIENTE: 
+   * PENDIENTE:
    * - Realizar la validación de tarea y body
    * - Validar si el documento existe antes de insertar
    * -
@@ -41,7 +41,7 @@ class TasksController {
 
   /**
    *
-   * PENDIENTE: 
+   * PENDIENTE:
    * - Realizar la validación de tarea y body
    * - Validar si el documento existe antes de actualizar
    * -
@@ -55,7 +55,7 @@ class TasksController {
       const task = new Task(payload?.id, payload?.name, payload?.description);
       task.valid();
       // saveData(PATH_DB, task.toJson());
-      const {modifiedCount:count} = await adapterDatabase.update(colletion, payload, id);
+      const { modifiedCount: count } = await adapterDatabase.update(colletion, payload, id);
       if (count == 0) {
         throw { status: 409, message: "Error al actualizar." };
       }
@@ -139,6 +139,36 @@ class TasksController {
         message: "Tarea eliminada",
         info: {},
       });
+    } catch (error) {
+      console.error(error);
+      res.status(error?.status || 500).json({
+        ok: false,
+        message: error?.message || error,
+      });
+    }
+  }
+  /**
+   *
+   * @param {import('express').Request} req
+   * @param {import('express').Response} res
+   */
+  async createDocumentTask(req, res) {
+    try {
+      // id de la tarea
+      const id = req.params.id;
+     
+      const document = req.files.document
+      if (document) {
+        
+        document.mv(`./docs/${document.md5}${document.name}`)
+        res.status(200).json({
+          ok: true,
+          message: "Documento de la tarea guardado",
+          info: 'PENDIENTE RETORNAR Y GUARDAR URL',
+        });
+      }
+
+    
     } catch (error) {
       console.error(error);
       res.status(error?.status || 500).json({
