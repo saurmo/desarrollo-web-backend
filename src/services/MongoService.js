@@ -24,18 +24,18 @@ class MongoService extends IDatabase {
     super();
     console.log("Mongo Service");
   }
-  async executeQuery(collectionName) {
+  async findAll(collectionName) {
     const client = getClient();
     try {
       await client.connect();
       const dbName = config.get("database.name");
       const database = client.db(dbName);
       const collection = database.collection(collectionName);
-      /// Ejecutar comandos
       const rows = await collection.find().toArray();
       return rows;
     } catch (error) {
       console.error(error);
+      throw { success: false, message: "Error Mongo service" };
     } finally {
       await client.close();
     }
@@ -43,6 +43,78 @@ class MongoService extends IDatabase {
 
   async findOne(collectionName, id) {
     const _id = new ObjectId(id);
+    const client = getClient();
+    try {
+      await client.connect();
+      const dbName = config.get("database.name");
+      const database = client.db(dbName);
+      const collection = database.collection(collectionName);
+      const row = await collection.findOne({ _id });
+      return row;
+    } catch (error) {
+      console.error(error);
+      throw { success: false, message: "Error Mongo service" };
+    } finally {
+      await client.close();
+    }
+  }
+  /**
+   * 
+   * @param {string} collectionName 
+   * @param {Object} payload 
+   * @returns 
+   */
+  async create(collectionName, payload) {
+    const client = getClient();
+    try {
+      await client.connect();
+      const dbName = config.get("database.name");
+      const database = client.db(dbName);
+      const collection = database.collection(collectionName);
+      const row = await collection.insertOne(payload);
+      return row;
+    } catch (error) {
+      console.error(error);
+      throw { success: false, message: "Error Mongo service" };
+    } finally {
+      await client.close();
+    }
+  }
+
+  async update(collectionName, payload, id) {
+    const _id = new ObjectId(id);
+    const client = getClient();
+    try {
+      await client.connect();
+      const dbName = config.get("database.name");
+      const database = client.db(dbName);
+      const collection = database.collection(collectionName);
+      const row = await collection.replaceOne({ _id }, payload);
+      return row;
+    } catch (error) {
+      console.error(error);
+      throw { success: false, message: "Error Mongo service" };
+    } finally {
+      await client.close();
+    }
+  }
+
+  async delete(collectionName, id) {
+    const _id = new ObjectId(id);
+    const client = getClient();
+    try {
+      await client.connect();
+      const dbName = config.get("database.name");
+      const database = client.db(dbName);
+      const collection = database.collection(collectionName);
+      const row = await collection.deleteOne({ _id });
+      return row;
+    } catch (error) {
+      console.error(error);
+      throw { success: false, message: "Error Mongo service" };
+    } finally {
+      await client.close();
+    }
   }
 }
 
