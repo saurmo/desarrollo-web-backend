@@ -15,6 +15,9 @@ class IDatabase {
   delete(collectionName, id) {
     throw "Implementar método";
   }
+  findByFilter(collectionName, filter) {
+    throw "Implementar método";
+  }
 }
 
 module.exports = { IDatabase };

@@ -5,5 +5,7 @@
     "user":"",
     "password":"",
     "host":"clusterudem.3l9e6.mongodb.net"
-  }
+  },
+  "api_host":"http://localhost:3001/",
+  "port":3001
 }
