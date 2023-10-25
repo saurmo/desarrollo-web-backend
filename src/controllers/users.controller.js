@@ -1,5 +1,6 @@
 require("express");
 const User = require("../models/Users");
+const { generateHash } = require("../services/Bcrypt");
 const ConfigService = require("../services/ConfigService");
 const { MongoService } = require("../services/MongoService");
 
@@ -24,6 +25,8 @@ class UsersController {
       const user = new User(payload);
       user.valid();
 
+      payload.password = await generateHash(payload.password);
+      console.log("password", payload.password);
       const userDb = await adapterDatabase.findByFilter(colletion, { id: user.id });
       if (userDb) {
         throw { status: 400, message: "El usuario ya existe" };

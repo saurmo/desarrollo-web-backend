@@ -2,6 +2,7 @@ require("express");
 const { TokenExpiredError } = require("jsonwebtoken");
 const { createToken, verifyToken } = require("../services/JwtService");
 const { MongoService } = require("../services/MongoService");
+const { compareHash } = require("../services/Bcrypt");
 
 const colletion = "users";
 const adapterDatabase = new MongoService();
@@ -18,12 +19,14 @@ class AuthController {
     try {
       const { email, password } = req.body;
       // VALIDAR email & password
-      const user = await adapterDatabase.findByFilter(colletion, { email, password });
-      delete user.password
-      if (!user) {
+      const user = await adapterDatabase.findByFilter(colletion, { email });
+      const passwordEquals = compareHash(password, user.password);
+      console.log(passwordEquals);
+      if (!user || passwordEquals == false) {
         throw { status: 404, message: "La usuario no se encontro." };
       }
       // CREAR TOKEN
+      delete user.password;
       const token = createToken(user);
       res.status(200).json({
         ok: true,
@@ -53,14 +56,14 @@ class AuthController {
         info: { ...user },
       });
     } catch (error) {
-      if (error instanceof TokenExpiredError ) {
-      return  res.status(400).json({
+      if (error instanceof TokenExpiredError) {
+        return res.status(400).json({
           ok: false,
-          message: 'Token no valido',
+          message: "Token no valido",
         });
       }
       console.error(error);
-      res.status(error?.status || 500).json({
+      return res.status(error?.status || 500).json({
         ok: false,
         message: error?.message || error,
       });

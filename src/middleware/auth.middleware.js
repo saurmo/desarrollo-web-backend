@@ -18,6 +18,7 @@ const AuthMiddleware = (req, res, next) => {
     req.user = user
     next();
   } catch (error) {
+    console.log(error);
     //TODO: Capturar el error especifico del token 
     res.status(400).json({
       ok: false,
