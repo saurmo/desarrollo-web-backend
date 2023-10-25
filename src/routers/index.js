@@ -1,15 +1,38 @@
-const express = require("express")
+const express = require("express");
 
-const router = express.Router()
+const router = express.Router();
 
-
-const taskRouter = require("./tasks.router")
-const userRouter = require("./users.router")
+const taskRouter = require("./tasks.router");
+const userRouter = require("./users.router");
+const { AuthController } = require("../controllers");
+const { AuthMiddleware } = require("../middleware/auth.middleware");
+const authController = new AuthController();
 // const reportRouter = require("./reports.router")
 
-router.use('/static/',express.static('docs'))
+router.use("/static/", express.static("docs"));
 
-router.use("/tasks", taskRouter)
-router.use("/users", userRouter)
+// audiencia - logs
+router.use((req, res, next) => {
+  console.log("Middleware - Audiencia");
+  console.log(req.ip);
+  next();
+});
 
-module.exports = router
+router.post("/login", authController.login);
+
+router.use( "/users",[AuthMiddleware], userRouter);
+
+router.use(AuthMiddleware);
+
+router.use("/tasks", taskRouter);
+router.post("/verify", authController.verifyToken);
+
+// Handler 404
+router.use((req, res) => {
+  return res.status(404).json({
+    ok: false,
+    message: "404 endpoint",
+  });
+});
+
+module.exports = router;
