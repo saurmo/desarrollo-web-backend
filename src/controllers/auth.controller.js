@@ -18,6 +18,7 @@ class AuthController {
   async login(req, res) {
     try {
       const { email, password } = req.body;
+
       // VALIDAR email & password
       const user = await adapterDatabase.findByFilter(colletion, { email });
       const passwordEquals = compareHash(password, user.password);
@@ -25,7 +26,7 @@ class AuthController {
       if (!user || passwordEquals == false) {
         throw { status: 404, message: "La usuario no se encontro." };
       }
-      // CREAR TOKEN
+      // // CREAR TOKEN
       delete user.password;
       const token = createToken(user);
       res.status(200).json({
@@ -62,7 +63,6 @@ class AuthController {
           message: "Token no valido",
         });
       }
-      console.error(error);
       return res.status(error?.status || 500).json({
         ok: false,
         message: error?.message || error,

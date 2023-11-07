@@ -14,18 +14,18 @@ router.use("/static/", express.static("docs"));
 // audiencia - logs
 router.use((req, res, next) => {
   console.log("Middleware - Audiencia");
-  console.log(req.ip);
   next();
 });
 
 router.post("/login", authController.login);
 
 router.use( "/users",[AuthMiddleware], userRouter);
+router.use( "/users", userRouter);
 
+router.post("/verify", authController.verifyToken);
 router.use(AuthMiddleware);
 
 router.use("/tasks", taskRouter);
-router.post("/verify", authController.verifyToken);
 
 // Handler 404
 router.use((req, res) => {

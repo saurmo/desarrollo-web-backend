@@ -112,14 +112,16 @@ class UsersController {
    */
   async getUsers(req, res) {
     try {
+      console.log('All users');
       const users = await adapterDatabase.findAll(colletion);
+      console.log(users);
+
       res.status(200).json({
         ok: true,
         message: "Usuarios consultados",
         info: users,
       });
     } catch (error) {
-      console.log(error);
       res.status(error?.status || 500).json({
         ok: false,
         message: error?.message || error,
