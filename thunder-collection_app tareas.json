@@ -1,0 +1,299 @@
+{
+    "client": "Thunder Client",
+    "collectionName": "app tareas",
+    "dateExported": "2023-11-07T22:57:19.807Z",
+    "version": "1.1",
+    "folders": [
+        {
+            "_id": "4f64d8a3-149d-4be0-908d-4676c406fae5",
+            "name": "tasks",
+            "containerId": "",
+            "created": "2023-10-17T23:02:04.229Z",
+            "sortNum": 20000
+        },
+        {
+            "_id": "1410529c-75c4-49c7-bc68-8f4c51a418c0",
+            "name": "users",
+            "containerId": "",
+            "created": "2023-10-17T23:02:16.865Z",
+            "sortNum": 30000
+        }
+    ],
+    "requests": [
+        {
+            "_id": "fa364a67-d9c1-4a6e-ae63-39d40086b56d",
+            "colId": "64633661-da51-453f-aaf8-eb9905acf850",
+            "containerId": "4f64d8a3-149d-4be0-908d-4676c406fae5",
+            "name": "tasks all",
+            "url": "http://localhost:3000/tasks",
+            "method": "GET",
+            "sortNum": 10000,
+            "created": "2023-10-12T23:42:27.668Z",
+            "modified": "2023-10-12T23:43:03.598Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "802817d8-d995-4e0a-8923-7b8f26544bc2",
+            "colId": "64633661-da51-453f-aaf8-eb9905acf850",
+            "containerId": "1410529c-75c4-49c7-bc68-8f4c51a418c0",
+            "name": "users all",
+            "url": "http://localhost:3001/users",
+            "method": "GET",
+            "sortNum": 10000,
+            "created": "2023-10-17T23:02:16.865Z",
+            "modified": "2023-10-25T00:17:56.516Z",
+            "headers": [],
+            "params": [],
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTJmMTdmNzVkMDhiY2NlOTZmOTc0MzMiLCJpZCI6IjEwMzYiLCJuYW1lIjoiU2FudGlhZ28gdXJyZWdvIiwiZW1haWwiOiJzYXVycmVnb0B1ZGVtLmVkdS5jbyIsImltYWdlX3Byb2ZpbGUiOiJodHRwOi8vbG9jYWxob3N0OjMwMDEvc3RhdGljL2ZmNmI3NDQxMTkwZjEyYzI2ZWJkNWZlNDU0MTg2YmJiY2FiaW4tZzI2YWI1MTYzM182NDAuanBnIiwiaWF0IjoxNjk4MTkzMDM0LCJleHAiOjE2OTgyMDAyMzR9.pFzsuNhTQzoYZNfe241MIn3khhaOT2LdFnt3NJExeo8"
+            },
+            "tests": []
+        },
+        {
+            "_id": "fad81ca8-3191-4648-a126-65392a4ded78",
+            "colId": "64633661-da51-453f-aaf8-eb9905acf850",
+            "containerId": "4f64d8a3-149d-4be0-908d-4676c406fae5",
+            "name": "tasks one",
+            "url": "http://localhost:3000/tasks/652885b3e52c7b4b76096d60",
+            "method": "GET",
+            "sortNum": 20000,
+            "created": "2023-10-12T23:48:38.183Z",
+            "modified": "2023-10-13T00:17:31.634Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "282574f4-1ce9-49c7-9159-9bbb8f906c2b",
+            "colId": "64633661-da51-453f-aaf8-eb9905acf850",
+            "containerId": "1410529c-75c4-49c7-bc68-8f4c51a418c0",
+            "name": "one",
+            "url": "http://localhost:3001/users/652f17f75d08bcce96f97433",
+            "method": "GET",
+            "sortNum": 20000,
+            "created": "2023-10-17T23:02:16.866Z",
+            "modified": "2023-10-17T23:26:24.148Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "b5f5f280-c2c4-43b7-bddd-ee3cad398a48",
+            "colId": "64633661-da51-453f-aaf8-eb9905acf850",
+            "containerId": "4f64d8a3-149d-4be0-908d-4676c406fae5",
+            "name": "tasks delete",
+            "url": "http://localhost:3000/tasks/65288a880a9eaae49a7ff30f",
+            "method": "DELETE",
+            "sortNum": 30000,
+            "created": "2023-10-12T23:48:57.168Z",
+            "modified": "2023-10-13T00:08:59.599Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "a08c20a4-f125-47ca-8341-77722180603d",
+            "colId": "64633661-da51-453f-aaf8-eb9905acf850",
+            "containerId": "1410529c-75c4-49c7-bc68-8f4c51a418c0",
+            "name": "delete",
+            "url": "http://localhost:3001/users/652f19adadc9f59a5fae2856",
+            "method": "DELETE",
+            "sortNum": 30000,
+            "created": "2023-10-17T23:02:16.867Z",
+            "modified": "2023-10-17T23:33:31.513Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "1cab541b-5c49-4970-b3a1-883a658cf0de",
+            "colId": "64633661-da51-453f-aaf8-eb9905acf850",
+            "containerId": "4f64d8a3-149d-4be0-908d-4676c406fae5",
+            "name": "tasks insert document",
+            "url": "http://localhost:3000/tasks/65288a880a9eaae49a7ff30f/documents",
+            "method": "POST",
+            "sortNum": 40000,
+            "created": "2023-10-12T23:42:44.692Z",
+            "modified": "2023-10-13T00:27:05.251Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "formdata",
+                "raw": "",
+                "form": [],
+                "files": [
+                    {
+                        "name": "document",
+                        "value": "/Users/santiagourrego/Downloads/Mutatá - Comunidad Emberá.pdf"
+                    }
+                ]
+            },
+            "tests": []
+        },
+        {
+            "_id": "a99a8ab6-4ef8-4906-a13c-967897f4b399",
+            "colId": "64633661-da51-453f-aaf8-eb9905acf850",
+            "containerId": "1410529c-75c4-49c7-bc68-8f4c51a418c0",
+            "name": "image profile",
+            "url": "http://localhost:3001/users/652f17f75d08bcce96f97433/image_profile",
+            "method": "POST",
+            "sortNum": 40000,
+            "created": "2023-10-17T23:02:16.868Z",
+            "modified": "2023-10-17T23:28:59.071Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "formdata",
+                "raw": "",
+                "form": [],
+                "files": [
+                    {
+                        "name": "document",
+                        "value": "/Users/santiagourrego/Desktop/vibra-img-free/cabin-g26ab51633_640.jpg"
+                    }
+                ]
+            },
+            "tests": []
+        },
+        {
+            "_id": "4b72f21e-9de7-49ee-b5a0-9646d3494082",
+            "colId": "64633661-da51-453f-aaf8-eb9905acf850",
+            "containerId": "4f64d8a3-149d-4be0-908d-4676c406fae5",
+            "name": "tasks insert",
+            "url": "http://localhost:3000/tasks",
+            "method": "POST",
+            "sortNum": 50000,
+            "created": "2023-10-13T00:25:31.454Z",
+            "modified": "2023-10-13T00:25:31.454Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"id\": \"3\",\n  \"name\": \"entrega avance proyecto 3\",\n  \"description\": \"\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "a405bb6c-0e7d-4b01-8440-e2c776a8ec0f",
+            "colId": "64633661-da51-453f-aaf8-eb9905acf850",
+            "containerId": "1410529c-75c4-49c7-bc68-8f4c51a418c0",
+            "name": "users insert",
+            "url": "http://localhost:3001/users",
+            "method": "POST",
+            "sortNum": 50000,
+            "created": "2023-10-17T23:02:16.869Z",
+            "modified": "2023-10-25T00:27:05.610Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"id\": \"1034\",\n  \"name\": \"Santiago\",\n  \"email\": \"saurrego12@udem.edu.co\",\n  \"password\":\"admin123\"\n}",
+                "form": []
+            },
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTJmMTdmNzVkMDhiY2NlOTZmOTc0MzMiLCJpZCI6IjEwMzYiLCJuYW1lIjoiU2FudGlhZ28gdXJyZWdvIiwiZW1haWwiOiJzYXVycmVnb0B1ZGVtLmVkdS5jbyIsImltYWdlX3Byb2ZpbGUiOiJodHRwOi8vbG9jYWxob3N0OjMwMDEvc3RhdGljL2ZmNmI3NDQxMTkwZjEyYzI2ZWJkNWZlNDU0MTg2YmJiY2FiaW4tZzI2YWI1MTYzM182NDAuanBnIiwiaWF0IjoxNjk4MTkzMDM0LCJleHAiOjE2OTgyMDAyMzR9.pFzsuNhTQzoYZNfe241MIn3khhaOT2LdFnt3NJExeo8"
+            },
+            "tests": []
+        },
+        {
+            "_id": "92270268-9f0a-4568-ac44-be0ac5407543",
+            "colId": "64633661-da51-453f-aaf8-eb9905acf850",
+            "containerId": "1410529c-75c4-49c7-bc68-8f4c51a418c0",
+            "name": "login",
+            "url": "http://localhost:3001/login",
+            "method": "POST",
+            "sortNum": 55000,
+            "created": "2023-10-17T23:49:37.674Z",
+            "modified": "2023-10-25T00:29:27.856Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"email\": \"saurrego12@udem.edu.co\",\n  \"password\":\"admin12\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "8cd07b10-7331-4e12-945c-73788ce99048",
+            "colId": "64633661-da51-453f-aaf8-eb9905acf850",
+            "containerId": "1410529c-75c4-49c7-bc68-8f4c51a418c0",
+            "name": "verify token",
+            "url": "http://localhost:3001/verify",
+            "method": "POST",
+            "sortNum": 57500,
+            "created": "2023-10-24T23:25:31.960Z",
+            "modified": "2023-10-24T23:39:20.492Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTJmMTdmNzVkMDhiY2NlOTZmOTc0MzMiLCJpZCI6IjEwMzYiLCJuYW1lIjoiU2FudGlhZ28gdXJyZWdvIiwiZW1haWwiOiJzYXVycmVnb0B1ZGVtLmVkdS5jbyIsImltYWdlX3Byb2ZpbGUiOiJodHRwOi8vbG9jYWxob3N0OjMwMDEvc3RhdGljL2ZmNmI3NDQxMTkwZjEyYzI2ZWJkNWZlNDU0MTg2YmJiY2FiaW4tZzI2YWI1MTYzM182NDAuanBnIiwiaWF0IjoxNjk4MTkwNDU0LCJleHAiOjE2OTgxOTA0ODR9.ZWFcrNA7YjpVWwQ8zgwzDc9aAs8MNCoucpCWTtRn-7I\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "31b3fd07-1d1b-4315-aa9a-cf1c89c34ac9",
+            "colId": "64633661-da51-453f-aaf8-eb9905acf850",
+            "containerId": "1410529c-75c4-49c7-bc68-8f4c51a418c0",
+            "name": "404",
+            "url": "http://localhost:3001/endpoint-no-existe",
+            "method": "POST",
+            "sortNum": 58750,
+            "created": "2023-10-24T23:36:36.958Z",
+            "modified": "2023-10-24T23:39:24.408Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTJmMTdmNzVkMDhiY2NlOTZmOTc0MzMiLCJpZCI6IjEwMzYiLCJuYW1lIjoiU2FudGlhZ28gdXJyZWdvIiwiZW1haWwiOiJzYXVycmVnb0B1ZGVtLmVkdS5jbyIsImltYWdlX3Byb2ZpbGUiOiJodHRwOi8vbG9jYWxob3N0OjMwMDEvc3RhdGljL2ZmNmI3NDQxMTkwZjEyYzI2ZWJkNWZlNDU0MTg2YmJiY2FiaW4tZzI2YWI1MTYzM182NDAuanBnIiwiaWF0IjoxNjk4MTkwNDU0LCJleHAiOjE2OTgxOTA0ODR9.ZWFcrNA7YjpVWwQ8zgwzDc9aAs8MNCoucpCWTtRn-7I\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "87c5c29a-3f6a-4b21-8cba-19cc504534df",
+            "colId": "64633661-da51-453f-aaf8-eb9905acf850",
+            "containerId": "4f64d8a3-149d-4be0-908d-4676c406fae5",
+            "name": "tasks update",
+            "url": "http://localhost:3000/tasks/6525e7b23387c297d5359edc",
+            "method": "PUT",
+            "sortNum": 60000,
+            "created": "2023-10-12T23:59:54.508Z",
+            "modified": "2023-10-13T00:05:37.392Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"id\": \"6525e7b23387c297d5359edc\",\n  \"name\": \"Tare 1\",\n  \"description\": \"Tarea 1, update\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "70cbce90-0bc0-46fe-8c1c-7fc3dc06b4de",
+            "colId": "64633661-da51-453f-aaf8-eb9905acf850",
+            "containerId": "1410529c-75c4-49c7-bc68-8f4c51a418c0",
+            "name": "update",
+            "url": "http://localhost:3001/users/652f17f75d08bcce96f97433",
+            "method": "PUT",
+            "sortNum": 60000,
+            "created": "2023-10-17T23:02:16.870Z",
+            "modified": "2023-10-17T23:27:19.197Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"id\": \"1036\",\n  \"name\": \"Santiago urrego\",\n  \"email\": \"saurrego@udem.edu.co\",\n  \"password\": \"admin123\"\n}",
+                "form": []
+            },
+            "tests": []
+        }
+    ]
+}
