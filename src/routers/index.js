@@ -4,6 +4,8 @@ const router = express.Router();
 
 const taskRouter = require("./tasks.router");
 const userRouter = require("./users.router");
+const publicRouter = require("./public.router")
+
 const { AuthController } = require("../controllers");
 const { AuthMiddleware } = require("../middleware/auth.middleware");
 const authController = new AuthController();
@@ -19,11 +21,11 @@ router.use((req, res, next) => {
 
 router.post("/login", authController.login);
 
-router.use( "/users",[AuthMiddleware], userRouter);
-router.use( "/users", userRouter);
+router.use( "/users/register/", publicRouter);
 
 router.post("/verify", authController.verifyToken);
 router.use(AuthMiddleware);
+router.use( "/users", userRouter);
 
 router.use("/tasks", taskRouter);
 

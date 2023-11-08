@@ -9,7 +9,7 @@ const adapterDatabase = new MongoService();
 const config = new ConfigService();
 
 class UsersController {
-  constructor() {}
+  constructor() { }
 
   /**
    * PENDIENTE:
@@ -177,6 +177,7 @@ class UsersController {
           info: user,
         });
       }
+      throw { status: 400 }
     } catch (error) {
       console.error(error);
       res.status(error?.status || 500).json({
