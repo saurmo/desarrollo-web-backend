@@ -1,0 +1,26 @@
+{
+  "name": "desarrollo-web-backend",
+  "version": "1.0.0",
+  "description": "> Hola, en este repositorio se encuentra todos los códigos que vemos en clase. Acá vas a encontrar:",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/saurmo/desarrollo-web-backend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/saurmo/desarrollo-web-backend/issues"
+  },
+  "homepage": "https://github.com/saurmo/desarrollo-web-backend#readme",
+  "dependencies": {
+    "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.6"
+  }
+}
