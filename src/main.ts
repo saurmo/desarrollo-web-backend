@@ -9,12 +9,13 @@ app.use(express.json())
 
 app.get('/hello', (req: Request, res: Response) => {
     res.send({
-        message: 'hola mundo'
+        message: 'hello'
     })
 })
 
 // Uso del middleware
 app.use(loggerMiddleware)
+
 
 // 
 app.use(usersRouter)
