@@ -1,5 +1,10 @@
 import { Request, Response } from "express"
 
+const users = [
+    {id:"1", name:"juan"},
+    {id:"2", name:"maria"}
+]
+
 const createUserHandler = (req: Request, res: Response) => {
     const payload = req.body // capturar el body
     res.status(201).json({
@@ -19,7 +24,7 @@ const getAllUsersHandler = (req: Request, res: Response) => {
         pagination: {
             page
         },
-        users: []
+        users
     })
 }
 
