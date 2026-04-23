@@ -1,33 +1,36 @@
+
 import { Request, Response } from "express"
-import { users } from "../data/users.data"
-import { User } from "../../domain/User"
+import { users } from "../data/users"
 import { createToken } from "../../infrastructure/tokens"
+import { User } from "../../domain/User"
 
 
-export const loginHandler = (req: Request, res: Response) => {
-    const { email, password } = req.body
-    // validar exista
-    let userFound: User | null = null
-    // for (let i = 0; i < users.length; i++) {
-    //     const user = users[i];
-    //     if (user.email === email && user.password === password) {
-    //         userFound = user
-    //     }
-    // }
-    userFound = users.find(x => x.email === email && x.password === password)
-    if (!userFound) {
-        res.status(404).send({
-            message: 'user not found'
+
+const loginHandler = (req: Request, res: Response) => {
+    const { email, password } = req.body // capturar el body email, password
+    // validar si envian el email y el password
+
+    let userFound = null
+    for (let id = 0; id < users.length; id++) {
+        const user = users[id];
+        if (email === user.email && password === user.password) {
+            userFound = user
+        }
+    }
+    if (userFound == null) {
+        res.status(404).json({
+            success: false,
+            message: "User not found"
         })
     }
-
-    const token = createToken(userFound)
-    res.status(200).json({
-        message: 'success',
-        data: {
-            id: userFound.id,
-            name: userFound.name, 
-            token
-        }
+    // token 
+    const token = createToken(userFound as User)
+    res.send({
+        success: false,
+        message: "login success",
+        data: { token }
     })
+
 }
+
+export { loginHandler }

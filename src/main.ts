@@ -6,7 +6,10 @@ import notFoundMiddleware from "./interfaces/middlewares/notFound";
 
 import usersRouter from "./interfaces/routers/users.router";
 import authRouter from "./interfaces/routers/auth.router";
+import dotenv from 'dotenv'
 import { authMiddleware } from "./interfaces/middlewares/auth.middleware";
+
+dotenv.config()
 
 config() // metodo que carga las variables de entorno .env
 
@@ -16,14 +19,13 @@ app.use(express.json())  // middleware para capturar el json
 
 app.get('/hello', (req: Request, res: Response) => {
     res.send({
-        message: 'hello world'
+        message: 'hello'
     })
 })
 
 // Uso del middleware
 app.use(loggerMiddleware)
 
-// 
 app.use(authRouter)
 
 app.use(authMiddleware)
