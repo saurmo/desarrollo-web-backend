@@ -1,36 +1,65 @@
+import { Request, Response } from 'express';
+import bcrypt from 'bcrypt';
+import { usuarioRepository } from '../../infrastructure/repositories/usuarioRepository';
+import { usuarioService } from '../../application/usuarios/usuarioService';
+import { createToken } from '../../infrastructure/tokens';
 
-import { Request, Response } from "express"
-import { users } from "../data/users"
-import { createToken } from "../../infrastructure/tokens"
-import { User } from "../../domain/User"
+export const loginHandler = async (req: Request, res: Response) => {
+  try {
+    const { email, password } = req.body;
 
-
-
-const loginHandler = (req: Request, res: Response) => {
-    const { email, password } = req.body // capturar el body email, password
-    // validar si envian el email y el password
-
-    let userFound = null
-    for (let id = 0; id < users.length; id++) {
-        const user = users[id];
-        if (email === user.email && password === user.password) {
-            userFound = user
-        }
+    const usuario = await usuarioRepository.findByEmail(email);
+    if (!usuario) {
+      return res.status(401).json({ message: 'Credenciales inválidas' });
     }
-    if (userFound == null) {
-        res.status(404).json({
-            success: false,
-            message: "User not found"
-        })
+
+    const valida = await bcrypt.compare(password, usuario.password);
+    if (!valida) {
+      return res.status(401).json({ message: 'Credenciales inválidas' });
     }
-    // token 
-    const token = createToken(userFound as User)
-    res.send({
-        success: false,
-        message: "login success",
-        data: { token }
-    })
 
-}
+    const token = createToken({
+      id: usuario.id,
+      name: usuario.nombre,
+      email: usuario.email,
+      password: '',
+    });
 
-export { loginHandler }
+    res.json({
+      data: { token },
+    });
+  } catch (error) {
+    console.log(error);
+    
+    res.status(500).json({ message: 'Error interno del servidor' });
+  }
+};
+
+export const registerHandler = async (req: Request, res: Response) => {
+  try {
+    const { nombre, apellidos, email, password, acepta_terminos } = req.body;
+
+    const usuario = await usuarioService.create({
+      nombre,
+      apellidos,
+      email,
+      password,
+      acepta_terminos: Boolean(acepta_terminos),
+    });
+
+    const token = createToken({
+      id: usuario.id,
+      name: usuario.nombre,
+      email: usuario.email,
+      password: '',
+    });
+
+    res.status(201).json({
+      data: { token, usuario },
+    });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : 'Error interno';
+    const status = message === 'El correo ya está registrado' ? 409 : 500;
+    res.status(status).json({ message });
+  }
+};
