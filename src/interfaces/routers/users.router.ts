@@ -1,5 +1,5 @@
 import { Router } from "express"
-import { createUserHandler, getAllUsersHandler, getOneUserHandler, removeUserHandler, updateUserHandler } from "../controllers/users.controller"
+import { createUserHandler, getAllUsersHandler, getOneUserHandler, removeUserHandler, updateUserHandler } from "../controllers/users.old.controller"
 import { authMiddleware } from "../middlewares/auth.middleware"
 
 

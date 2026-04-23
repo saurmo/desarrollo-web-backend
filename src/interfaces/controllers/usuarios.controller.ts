@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
-import { usuarioService } from '../../application/usuarios/usuarioService';
+import { usuarioUseCase } from '../../application/usuarios/usuarioUseCase';
 
 export const getAllUsuariosHandler = async (_req: Request, res: Response) => {
   try {
-    const usuarios = await usuarioService.getAll();
+    const usuarios = await usuarioUseCase.getAll();
     res.json({ data: usuarios });
   } catch (error) {
     res.status(500).json({ message: 'Error al obtener usuarios' });
@@ -12,7 +12,7 @@ export const getAllUsuariosHandler = async (_req: Request, res: Response) => {
 
 export const getOneUsuarioHandler = async (req: Request, res: Response) => {
   try {
-    const usuario = await usuarioService.getById(req.params.id as string);
+    const usuario = await usuarioUseCase.getById(req.params.id as string);
     res.json({ data: usuario });
   } catch (error) {
     const message = error instanceof Error ? error.message : 'Error interno';
@@ -24,7 +24,7 @@ export const getOneUsuarioHandler = async (req: Request, res: Response) => {
 export const createUsuarioHandler = async (req: Request, res: Response) => {
   try {
     const { nombre, apellidos, email, password, acepta_terminos } = req.body;
-    const usuario = await usuarioService.create({
+    const usuario = await usuarioUseCase.create({
       nombre,
       apellidos,
       email,
@@ -42,7 +42,7 @@ export const createUsuarioHandler = async (req: Request, res: Response) => {
 export const updateUsuarioHandler = async (req: Request, res: Response) => {
   try {
     const { nombre, apellidos, email } = req.body;
-    const usuario = await usuarioService.update(req.params.id as string, {
+    const usuario = await usuarioUseCase.update(req.params.id as string, {
       nombre,
       apellidos,
       email,
@@ -57,7 +57,7 @@ export const updateUsuarioHandler = async (req: Request, res: Response) => {
 
 export const removeUsuarioHandler = async (req: Request, res: Response) => {
   try {
-    await usuarioService.remove(req.params.id as string );
+    await usuarioUseCase.remove(req.params.id as string );
     res.json({ message: 'Usuario eliminado correctamente' });
   } catch (error) {
     const message = error instanceof Error ? error.message : 'Error interno';

@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
 import { usuarioRepository } from '../../infrastructure/repositories/usuarioRepository';
-import { usuarioService } from '../../application/usuarios/usuarioService';
+import { usuarioUseCase } from '../../application/usuarios/usuarioUseCase';
 import { createToken } from '../../infrastructure/tokens';
 
 export const loginHandler = async (req: Request, res: Response) => {
@@ -39,7 +39,7 @@ export const registerHandler = async (req: Request, res: Response) => {
   try {
     const { nombre, apellidos, email, password, acepta_terminos } = req.body;
 
-    const usuario = await usuarioService.create({
+    const usuario = await usuarioUseCase.create({
       nombre,
       apellidos,
       email,

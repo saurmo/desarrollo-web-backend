@@ -2,7 +2,7 @@ import bcrypt from 'bcrypt';
 import { usuarioRepository } from '../../infrastructure/repositories/usuarioRepository';
 import { ActualizarUsuarioDto, CrearUsuarioDto } from '../../domain/models/Usuario';
 
-export const usuarioService = {
+export const usuarioUseCase = {
   getAll: () =>
     usuarioRepository.findAll(),
 
@@ -13,8 +13,10 @@ export const usuarioService = {
   },
 
   create: async (data: CrearUsuarioDto) => {
+
     const existe = await usuarioRepository.findByEmail(data.email);
     if (existe) throw new Error('El correo ya está registrado');
+
     const hash = await bcrypt.hash(data.password, 10);
     const { password: _, ...usuario } = await usuarioRepository.create({
       ...data,
