@@ -1,4 +1,6 @@
 import { Request, Response } from "express"
+import { users } from "../data/users.data"
+
 
 const createUserHandler = (req: Request, res: Response) => {
     const payload = req.body
@@ -19,8 +21,37 @@ const getAllUsersHandler = (req: Request, res: Response) => {
         pagination: {
             page
         },
-        usuarios: []
+        users
     })
 }
 
-export { createUserHandler, getAllUsersHandler }
+const getOneUserHandler =  (req: Request, res: Response) => {
+    const id = req.params.id
+    res.status(200).json({
+        usuarios: {
+            id
+        }
+    })
+}
+
+const updateUserHandler =  (req: Request, res: Response) => {
+    // capturar el id
+    // capturar el json
+    res.status(200).json({
+        usuarios: {
+            id: ''
+        }
+    })
+}
+
+
+const removerUserHandler =  (req: Request, res: Response) => {
+    // capturar el id
+    res.status(200).json({
+        usuarios: {
+            id: ''
+        }
+    })
+}
+
+export { createUserHandler, getAllUsersHandler, getOneUserHandler, updateUserHandler, removerUserHandler }
