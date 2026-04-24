@@ -13,10 +13,10 @@ export const usuarioUseCase = {
   },
 
   create: async (data: CrearUsuarioDto) => {
-
     const existe = await usuarioRepository.findByEmail(data.email);
     if (existe) throw new Error('El correo ya está registrado');
 
+    // 
     const hash = await bcrypt.hash(data.password, 10);
     const { password: _, ...usuario } = await usuarioRepository.create({
       ...data,
