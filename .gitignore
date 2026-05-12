@@ -5,6 +5,4 @@ package-lock.json
 .env
 /src/generated/prisma
 
-/src/generated/prisma
-
-/src/generated/prisma
+/uploads

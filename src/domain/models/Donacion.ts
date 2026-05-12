@@ -1,11 +1,7 @@
-
-
-export interface Donacion {
-    id: string;
-    user_id: string;
-    total: number;
-    descripcion: string;
-    create_at: number
-
-
+/** Datos para crear una donación (coinciden con el modelo Prisma `donaciones`). */
+export interface DonacionCreateInput {
+  user_id?: string | null;
+  total: number;
+  descripcion?: string | null;
+  comprobante_url?: string | null;
 }

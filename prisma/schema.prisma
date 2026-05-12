@@ -29,9 +29,10 @@ model usuarios {
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model donaciones {
-  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  created_at  DateTime @default(now()) @db.Timestamptz(6)
-  user_id     String?  @db.Uuid
-  total       Decimal? @db.Decimal
-  descripcion String?  @default("500") @db.VarChar
+  id               String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  created_at       DateTime @default(now()) @db.Timestamptz(6)
+  user_id          String?  @db.Uuid
+  total            Decimal? @db.Decimal
+  descripcion      String?  @default("500") @db.VarChar
+  comprobante_url  String?  @db.VarChar(1024)
 }
