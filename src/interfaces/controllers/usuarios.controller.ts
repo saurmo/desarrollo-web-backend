@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { usuarioUseCase } from '../../application/usuarios/usuarioUseCase';
+import { isS3ObjectStorageConfigured, uploadFileToS3 } from '../../infrastructure/storage/s3ObjectStorageService';
 
 export const getAllUsuariosHandler = async (_req: Request, res: Response) => {
   try {
@@ -57,7 +58,7 @@ export const updateUsuarioHandler = async (req: Request, res: Response) => {
 
 export const removeUsuarioHandler = async (req: Request, res: Response) => {
   try {
-    await usuarioUseCase.remove(req.params.id as string );
+    await usuarioUseCase.remove(req.params.id as string);
     res.json({ message: 'Usuario eliminado correctamente' });
   } catch (error) {
     const message = error instanceof Error ? error.message : 'Error interno';
@@ -65,3 +66,29 @@ export const removeUsuarioHandler = async (req: Request, res: Response) => {
     res.status(status).json({ message });
   }
 };
+
+export const imageProfileHandler = async (req: Request, res: Response) => {
+  const file = req.file
+  let foto_perfil;
+  if (file && isS3ObjectStorageConfigured()) {
+    foto_perfil = await uploadFileToS3({
+      buffer: file.buffer,
+      contentType: file.mimetype,
+      originalName: file.originalname,
+      folder: 'fotos-perfil'
+    });
+  } else {
+    res.status(400).json({
+      message: "No se logro cargar la imágen"
+    })
+    return
+  }
+
+  const usuario = await usuarioUseCase.update(req.params.id as string, {
+    foto_perfil
+  });
+  res.json({
+    success: true,
+    data: usuario
+  })
+}

@@ -29,4 +29,5 @@ export interface ActualizarUsuarioDto {
   nombre?: string;
   apellidos?: string;
   email?: string;
+  foto_perfil?: string;
 }

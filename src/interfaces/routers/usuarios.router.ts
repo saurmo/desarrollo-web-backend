@@ -5,11 +5,14 @@ import {
   createUsuarioHandler,
   updateUsuarioHandler,
   removeUsuarioHandler,
+  imageProfileHandler,
 } from '../controllers/usuarios.controller';
+import { imageProfileMiddleware } from '../middlewares/uploadFiles.middleware';
 
 const router = Router();
 
 router.get('/usuarios', getAllUsuariosHandler);
+router.post('/usuarios/:id/perfil', imageProfileMiddleware, imageProfileHandler);
 router.post('/usuarios', createUsuarioHandler);
 router.get('/usuarios/:id', getOneUsuarioHandler);
 router.put('/usuarios/:id', updateUsuarioHandler);

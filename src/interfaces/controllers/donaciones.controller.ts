@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { DonacionUseCase } from '../../application/donacionUseCase';
 import {
   isS3ObjectStorageConfigured,
-  uploadDonacionComprobanteToS3,
+  uploadFileToS3,
 } from '../../infrastructure/storage/s3ObjectStorageService';
 import { saveDonacionComprobanteLocally } from '../../infrastructure/storage/localComprobanteStorage';
 
@@ -31,10 +31,11 @@ export const crearDonacionHandler = async (req: Request, res: Response) => {
     let comprobante_url: string | null = null;
     if (req.file) {
       if (isS3ObjectStorageConfigured()) {
-        comprobante_url = await uploadDonacionComprobanteToS3({
+        comprobante_url = await uploadFileToS3({
           buffer: req.file.buffer,
           contentType: req.file.mimetype,
           originalName: req.file.originalname,
+          folder:'comprobantes'
         });
       } else {
         comprobante_url = await saveDonacionComprobanteLocally({

@@ -48,28 +48,19 @@ export function isS3ObjectStorageConfigured(): boolean {
 
 function resolvePublicObjectUrl(objectKey: string): string {
   const base = process.env.SUPABASE_STORAGE_PUBLIC_URL!.replace(/\/$/, '');
-  return `${base}/${objectKey.replace(/^\/+/, '')}`;
+  const bucket= process.env.S3_BUCKET_NAME
+  return `${base}/${bucket}/${objectKey.replace(/^\/+/, '')}`;
 }
 
 export type UploadDonacionComprobanteInput = {
   buffer: Buffer;
   contentType: string;
   originalName: string;
+  folder: 'comprobantes' | 'fotos-perfil';
 };
 
-/**
- * Sube el comprobante con `PutObjectCommand` (mismo patrón que la guía de AWS;
- * aquí el `Body` es un `Buffer` desde Multer memoryStorage).
- *
- * Ejemplo equivalente con stream desde disco:
- * ```ts
- * import fs from 'fs';
- * await client.send(new PutObjectCommand({
- *   Bucket, Key, Body: fs.createReadStream('/path/to/file'), ContentType: 'image/jpeg',
- * }));
- * ```
- */
-export async function uploadDonacionComprobanteToS3(
+
+export async function uploadFileToS3(
   params: UploadDonacionComprobanteInput,
 ): Promise<string> {
   const client = getOrCreateS3Client();
@@ -83,9 +74,9 @@ export async function uploadDonacionComprobanteToS3(
 
   const ext = path.extname(params.originalName).toLowerCase();
   const safeExt = ext && /^\.[a-z0-9]+$/i.test(ext) ? ext : '';
-  const objectKey = `${Date.now()}-${randomBytes(8).toString('hex')}${safeExt}`;
+  const objectKey = `${params.folder}/${Date.now()}-${randomBytes(8).toString('hex')}${safeExt}`;
 
- const response = await client.send(
+   await client.send(
     new PutObjectCommand({
       Bucket: bucket,
       Key: objectKey,
@@ -93,8 +84,6 @@ export async function uploadDonacionComprobanteToS3(
       ContentType: params.contentType,
     }),
   );
-  console.log(response);
-  
 
   return resolvePublicObjectUrl(objectKey);
 }
