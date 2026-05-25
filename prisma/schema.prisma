@@ -26,6 +26,7 @@ model usuarios {
   created_at      DateTime @default(now()) @db.Timestamptz(6)
   updated_at      DateTime @default(now()) @db.Timestamptz(6)
   foto_perfil     String?  @db.VarChar(1024)
+  role            String   @default("donante") @db.VarChar(20)
 }
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.

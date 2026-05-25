@@ -1,14 +1,19 @@
 {
   "name": "desarrollo-web-backend",
   "version": "1.0.0",
-  "description": "> Hola, en este repositorio se encuentra todos los códigos que vemos en clase. Acá vas a encontrar:",
-  "main": "index.js",
+  "description": "REST API para donaciones, productores y usuarios con Express, TypeScript, JWT y Supabase/Postgres.",
+  "main": "dist/main.js",
   "scripts": {
     "dev": "nodemon --exec tsx src/main.ts",
+    "build": "prisma generate && tsc",
+    "start": "node dist/main.js",
+    "typecheck": "tsc --noEmit",
     "test": "echo \"Error: no test specified\" && exit 1",
     "prisma:pull": "npx prisma db pull",
     "prisma:generate": "npx prisma generate",
-    "prisma:migrate": "npx prisma migrate dev"
+    "prisma:migrate": "npx prisma migrate dev",
+    "prisma:deploy": "npx prisma migrate deploy",
+    "lint": "echo \"No lint configured\""
   },
   "repository": {
     "type": "git",
@@ -26,12 +31,15 @@
     "@prisma/adapter-pg": "^7.8.0",
     "@prisma/client": "^7.8.0",
     "bcrypt": "^6.0.0",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.15.1",
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
     "jsonwebtoken": "^9.0.3",
     "multer": "^2.1.1",
-    "pg": "^8.20.0"
+    "pg": "^8.20.0",
+    "reflect-metadata": "^0.2.2"
   },
   "devDependencies": {
     "@types/bcrypt": "^6.0.0",
@@ -39,9 +47,12 @@
     "@types/express": "^5.0.6",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/multer": "^2.1.0",
+    "@types/node": "^20.19.41",
     "@types/pg": "^8.20.0",
     "nodemon": "^3.1.14",
     "prisma": "^7.8.0",
-    "ts-node": "^10.9.2"
+    "ts-node": "^10.9.2",
+    "tsx": "^4.20.0",
+    "typescript": "^5.6.2"
   }
 }

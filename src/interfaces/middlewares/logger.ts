@@ -1,9 +1,6 @@
-import { Request, Response, NextFunction } from 'express'
+import { Request, Response, NextFunction } from 'express';
 
-const loggerMiddleware = (req: Request, res: Response, next: NextFunction) => {
-    const url = req.url
-    console.log('Interceptando request....', url);
-    next()
-}
-
-export default loggerMiddleware
+export const loggerMiddleware = (req: Request, _res: Response, next: NextFunction) => {
+  console.log(`${req.method} ${req.url}`);
+  next();
+};
