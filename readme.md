@@ -1,39 +1,44 @@
-# DESARROLLO DE SOFTWARE EN LA WEB - BACKEND
 
-> Hola, en este repositorio se encuentra todos los códigos que vemos en clase. Acá vas a encontrar:
+# Api Rest con expressjs
 
-- Introducción a javascript
-- Proyecto de un API Rest
+Página: https://expressjs.com/
 
-Las tecnologias que usamos son:
+- `npm init -y`
+- `npm install express`
+- `npm install --save-dev typescript @types/express @types/node`
 
-- Nodejs
-- Postgres o mongo
+tsc --init
+```json
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "nodenext",
+    "rewriteRelativeImportExtensions": true,
+    "erasableSyntaxOnly": true,
+    "verbatimModuleSyntax": true,
+    "noEmit": true,
+    "strict": true,
+    "skipLibCheck": true
+  }
+}
+```
 
-## Curso 2023-2
+## Ejemplo básico de api rest
+```ts
+import express, { type Express, type Request, type Response } from 'express';
 
-- API Tasks [Link](https://github.com/saurmo/desarrollo-web-backend/tree/2023-2-tasks)
+const app: Express = express();
 
-## Curso 2023-1
+app.get('/', (req: Request, res: Response) => {
+  res.send('Hello World!');
+});
 
-- API Tasks [Link](https://github.com/saurmo/desarrollo-web-backend/tree/curso-2023-1-tasks)
+app.listen(3000);
+```
 
-
-## Curso 2022-2
-
-- API Tienda Frutas y Verduras [Link](https://github.com/saurmo/desarrollo-web-backend/tree/curso-2022-2-api-tienda)
-
-
-## Curso 2022-1
-
-- API restaurante [Link](https://github.com/saurmo/desarrollo-web-backend/tree/curso-2022-1-api-restaurante)
-
-## Curso 2021-2
-
-- Proyecto de reservas [Link](https://github.com/saurmo/desarrollo-web-backend/tree/curso-2021-2-api)
-- Introducción básica [Link](https://github.com/saurmo/desarrollo-web-backend/tree/curso-2021-2-intro)
-
-## Curso 2021-1
-
-- Introducción básica a javascript [Link]
-- Tienda Olimpo API [Link](https://github.com/saurmo/desarrollo-web-backend/tree/2021-1-tienda-olimpo-api)
+Http Methods
+- POST -> Crear
+- PUT -> Modificación total (upsert, si no existe se crea) 
+- PATCH -> Modificación parcial
+- DELETE -> Eliminar
+- GET -> Consultar
