@@ -1,11 +1,16 @@
 
 import { type Request, type Response } from 'express';
 import type { Listing } from '../../domain/models/Listing.ts';
+import { ListingsUseCase } from '../../application/listings.use-case.ts';
+import type { IListingRepository } from '../../domain/repository/IListings.repository.ts';
+import { ListingsPostgresRepository } from '../../infrastructure/repository/listings.pg.repository.ts';
 
 export const getListings = async (req: Request, res: Response) => {
   try {
-    // Lógica para obtener todos los registros o filtrar por req.query (ej. categorías, precio)
-    res.status(200).json({ message: 'Obtener todas las propiedades' });
+    const repository: IListingRepository=new ListingsPostgresRepository()
+    const useCase = new ListingsUseCase(repository)
+  const response=  await useCase.getAll()
+    res.status(200).json(response);
   } catch (error) {
     res.status(500).json({ error: 'Error al obtener las propiedades' });
   }

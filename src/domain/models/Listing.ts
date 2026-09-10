@@ -12,3 +12,14 @@ export interface Listing {
   videos?: string[];
   categories: string[];
 }
+
+export interface ListingFilterOptions {
+  state?: string;
+  minPrice?: number;
+  maxPrice?: number;
+  capacity?: number;
+  location?: string;
+  categoryId?: string;
+  limit?: number;
+  offset?: number;
+}
