@@ -42,3 +42,16 @@ Http Methods
 - PATCH -> Modificación parcial
 - DELETE -> Eliminar
 - GET -> Consultar
+
+
+## PRISMA ORM 
+
+https://www.prisma.io/docs/v7/prisma-orm/quickstart/prisma-postgres
+
+`npm install prisma@7.10.0 @types/pg --save-dev`
+`npm install @prisma/client@7.10.0 @prisma/adapter-pg pg dotenv`
+
+`npx prisma init`
+
+> Sincronizar la base de datos con el código (schema.prisma)
+`npx prisma db pull  `

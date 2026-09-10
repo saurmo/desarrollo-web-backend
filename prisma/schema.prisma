@@ -1,0 +1,76 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model categories {
+  id                 String               @id @db.VarChar(36)
+  name               String               @unique @db.VarChar(100)
+  description        String?
+  state              String               @default("ACTIVE") @db.VarChar(20)
+  deleted_at         DateTime?            @db.Timestamptz(6)
+  created_at         DateTime?            @default(now()) @db.Timestamptz(6)
+  updated_at         DateTime?            @default(now()) @db.Timestamptz(6)
+  created_by         String               @db.VarChar(36)
+  updated_by         String?              @db.VarChar(36)
+  listing_categories listing_categories[]
+}
+
+model comodities {
+  id                 String               @id @db.VarChar(36)
+  name               String               @unique @db.VarChar(100)
+  description        String?
+  state              String               @default("ACTIVE") @db.VarChar(20)
+  deleted_at         DateTime?            @db.Timestamptz(6)
+  created_at         DateTime?            @default(now()) @db.Timestamptz(6)
+  updated_at         DateTime?            @default(now()) @db.Timestamptz(6)
+  created_by         String               @db.VarChar(36)
+  updated_by         String?              @db.VarChar(36)
+  listing_comodities listing_comodities[]
+}
+
+model listing_categories {
+  listing_id  String     @db.VarChar(36)
+  category_id String     @db.VarChar(36)
+  categories  categories @relation(fields: [category_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  listings    listings   @relation(fields: [listing_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@id([listing_id, category_id])
+}
+
+model listing_comodities {
+  listing_id  String     @db.VarChar(36)
+  comodity_id String     @db.VarChar(36)
+  comodities  comodities @relation(fields: [comodity_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  listings    listings   @relation(fields: [listing_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@id([listing_id, comodity_id])
+}
+
+model listings {
+  id                 String               @id @db.VarChar(36)
+  name               String               @db.VarChar(255)
+  location           String               @db.VarChar(255)
+  price              Decimal              @db.Decimal(10, 2)
+  capacity           Int
+  weather            String               @db.VarChar(100)
+  rating             Decimal?             @default(0.00) @db.Decimal(3, 2)
+  photos             Json                 @default("[]")
+  videos             Json?                @default("[]")
+  state              String               @default("ACTIVE") @db.VarChar(20)
+  deleted_at         DateTime?            @db.Timestamptz(6)
+  created_at         DateTime?            @default(now()) @db.Timestamptz(6)
+  updated_at         DateTime?            @default(now()) @db.Timestamptz(6)
+  created_by         String               @db.VarChar(36)
+  updated_by         String?              @db.VarChar(36)
+  listing_categories listing_categories[]
+  listing_comodities listing_comodities[]
+
+  @@index([photos], map: "idx_listings_photos", type: Gin)
+  @@index([state], map: "idx_listings_state")
+  @@index([videos], map: "idx_listings_videos", type: Gin)
+}
