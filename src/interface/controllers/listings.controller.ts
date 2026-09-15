@@ -5,10 +5,12 @@ import { ListingsUseCase } from '../../application/listings.use-case.ts';
 import type { IListingRepository } from '../../domain/repository/IListings.repository.ts';
 import { ListingsPostgresRepository } from '../../infrastructure/repository/listings.pg.repository.ts';
 
+ const repository: IListingRepository=new ListingsPostgresRepository()
+const useCase = new ListingsUseCase(repository)
+
 export const getListings = async (req: Request, res: Response) => {
   try {
-    const repository: IListingRepository=new ListingsPostgresRepository()
-    const useCase = new ListingsUseCase(repository)
+   
   const response=  await useCase.getAll()
     res.status(200).json(response);
   } catch (error) {
