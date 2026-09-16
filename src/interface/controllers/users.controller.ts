@@ -1,15 +1,16 @@
 
 import { type Request, type Response } from 'express';
-import type { Listing } from '../../domain/models/Listing.ts';
-import { ListingsUseCase } from '../../application/listings.use-case.ts';
-import type { IListingRepository } from '../../domain/repository/IListings.repository.ts';
-import { ListingsPostgresRepository } from '../../infrastructure/repository/listings.pg.repository.ts';
+import type { User } from '../../domain/models/User.ts';
+import { UsersUseCase } from '../../application/users.use-case.ts';
+import type { IUserRepository } from '../../domain/repository/IUser.repository.ts';
+import { UserPgRepository } from '../../infrastructure/repository/users.pg.repository.ts';
 
-const repository: IListingRepository = new ListingsPostgresRepository()
-const useCase = new ListingsUseCase(repository)
+const repository: IUserRepository = new UserPgRepository()
+const useCase = new UsersUseCase(repository)
 
-export const getListings = async (req: Request, res: Response) => {
+export const getUsers = async (req: Request, res: Response) => {
   try {
+
     const response = await useCase.getAll()
     res.status(200).json(response);
   } catch (error) {
@@ -28,7 +29,7 @@ export const getListingById = async (req: Request, res: Response) => {
 
 export const createListing = async (req: Request, res: Response) => {
   try {
-    const listingData: Omit<Listing, 'id'> = req.body;
+    const listingData: Omit<User, 'id'> = req.body;
     res.status(201).json({ message: 'Propiedad creada exitosamente', data: listingData });
   } catch (error) {
     res.status(500).json({ error: 'Error al crear la propiedad' });
@@ -38,7 +39,7 @@ export const createListing = async (req: Request, res: Response) => {
 export const updateListing = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const updateData: Partial<Listing> = req.body;
+    const updateData: Partial<User> = req.body;
     res.status(200).json({ message: `Propiedad ${id} actualizada`, data: updateData });
   } catch (error) {
     res.status(500).json({ error: 'Error al actualizar la propiedad' });
