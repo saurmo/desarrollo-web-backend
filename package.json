@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "nodemon --ext ts,json --exec 'tsx ./src/app.ts'",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc && npm run prisma:generate",
+    "build": "npm run prisma:generate && tsc",
+    "start": "node ./dist/app.js",
     "prisma:pull": "npx prisma db pull",
     "prisma:generate": "npx prisma generate",
     "postinstall": "prisma skills sync || exit 0"
