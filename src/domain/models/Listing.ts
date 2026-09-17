@@ -22,4 +22,5 @@ export interface ListingFilterOptions {
   categoryId?: string;
   limit?: number;
   offset?: number;
+  page?: number;
 }

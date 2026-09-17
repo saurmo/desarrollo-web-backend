@@ -1,6 +1,6 @@
 
 import { type Request, type Response } from 'express';
-import type { Listing } from '../../domain/models/Listing.ts';
+import type { Listing, ListingFilterOptions } from '../../domain/models/Listing.ts';
 import { ListingsUseCase } from '../../application/listings.use-case.ts';
 import type { IListingRepository } from '../../domain/repository/IListings.repository.ts';
 import { ListingsPostgresRepository } from '../../infrastructure/repository/listings.pg.repository.ts';
@@ -10,7 +10,17 @@ const useCase = new ListingsUseCase(repository)
 
 export const getListings = async (req: Request, res: Response) => {
   try {
-    const response = await useCase.getAll()
+    const filters: ListingFilterOptions = {}
+    // Operador ternario ( ---condicion--- ?  sentencia true : sentencia false)
+    const limit=req.query.limit ? parseInt(req.query.limit as string, 10) : undefined;
+    const page=req.query.page ? parseInt(req.query.page as string, 10) : undefined;
+    if (limit !== undefined) {
+      filters.limit = limit;
+    }
+    if (page !== undefined) {
+      filters.page = page || 1; // Si no se proporciona page, se asume 1
+    }
+    const response = await useCase.getAll(filters)
     res.status(200).json(response);
   } catch (error) {
     res.status(500).json({ error: 'Error al obtener las propiedades' });
