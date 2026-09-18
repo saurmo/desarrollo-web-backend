@@ -1,4 +1,4 @@
-import type { CreateUserDTO, UpdateUserDTO, User } from "../models/User.ts";
+import type { CreateUserDTO, UpdateUserDTO, User, UserFilterOptions } from "../models/User.ts";
 
 export interface IUserRepository {
   /**
@@ -10,7 +10,7 @@ export interface IUserRepository {
   /**
    * Retrieves all users.
    */
-  findAll(): Promise<User[]>;
+  findAll(filters: UserFilterOptions): Promise<{ total: number; data: User[] }>;
 
   /**
    * Finds a user by their unique identifier.

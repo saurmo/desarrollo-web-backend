@@ -1,6 +1,16 @@
 // Allowed roles definition
 export type UserRole = 'admin' | 'user' | 'owner';
 
+export interface UserFilterOptions {
+  identification?: string;
+  role?: string;
+  limit?: number;
+  offset?: number;
+  page?: number;
+  status?: string;
+}
+
+
 // Main User Entity
 export interface User {
   id: number;

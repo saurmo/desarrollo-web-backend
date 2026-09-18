@@ -1,6 +1,6 @@
 
 import { type Request, type Response } from 'express';
-import type { User } from '../../domain/models/User.ts';
+import type { User, UserFilterOptions } from '../../domain/models/User.ts';
 import { UsersUseCase } from '../../application/users.use-case.ts';
 import type { IUserRepository } from '../../domain/repository/IUser.repository.ts';
 import { UserPgRepository } from '../../infrastructure/repository/users.pg.repository.ts';
@@ -10,8 +10,13 @@ const useCase = new UsersUseCase(repository)
 
 export const getUsers = async (req: Request, res: Response) => {
   try {
-
-    const response = await useCase.getAll()
+    const limit = req.query.limit ? parseInt(req.query.limit as string, 10) : undefined;
+    const page = req.query.page ? parseInt(req.query.page as string, 10) : undefined;
+    const filters: UserFilterOptions = {
+      limit,
+      page
+    }
+    const response = await useCase.getAll(filters)
     res.status(200).json(response);
   } catch (error) {
     res.status(500).json({ error: 'Error al obtener las propiedades' });

@@ -6,7 +6,7 @@ Página: https://expressjs.com/
 - `npm init -y`
 - `npm install express`
 - `npm install --save-dev typescript @types/express @types/node`
-https://www.npmjs.com/package/nodemon
+- `npm install -g nodemon` https://www.npmjs.com/package/nodemon
 
 tsc --init
 ```json
@@ -62,12 +62,11 @@ https://www.prisma.io/docs/v7/prisma-orm/quickstart/prisma-postgres
 - limit: Nos obtiene x cantidad de datos. Por ejemplo consultar 200 items
 - offset: Es el puntero de donde consultamos la información.
 
-Si tenemos un limit de 10 y un total de 100 items. Hay 10 páginas
-Con un limit de 10:
-Page 1 (limit=10, offset=0). 02 - 12
-Page 2 (limit=10, offset=10)
-Page 3 (limit=10, offset=20)
-Page 4 (limit=10, offset=30)
+>Si tenemos un limit de 10 y un total de 100 items. Hay 10 páginas Con un limit de 10:
+- Page 1 (limit=10, offset=0). 02 - 12
+- Page 2 (limit=10, offset=10)
+- Page 3 (limit=10, offset=20)
+- Page 4 (limit=10, offset=30)
 
 ## ¿Cómo se ve sobre la tabla?
 

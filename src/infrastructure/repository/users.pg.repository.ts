@@ -1,6 +1,6 @@
 import prisma from "./client.ts";
 import type { IUserRepository } from "../../domain/repository/IUser.repository.ts";
-import type { CreateUserDTO, UpdateUserDTO, User } from "../../domain/models/User.ts";
+import type { CreateUserDTO, UpdateUserDTO, User, UserFilterOptions } from "../../domain/models/User.ts";
 
 export class UserPgRepository implements IUserRepository {
 
@@ -20,10 +20,21 @@ export class UserPgRepository implements IUserRepository {
     return this.mapToDomain(createdUser);
   }
 
-  async findAll(): Promise<User[]> {
-    const users = await prisma.users.findMany({});
-    const usersMap= users.map((user) => this.mapToDomain(user));
-    return usersMap
+  async findAll(filters: UserFilterOptions): Promise<{ total: number; data: User[] }> {
+    const total = await prisma.users.count({
+      where: {
+        status: filters.status,
+      }
+    })
+    const users = await prisma.users.findMany({
+      take: filters.limit,
+      skip: filters.offset,
+      where: {
+        status: filters.status,
+      }
+    });
+    const usersMap = users.map((user) => this.mapToDomain(user));
+    return { total, data: usersMap };
   }
 
   async findById(id: number) {

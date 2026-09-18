@@ -7,7 +7,10 @@ import cors from "cors"
 const app: Express = express();
 
 app.get('/', (req: Request, res: Response) => {
-  res.send('Hello World!');
+  res.send({
+    success: true,
+    message: 'API is running',
+  });
 });
 
 // Middleware es global: express.json() permite capturar el json de los bodies
