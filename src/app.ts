@@ -1,15 +1,24 @@
 import express, { type Express, type Request, type Response } from 'express';
 
 import listingRoutes from "./interface/routers/listings.router.ts"
-import cors from 'cors'
+import usersRoutes from "./interface/routers/users.router.ts"
+import cors from "cors"
+
 const app: Express = express();
 
 app.get('/', (req: Request, res: Response) => {
-  res.send('Hello World!');
+  res.send({
+    success: true,
+    message: 'API is running',
+  });
 });
 
-// Middleware - Permite capturar los json del body express.json()
+// Middleware es global: express.json() permite capturar el json de los bodies
 app.use(express.json());
+app.use(cors({
+  origin:"http://localhost:3000"
+}))
+
 
 app.use(cors({
   origin:'http://localhost:3000'
@@ -17,6 +26,7 @@ app.use(cors({
 
 // Montar las rutas bajo el prefijo /api/listings
 app.use('/api/listings', listingRoutes);
+app.use('/api/users', usersRoutes);
 
 const PORT=process.env["PORT"] || 3001
 app.listen(PORT,()=>{

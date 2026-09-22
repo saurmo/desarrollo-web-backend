@@ -80,3 +80,42 @@ CREATE INDEX idx_listings_videos ON listings USING gin (videos);
 
 -- Índice optimizado para búsquedas por estado
 CREATE INDEX idx_listings_state ON listings (state);
+
+
+-- 1. Creación del tipo ENUM para los roles
+CREATE TYPE user_role AS ENUM ('admin', 'user', 'owner');
+
+-- 2. Creación de la tabla de usuarios
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    identificacion VARCHAR(20) UNIQUE NOT NULL,
+    role user_role NOT NULL DEFAULT 'user',
+    phone VARCHAR(20),
+    email VARCHAR(150) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 3. Inserción masiva de 400 usuarios con datos ficticios
+INSERT INTO users (nombre, identificacion, role, phone, email, password)
+SELECT 
+    -- Nombre aleatorio combinado
+    (ARRAY['Carlos', 'Ana', 'Luis', 'Maria', 'Jorge', 'Sofia', 'Pedro', 'Lucia', 'Diego', 'Elena'])[1 + floor(random() * 10)] || ' ' ||
+    (ARRAY['Gomez', 'Rodriguez', 'Lopez', 'Martinez', 'Perez', 'García', 'Sánchez', 'Torres', 'Ramírez', 'Flores'])[1 + floor(random() * 10)] AS nombre,
+    
+    -- Identificación única de 8 a 10 dígitos
+    (10000000 + gs.i)::text AS identificacion,
+    
+    -- Distribución aleatoria de roles
+    (ARRAY['admin', 'user', 'owner']::user_role[])[1 + floor(random() * 3)] AS role,
+    
+    -- Número de teléfono ficticio
+    '+573' || lpad((floor(random() * 89999999 + 10000000))::text, 8, '0') AS phone,
+    
+    -- Email único
+    'usuario' || gs.i || '@ejemplo.com' AS email,
+    
+    -- Hash simulado de contraseña
+    '$2b$10$e8T8fE/xM0.Y.3Q9bQZ7uO8N.0Xk2yJ1v3w4x5y6z7a8b9c0d1e2f' AS password
+FROM generate_series(1, 400) AS gs(i);
