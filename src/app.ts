@@ -16,7 +16,7 @@ app.get('/', (req: Request, res: Response) => {
 // Middleware es global: express.json() permite capturar el json de los bodies
 app.use(express.json());
 app.use(cors({
-  origin:["http://localhost:3000", "https://listings-app-nine.vercel.app/"]
+  origin:["http://localhost:3000", "https://listings-app-nine.vercel.app"]
 }))
 
 
