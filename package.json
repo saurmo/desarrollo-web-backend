@@ -5,9 +5,11 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon --ext ts,json --exec 'tsx ./src/app.ts'",
+    "dev:udem": "node ./src/app.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "npm run prisma:generate && tsc",
     "start": "node ./dist/app.js",
+    "sync": "npm run prisma:pull && npm run prisma:generate",
     "prisma:pull": "npx prisma db pull",
     "prisma:generate": "npx prisma generate",
     "postinstall": "prisma skills sync || exit 0"
@@ -37,6 +39,7 @@
     "@types/express": "^5.0.6",
     "@types/node": "^26.5.0",
     "@types/pg": "^8.23.1",
+    "nodemon": "^3.1.14",
     "prisma": "^7.10.0",
     "typescript": "^7.0.2"
   }

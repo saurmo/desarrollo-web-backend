@@ -26,9 +26,11 @@ export class UserPgRepository implements IUserRepository {
         status: filters.status,
       }
     })
+    console.log(filters);
+    
     const users = await prisma.users.findMany({
-      take: filters.limit,
-      skip: filters.offset,
+      take: filters?.limit ?? 10,
+      skip: filters?.offset ?? 0,
       where: {
         status: filters.status,
       }
