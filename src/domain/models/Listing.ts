@@ -1,6 +1,7 @@
 // Interfaz para definir los tipos de datos de la propiedad
 export interface Listing {
   id: string;
+  state: 'ACTIVE' | 'INACTIVE' | 'REMOVED';
   name: string;
   location: string;
   price: number;
@@ -11,7 +12,17 @@ export interface Listing {
   photos: string[];
   videos?: string[];
   categories: string[];
+  updatedAt?: Date;
+  updatedBy?: string;
+  deletedAt?: Date;
+  deletedBy?: string;
 }
+
+export interface CreateListing extends Omit<Listing, | 'updatedAt'  | 'updatedBy' | 'deletedAt' | 'deletedBy'> {
+  created_by: string;
+  created_at: Date;
+}
+
 
 export interface ListingFilterOptions {
   state?: string;

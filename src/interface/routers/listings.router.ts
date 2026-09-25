@@ -3,17 +3,11 @@ import { createListing, deleteListing, getListingById, getListings, updateListin
 
 const router:Router = Router()
 
-// router
-// .get("/listings", )
-// .get("/listings/:id")
-// .post("/listings")
-// .put("/listings")
-// .delete("/listings")
 
-router.get('/', getListings);
-router.get('/:id', getListingById);
-router.post('/', createListing);
-router.put('/:id', updateListing);
-router.delete('/:id', deleteListing);
+router.get('/', getListings); //OK
+router.get('/:id', getListingById); // OK
+router.post('/', createListing); // ok 
+router.put('/:id', updateListing) // PENDIENTE TAREA 
+router.delete('/:id', deleteListing); // OK
 
 export default router
