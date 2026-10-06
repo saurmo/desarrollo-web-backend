@@ -1,6 +1,21 @@
 // Allowed roles definition
 export type UserRole = 'admin' | 'user' | 'owner';
 
+export interface LoginDTO {
+  email: string;
+  password: string;
+}
+
+export interface AuthResponseDTO {
+  user: {
+    id: number;
+    nombre: string;
+    email: string;
+    role: string;
+  };
+  token: string;
+}
+
 export interface UserFilterOptions {
   identification?: string;
   role?: string;

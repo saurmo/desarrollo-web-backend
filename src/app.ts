@@ -2,6 +2,7 @@ import express, { type Express, type Request, type Response } from 'express';
 
 import listingRoutes from "./interface/routers/listings.router.ts"
 import usersRoutes from "./interface/routers/users.router.ts"
+import authRoutes from "./interface/routers/auth.router.ts"
 import cors from "cors"
 
 const app: Express = express();
@@ -20,11 +21,8 @@ app.use(cors({
 }))
 
 
-app.use(cors({
-  origin:'http://localhost:3000'
-}))
-
 // Montar las rutas bajo el prefijo /api/listings
+app.use('/api/auth', authRoutes );
 app.use('/api/listings', listingRoutes);
 app.use('/api/users', usersRoutes);
 
