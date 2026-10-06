@@ -1,0 +1,29 @@
+info:
+  name: create listing
+  type: http
+  seq: 4
+
+http:
+  method: POST
+  url: http://localhost:3001/api/listings
+  body:
+    type: json
+    data: |-
+      {
+        "id": "lst-10000111",
+        "name": "Casa en la playa",
+        "location": "Playa del Carmen, Quintana Roo, Mexico",
+        "price": 100000,
+        "capacity": 4,
+        "weather": "sunny",
+        "rating": 4.5,
+        "photos": ["photo1.jpg", "photo2.jpg"],
+        "videos": ["video1.mp4", "video2.mp4"]
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

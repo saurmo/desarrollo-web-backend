@@ -1,4 +1,4 @@
-import type { Listing, ListingFilterOptions } from "../domain/models/Listing.ts";
+import type { CreateListing, Listing, ListingFilterOptions } from "../domain/models/Listing.ts";
 import type { IListingRepository } from "../domain/repository/IListings.repository.ts";
 
 export class ListingsUseCase {
@@ -29,4 +29,38 @@ export class ListingsUseCase {
       data
     };
   }
+
+  async getById(id: string | null) {
+    if (!id || id.length === 0) {
+      throw new Error('bad_request, ID is required');
+    }
+    const data = await this.listingRepository.findById(id);
+    return { data };
+  }
+
+
+  async deleteById(id: string | null) {
+    if (!id || id.length === 0) {
+      throw new Error('bad_request, ID is required');
+    }
+    const currentListing = await this.listingRepository.findById(id);
+    if (!currentListing) {
+      throw new Error('not_found: Listing not found');
+    }
+    // TODO: capturamos el usuario que esta eliminando la propiedad
+    const data = await this.listingRepository.softDelete(id, 'system');
+    return { message: 'Listing deleted successfully', data };
+  }
+
+  async create(listing: CreateListing) {
+    // TODO: Validar la información de listing
+    const createListing: CreateListing = {
+      ...listing,
+      state: 'ACTIVE',
+      created_by:'system',
+      created_at: new Date(),
+    }
+    const data = await  this.listingRepository.create(createListing);
+    return { message: 'Listing created successfully', data };
+  }  
 }
