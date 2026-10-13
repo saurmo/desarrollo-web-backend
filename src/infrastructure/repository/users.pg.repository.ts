@@ -1,11 +1,18 @@
 import prisma from "./client.ts";
 import type { IUserRepository } from "../../domain/repository/IUser.repository.ts";
 import type { CreateUserDTO, UpdateUserDTO, User, UserFilterOptions } from "../../domain/models/User.ts";
+import { BadRequest } from "../../application/errors/bad-request.error.ts";
 
 export class UserPgRepository implements IUserRepository {
 
 
   async create(data: CreateUserDTO): Promise<User> {
+
+    const existUser = await this.findByEmail(data.email)
+    if (existUser) {
+      throw new BadRequest("El usuario ya existe", { email: data.email })
+    }
+
     const createdUser = await prisma.users.create({
       data: {
         nombre: data.name,
@@ -14,6 +21,8 @@ export class UserPgRepository implements IUserRepository {
         phone: data.phone,
         email: data.email,
         password: data.password ?? '',
+        status: data.status,
+        created_at: new Date()
       },
     });
 
@@ -27,7 +36,7 @@ export class UserPgRepository implements IUserRepository {
       }
     })
     console.log(filters);
-    
+
     const users = await prisma.users.findMany({
       take: filters?.limit ?? 10,
       skip: filters?.offset ?? 0,
@@ -101,7 +110,7 @@ export class UserPgRepository implements IUserRepository {
       email: rawUser.email,
       password: rawUser.password,
       createdAt: rawUser.created_at,
-      status:"ACTIVE"
+      status: "ACTIVE"
     } as User;
   }
 }

@@ -29,7 +29,7 @@ export interface UserFilterOptions {
 
 // Main User Entity
 export interface User {
-  id: number;
+  id?: number;
   name: string;
   identification: string;
   role: UserRole;

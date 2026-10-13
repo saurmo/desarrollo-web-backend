@@ -7,7 +7,7 @@ import { JwtService } from "../../infrastructure/services/jwt.service.ts";
 
 const router = Router();
 
-// Inyección de dependencias
+// Inyección de dependencias : Implementación de infrastructure
  const userRepository = new UserPgRepository();
  const bcryptService = new BcryptService();
 const jwtService = new JwtService();
@@ -18,6 +18,7 @@ const jwtService = new JwtService();
 
 // Ruta pública para autenticación
 router.post('/login', authController.login);
+router.post('/register', authController.register);
 
 // Ejemplo de ruta protegida usando el middleware de verificación
 // router.get('/me', authenticateToken, (req, res) => {

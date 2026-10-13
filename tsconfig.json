@@ -3,12 +3,13 @@
     "target": "ES2017",
     "outDir": "./dist",
     "rootDir": "./",
-    "module": "nodenext",
+    "module": "es2015",
     "rewriteRelativeImportExtensions": true,
     "erasableSyntaxOnly": false,
     "verbatimModuleSyntax": true,
     "noEmit": true,
     "strict": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+     "experimentalDecorators": true
   }
 }
