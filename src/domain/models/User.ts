@@ -9,6 +9,7 @@ export interface LoginDTO {
 export interface AuthResponseDTO {
   user: {
     id: number;
+    identification:string;
     nombre: string;
     email: string;
     role: string;
@@ -36,6 +37,7 @@ export interface User {
   email: string;
   password?: string;
   createdAt?: Date;
+  status: "ACTIVE" | "INACTIVE"
 }
 
 // Data Transfer Object for creating a new user

@@ -90,6 +90,7 @@ export class UserPgRepository implements IUserRepository {
   }
 
   // Mapeador privado para adaptar las columnas de la DB (español) al modelo TypeScript (inglés)
+  // TODO: Pendiente mapear en la base de datos el status
   private mapToDomain(rawUser: any) {
     return {
       id: rawUser.id,
@@ -100,6 +101,7 @@ export class UserPgRepository implements IUserRepository {
       email: rawUser.email,
       password: rawUser.password,
       createdAt: rawUser.created_at,
+      status:"ACTIVE"
     } as User;
   }
 }

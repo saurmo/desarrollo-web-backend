@@ -1,15 +1,19 @@
 import { Router } from "express";
 import { AuthController } from "../controllers/auth.controller.ts";
 import { AuthUseCase } from "../../application/auth.use-case.ts";
+import { UserPgRepository } from "../../infrastructure/repository/users.pg.repository.ts";
+import { BcryptService } from "../../infrastructure/services/bcrypt.service.ts";
+import { JwtService } from "../../infrastructure/services/jwt.service.ts";
 
 const router = Router();
 
 // Inyección de dependencias
-// const userRepository = new PrismaUserRepository();
-// const bcryptService = new BcryptService();
-// const jwtService = new JwtService();
+ const userRepository = new UserPgRepository();
+ const bcryptService = new BcryptService();
+const jwtService = new JwtService();
 
  const authUseCase = new AuthUseCase(userRepository, bcryptService, jwtService);
+ 
  const authController = new AuthController(authUseCase);
 
 // Ruta pública para autenticación

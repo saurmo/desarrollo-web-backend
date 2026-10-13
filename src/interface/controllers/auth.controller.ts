@@ -2,7 +2,12 @@ import type { Request, Response } from 'express';
 import type { AuthUseCase } from '../../application/auth.use-case.ts';
 
 export class AuthController {
-  constructor(private authUseCase: AuthUseCase) {}
+
+  private authUseCase: AuthUseCase
+
+  constructor(authUserCase: AuthUseCase) {
+    this.authUseCase = authUserCase
+  }
 
   login = async (req: Request, res: Response): Promise<void> => {
     try {
