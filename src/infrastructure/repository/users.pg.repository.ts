@@ -35,8 +35,6 @@ export class UserPgRepository implements IUserRepository {
         status: filters.status,
       }
     })
-    console.log(filters);
-
     const users = await prisma.users.findMany({
       take: filters?.limit ?? 10,
       skip: filters?.offset ?? 0,
@@ -87,7 +85,7 @@ export class UserPgRepository implements IUserRepository {
     }
   }
 
-  async remove(id: number) {
+  async deleteById(id: number) {
     try {
       await prisma.users.delete({
         where: { id },

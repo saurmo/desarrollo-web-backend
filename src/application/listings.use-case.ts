@@ -52,15 +52,20 @@ export class ListingsUseCase {
     return { message: 'Listing deleted successfully', data };
   }
 
-  async create(listing: CreateListing) {
-    // TODO: Validar la información de listing
-    const createListing: CreateListing = {
-      ...listing,
+  async create(payload: Record<string, unknown>) {
+    const currentListing = await this.getById(payload.id as string)
+    if (currentListing) {
+      throw new Error('already_exists: Listing already exists');
+    }
+
+    // TODO: Validar la información de listing con DTO
+    const createListing = {
+      ...payload,
       state: 'ACTIVE',
-      created_by:'system',
+      created_by: 'system',
       created_at: new Date(),
     }
-    const data = await  this.listingRepository.create(createListing);
+    const data = await this.listingRepository.create(createListing as CreateListing);
     return { message: 'Listing created successfully', data };
-  }  
+  }
 }

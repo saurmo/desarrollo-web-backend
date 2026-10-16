@@ -36,5 +36,5 @@ export interface IUserRepository {
    * @param id The ID of the user to delete.
    * @returns Returns true if deletion was successful, false otherwise.
    */
-  remove(id: number): Promise<boolean>;
+  deleteById(id: number): Promise<boolean>;
 }

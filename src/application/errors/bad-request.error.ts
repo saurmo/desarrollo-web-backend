@@ -1,16 +1,16 @@
 
 
 export class BadRequest extends Error {
-    payloadErrors: unknown
-    constructor(message: string, payloadErrors: unknown) {
+    errors: unknown
+    constructor(message: string, errors: unknown) {
         super(message)
-        this.payloadErrors = payloadErrors
+        this.errors = errors
     }
 
     print() {
         return {
             message: this.message,
-            errors: this.payloadErrors
+            errors: this.errors
         }
     }
 }

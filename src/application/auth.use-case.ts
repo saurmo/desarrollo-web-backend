@@ -60,6 +60,7 @@ export class AuthUseCase {
     }
     // cifrar la contraseña
     dto.password = this.bcryptService.encrypt(dto.password)
+
     // persistencia de datos
     const resultDb = await this.userRepository.create(dto.mapCreateDto())
     return {

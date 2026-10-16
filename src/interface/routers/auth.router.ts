@@ -18,7 +18,7 @@ const jwtService = new JwtService();
 
 // Ruta pública para autenticación
 router.post('/login', authController.login);
-router.post('/register', authController.register);
+router.post('/register', authController.register); // Crear un usuario en base de datos
 
 // Ejemplo de ruta protegida usando el middleware de verificación
 // router.get('/me', authenticateToken, (req, res) => {

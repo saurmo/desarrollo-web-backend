@@ -4,9 +4,12 @@ import type { User, UserFilterOptions } from '../../domain/models/User.ts';
 import { UsersUseCase } from '../../application/users.use-case.ts';
 import type { IUserRepository } from '../../domain/repository/IUser.repository.ts';
 import { UserPgRepository } from '../../infrastructure/repository/users.pg.repository.ts';
+import { BcryptService } from '../../infrastructure/services/bcrypt.service.ts';
+import { handleError } from '../middlewares/error.handler.ts';
 
 const repository: IUserRepository = new UserPgRepository()
-const useCase = new UsersUseCase(repository)
+const bcryptService = new BcryptService();
+const useCase = new UsersUseCase(repository, bcryptService)
 
 export const getUsers = async (req: Request, res: Response) => {
   try {
@@ -20,44 +23,45 @@ export const getUsers = async (req: Request, res: Response) => {
     res.status(200).json(response);
   } catch (error) {
     console.log(error);
-    
+
     res.status(500).json({ error: 'Error al obtener las propiedades' });
   }
 };
-
-export const getListingById = async (req: Request, res: Response) => {
+export const getUserById = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    res.status(200).json({ message: `Obtener propiedad con ID: ${id}` });
+    const data = await useCase.getById(id as string) 
+    res.json(data);
   } catch (error) {
-    res.status(500).json({ error: 'Error al obtener la propiedad' });
+    handleError(error, res);
   }
 };
 
-export const createListing = async (req: Request, res: Response) => {
+export const createUser = async (req: Request, res: Response) => {
   try {
-    const listingData: Omit<User, 'id'> = req.body;
-    res.status(201).json({ message: 'Propiedad creada exitosamente', data: listingData });
+    const data = await useCase.create(req.body)
+    res.status(201).json(data);
   } catch (error) {
-    res.status(500).json({ error: 'Error al crear la propiedad' });
+    handleError(error, res);
   }
 };
 
-export const updateListing = async (req: Request, res: Response) => {
-  try {
-    const { id } = req.params;
-    const updateData: Partial<User> = req.body;
-    res.status(200).json({ message: `Propiedad ${id} actualizada`, data: updateData });
-  } catch (error) {
-    res.status(500).json({ error: 'Error al actualizar la propiedad' });
-  }
-};
+// export const updateUser = async (req: Request, res: Response) => {
+//   try {
+//     const { id } = req.params;
+//     const updateData: Partial<User> = req.body;
+//     res.status(200).json({ message: `Propiedad ${id} actualizada`, data: updateData });
+//   } catch (error) {
+//     handleError(error, res);
+//   }
+// };
 
-export const deleteListing = async (req: Request, res: Response) => {
+export const deleteUser = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    res.status(200).json({ message: `Propiedad ${id} eliminada` });
+    const data = await useCase.deleteById(id as string) // { data }
+    res.status(200).json(data);
   } catch (error) {
-    res.status(500).json({ error: 'Error al eliminar la propiedad' });
+    handleError(error, res);
   }
 };

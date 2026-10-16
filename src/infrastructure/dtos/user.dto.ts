@@ -3,8 +3,7 @@ import type { CreateUserDTO, UserRole } from '../../domain/models/User';
 
 export class UserDto {
 
-
-    @IsNotEmpty()
+    @IsNotEmpty() // if(name != null && name !== undefined && name != "")
     name: string;
 
     @IsNotEmpty()
@@ -46,4 +45,16 @@ export class UserDto {
         return data
     }
 
+}
+
+export class AdminUserDto extends UserDto {
+
+    @IsIn(["user", "owner", "admin"])
+    @IsNotEmpty()
+    role: UserRole;
+
+    constructor(payload: Record<string, unknown>) {
+        super(payload)
+        this.role = payload["role"] as UserRole || "" as string
+    }
 }
