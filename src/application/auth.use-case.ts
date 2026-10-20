@@ -1,16 +1,16 @@
 import type { AuthResponseDTO, LoginDTO } from "../domain/models/User.ts";
 import { UserDto } from "../infrastructure/dtos/user.dto.ts";
-import type { UserPgRepository } from "../infrastructure/repository/users.pg.repository.ts";
+import type { IUserRepository } from "../domain/repository/IUser.repository.ts";
 import type { BcryptService } from "../infrastructure/services/bcrypt.service.ts";
 import type { JwtService } from "../infrastructure/services/jwt.service.ts";
 import { BadRequest } from "./errors/bad-request.error.ts";
 
 export class AuthUseCase {
-  private userRepository: UserPgRepository
+  private userRepository: IUserRepository
   private bcryptService: BcryptService
   private jwtService: JwtService
   constructor(
-    userRepository: UserPgRepository,
+    userRepository: IUserRepository,
     bcryptService: BcryptService,
     jwtService: JwtService
 
@@ -41,7 +41,7 @@ export class AuthUseCase {
       user: {
         id: user.id || 0,
         identification: user.identification,
-        nombre: user.name,
+        name: user.name,
         email: user.email,
         role: user.role
       },

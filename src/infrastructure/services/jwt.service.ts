@@ -1,24 +1,31 @@
-
+import 'dotenv/config';
 import jwt from "jsonwebtoken";
-import type { User } from "../../domain/models/User.ts";
+import type { AuthToken, User } from "../../domain/models/User.ts";
 
-const JWT_SECRET: string = process.env["JWT_SECRET"] || "b52aed86-3f01-4687-bbbe-09542c82b7ad"
+// Sin valor por defecto: si falta la variable, la API no debe arrancar con un secreto conocido.
+const JWT_SECRET = process.env["JWT_SECRET"]
+if (!JWT_SECRET) {
+    throw new Error("Falta la variable de entorno JWT_SECRET");
+}
+
+const EXPIRES_IN_SECONDS = 60 * 60
 
 export class JwtService {
 
 
-    generateToken(user: User) {
-        return jwt.sign({
+    generateToken(user: User): AuthToken {
+        const accessToken = jwt.sign({
             id: user.id,
             identification: user.identification,
-            nombre: user.name,
+            name: user.name,
             email: user.email,
             role: user.role
-        }, JWT_SECRET, { expiresIn: 60 * 60 })
+        }, JWT_SECRET!, { expiresIn: EXPIRES_IN_SECONDS })
+        return { accessToken, tokenType: 'Bearer', expiresIn: EXPIRES_IN_SECONDS }
     }
 
     verifyToken(token: string) {
-        return jwt.verify(token, JWT_SECRET)
+        return jwt.verify(token, JWT_SECRET!)
     }
 
 }

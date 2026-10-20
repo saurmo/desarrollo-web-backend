@@ -1,7 +1,7 @@
 import prisma from "./client.ts";
 import type { IUserRepository } from "../../domain/repository/IUser.repository.ts";
 import type { CreateUserDTO, UpdateUserDTO, User, UserFilterOptions } from "../../domain/models/User.ts";
-import { BadRequest } from "../../application/errors/bad-request.error.ts";
+import { ConflictError } from "../../application/errors/conflict.error.ts";
 
 export class UserPgRepository implements IUserRepository {
 
@@ -10,7 +10,7 @@ export class UserPgRepository implements IUserRepository {
 
     const existUser = await this.findByEmail(data.email)
     if (existUser) {
-      throw new BadRequest("El usuario ya existe", { email: data.email })
+      throw new ConflictError(`Ya existe un usuario con el email ${data.email}`)
     }
 
     const createdUser = await prisma.users.create({
@@ -47,8 +47,9 @@ export class UserPgRepository implements IUserRepository {
   }
 
   async findById(id: number) {
-    const user = await prisma.users.findUnique({
-      where: { id },
+    // findFirst porque se filtra también por status (findUnique solo acepta campos únicos)
+    const user = await prisma.users.findFirst({
+      where: { id, status: 'ACTIVE' },
     });
 
     if (!user) return null;
@@ -87,8 +88,10 @@ export class UserPgRepository implements IUserRepository {
 
   async deleteById(id: number) {
     try {
-      await prisma.users.delete({
+      // Borrado lógico: se conserva la fila para no romper el historial que la referencia
+      await prisma.users.update({
         where: { id },
+        data: { status: 'INACTIVE' },
       });
       return true;
     } catch (error) {
@@ -97,7 +100,6 @@ export class UserPgRepository implements IUserRepository {
   }
 
   // Mapeador privado para adaptar las columnas de la DB (español) al modelo TypeScript (inglés)
-  // TODO: Pendiente mapear en la base de datos el status
   private mapToDomain(rawUser: any) {
     return {
       id: rawUser.id,
@@ -108,7 +110,7 @@ export class UserPgRepository implements IUserRepository {
       email: rawUser.email,
       password: rawUser.password,
       createdAt: rawUser.created_at,
-      status: "ACTIVE"
+      status: rawUser.status ?? "ACTIVE"
     } as User;
   }
 }

@@ -1,8 +1,21 @@
-import type { UserFilterOptions } from "../domain/models/User.ts";
+import type { User, UserFilterOptions } from "../domain/models/User.ts";
 import type { IUserRepository } from "../domain/repository/IUser.repository.ts";
 import { AdminUserDto, UserDto } from "../infrastructure/dtos/user.dto.ts";
 import type { BcryptService } from "../infrastructure/services/bcrypt.service.ts";
 import { BadRequest } from "./errors/bad-request.error.ts";
+
+// Convierte el id de la URL (siempre texto) en un entero positivo, o lanza bad_request.
+const parseId = (id: string | null): number => {
+  const value = Number(id);
+  if (!id || !Number.isInteger(value) || value <= 0) {
+    throw new Error('bad_request, ID must be a positive integer');
+  }
+  return value;
+};
+
+// El repositorio devuelve el hash de la contraseña porque el login lo necesita,
+// pero nunca debe salir en una respuesta de la API.
+const withoutPassword = ({ password, ...user }: User) => user;
 
 export class UsersUseCase {
   private userRepository: IUserRepository
@@ -29,37 +42,30 @@ export class UsersUseCase {
         limit: filters.limit,
         totalPages: Math.ceil(total / (filters.limit ?? 10)),
       },
-      data
+      data: data.map(withoutPassword)
     };
   }
 
   async getById(id: string | null) {
-    if (!id || id.length === 0 || Number.isNaN(id)) {
-      throw new Error('bad_request, ID is required or number');
+    const data = await this.userRepository.findById(parseId(id));
+    if (!data) {
+      throw new Error('not_found: User not found');
     }
-    const data = await this.userRepository.findById(Number(id));
-    return { data };
+    return { data: withoutPassword(data) };
   }
 
 
   async deleteById(id: string | null) {
-    if (!id || id.length === 0 || Number.isNaN(id)) {
-      throw new Error('bad_request, ID is required');
+    const userId = parseId(id);
+    const currentUser = await this.userRepository.findById(userId);
+    if (!currentUser) {
+      throw new Error('not_found: User not found');
     }
-    const currentListing = await this.userRepository.findById(+id);
-    if (!currentListing) {
-      throw new Error('not_found: Listing not found');
-    }
-    const data = await this.userRepository.deleteById(+id);
-    return { message: 'Listing deleted successfully', data };
+    const data = await this.userRepository.deleteById(userId);
+    return { message: 'User deleted successfully', data };
   }
 
   async create(payload: Record<string, unknown>) {
-
-    const currentUser = await this.getById(payload.id as string || "")
-    if (currentUser) {
-      throw new Error('already_exists: User already exists');
-    }
 
     // validacion de datos
     const dto = new AdminUserDto(payload)

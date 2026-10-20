@@ -1,6 +1,7 @@
 import type { Request, Response } from 'express';
 import type { AuthUseCase } from '../../application/auth.use-case.ts';
 import { BadRequest } from '../../application/errors/bad-request.error.ts';
+import { ConflictError } from '../../application/errors/conflict.error.ts';
 
 export class AuthController {
 
@@ -39,6 +40,10 @@ export class AuthController {
     } catch (error: any) {
       if (error instanceof BadRequest) {
         res.status(400).json(error.print());
+        return
+      }
+      if (error instanceof ConflictError) {
+        res.status(409).json({ error: error.message });
         return
       }
       console.error(error)

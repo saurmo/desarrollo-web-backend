@@ -16,8 +16,9 @@ export class ListingsPostgresRepository implements IListingRepository {
     }
     async findById(id: string) {
         // select * from listings where id = $1
-        const data = await prisma.listings.findUnique({
-            where: { id }
+        // findFirst porque se filtra también por state (findUnique solo acepta campos únicos)
+        const data = await prisma.listings.findFirst({
+            where: { id, state: 'ACTIVE' }
         });
         if (!data) {
             throw new Error('not_found, Listing not found');

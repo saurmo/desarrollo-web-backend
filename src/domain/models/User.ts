@@ -6,15 +6,21 @@ export interface LoginDTO {
   password: string;
 }
 
+export interface AuthToken {
+  accessToken: string;
+  tokenType: 'Bearer';
+  expiresIn: number; // en segundos
+}
+
 export interface AuthResponseDTO {
   user: {
     id: number;
-    identification:string;
-    nombre: string;
+    identification: string;
+    name: string;
     email: string;
     role: string;
   };
-  token: string;
+  token: AuthToken;
 }
 
 export interface UserFilterOptions {
