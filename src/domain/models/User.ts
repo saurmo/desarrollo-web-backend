@@ -1,6 +1,15 @@
 // Allowed roles definition
 export type UserRole = 'admin' | 'user' | 'owner';
 
+// Datos del usuario que viajan dentro del JWT y quedan disponibles en req.user
+export interface AuthUser {
+  id: number;
+  identification: string;
+  name: string;
+  email: string;
+  role: UserRole;
+}
+
 export interface LoginDTO {
   email: string;
   password: string;

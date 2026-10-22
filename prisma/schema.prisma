@@ -77,8 +77,8 @@ model listings {
 
 model users {
   id             Int       @id @default(autoincrement())
-  nombre         String    @db.VarChar(100)
-  identificacion String    @unique @db.VarChar(20)
+  name           String    @db.VarChar(100)
+  identification String    @unique(map: "users_identificacion_key") @db.VarChar(20)
   role           user_role @default(user)
   phone          String?   @db.VarChar(20)
   email          String    @unique @db.VarChar(150)

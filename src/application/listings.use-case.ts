@@ -1,5 +1,9 @@
-import type { CreateListing, Listing, ListingFilterOptions } from "../domain/models/Listing.ts";
+import type { AuthUser } from "../domain/models/User.ts";
+import type { ListingFilterOptions } from "../domain/models/Listing.ts";
 import type { IListingRepository } from "../domain/repository/IListings.repository.ts";
+import { ListingDto } from "../infrastructure/dtos/listing.dto.ts";
+import { BadRequest } from "./errors/bad-request.error.ts";
+import { ForbiddenError } from "./errors/forbidden.error.ts";
 
 export class ListingsUseCase {
   private listingRepository: IListingRepository
@@ -9,22 +13,22 @@ export class ListingsUseCase {
   }
 
   async getAll(filters: ListingFilterOptions = {}) {
-    // calcular la page de acuerdo al offset y limit, si no se proporcionan, se asume page 1
+    // Si no se indican page y limit, se asume la primera página de 10
     const page = filters.page ?? 1;
-    const offset = (filters.limit ?? 10) * (page - 1);
-    const searchOptions: ListingFilterOptions = {
+    const limit = filters.limit ?? 10;
+    const { data, total } = await this.listingRepository.findAll({
+      ...filters,
+      page,
+      limit,
+      offset: limit * (page - 1),
       state: 'ACTIVE',
-      limit: 10,
-      offset,
-      ...filters, // Sobre escribimos los valores por defecto con los filtros proporcionados
-    };
-    const { data, total } = await this.listingRepository.findAll(searchOptions);
+    });
     return {
       pagination: {
         total,
         currentPage: page,
-        limit: searchOptions.limit,
-        totalPages: Math.ceil(total / (searchOptions.limit ?? 10)),
+        limit,
+        totalPages: Math.ceil(total / limit),
       },
       data
     };
@@ -35,37 +39,31 @@ export class ListingsUseCase {
       throw new Error('bad_request, ID is required');
     }
     const data = await this.listingRepository.findById(id);
+    if (!data) {
+      throw new Error('not_found, Listing not found');
+    }
     return { data };
   }
 
-
-  async deleteById(id: string | null) {
-    if (!id || id.length === 0) {
-      throw new Error('bad_request, ID is required');
+  async create(payload: Record<string, unknown>, actor: AuthUser) {
+    // Se validan los datos y solo se aceptan los campos permitidos
+    const dto = new ListingDto(payload ?? {})
+    const errors = await dto.validateDto()
+    if (errors.length > 0) {
+      throw new BadRequest("Error en datos", errors.map(error => error.constraints))
     }
-    const currentListing = await this.listingRepository.findById(id);
-    if (!currentListing) {
-      throw new Error('not_found: Listing not found');
-    }
-    // TODO: capturamos el usuario que esta eliminando la propiedad
-    const data = await this.listingRepository.softDelete(id, 'system');
-    return { message: 'Listing deleted successfully', data };
+    // El dueño de la propiedad es quien la crea: sale del token, no del body
+    const data = await this.listingRepository.create(dto.toInput(), String(actor.id));
+    return { message: 'Listing created successfully', data };
   }
 
-  async create(payload: Record<string, unknown>) {
-    const currentListing = await this.getById(payload.id as string)
-    if (currentListing) {
-      throw new Error('already_exists: Listing already exists');
+  async deleteById(id: string | null, actor: AuthUser) {
+    const { data: listing } = await this.getById(id); // 404 si no existe o ya estaba eliminada
+    // Regla de negocio: un owner solo elimina SUS propiedades; el admin puede eliminar cualquiera
+    if (actor.role !== 'admin' && listing.createdBy !== String(actor.id)) {
+      throw new ForbiddenError('Solo puedes eliminar las propiedades que tú creaste');
     }
-
-    // TODO: Validar la información de listing con DTO
-    const createListing = {
-      ...payload,
-      state: 'ACTIVE',
-      created_by: 'system',
-      created_at: new Date(),
-    }
-    const data = await this.listingRepository.create(createListing as CreateListing);
-    return { message: 'Listing created successfully', data };
+    await this.listingRepository.softDelete(listing.id, String(actor.id));
+    return { message: 'Listing deleted successfully' };
   }
 }

@@ -1,11 +1,13 @@
 
 import { type Request, type Response } from 'express';
-import type { User, UserFilterOptions } from '../../domain/models/User.ts';
+import type { UserFilterOptions } from '../../domain/models/User.ts';
 import { UsersUseCase } from '../../application/users.use-case.ts';
 import type { IUserRepository } from '../../domain/repository/IUser.repository.ts';
 import { UserPgRepository } from '../../infrastructure/repository/users.pg.repository.ts';
 import { BcryptService } from '../../infrastructure/services/bcrypt.service.ts';
+import { requireUser } from '../middlewares/auth.middleware.ts';
 import { handleError } from '../middlewares/error.handler.ts';
+import { parsePagination } from '../../application/pagination.ts';
 
 const repository: IUserRepository = new UserPgRepository()
 const bcryptService = new BcryptService();
@@ -13,18 +15,17 @@ const useCase = new UsersUseCase(repository, bcryptService)
 
 export const getUsers = async (req: Request, res: Response) => {
   try {
-    const limit = req.query.limit ? parseInt(req.query.limit as string, 10) : undefined;
-    const page = req.query.page ? parseInt(req.query.page as string, 10) : undefined;
-    const filters: UserFilterOptions = {
-      limit,
-      page
+    const { page, limit } = parsePagination(req.query.page, req.query.limit)
+    // Filtro opcional ?role=admin|user|owner; cualquier otro valor responde 400
+    const role = typeof req.query.role === 'string' ? req.query.role : undefined
+    if (role && !['admin', 'user', 'owner'].includes(role)) {
+      throw new Error('bad_request, role debe ser admin, user u owner')
     }
+    const filters: UserFilterOptions = { page, limit, role }
     const response = await useCase.getAll(filters)
     res.status(200).json(response);
   } catch (error) {
-    console.log(error);
-
-    res.status(500).json({ error: 'Error al obtener las propiedades' });
+    handleError(error, res);
   }
 };
 export const getUserById = async (req: Request, res: Response) => {
@@ -46,20 +47,10 @@ export const createUser = async (req: Request, res: Response) => {
   }
 };
 
-// export const updateUser = async (req: Request, res: Response) => {
-//   try {
-//     const { id } = req.params;
-//     const updateData: Partial<User> = req.body;
-//     res.status(200).json({ message: `Propiedad ${id} actualizada`, data: updateData });
-//   } catch (error) {
-//     handleError(error, res);
-//   }
-// };
-
 export const deleteUser = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const data = await useCase.deleteById(id as string) // { data }
+    const data = await useCase.deleteById(id as string, requireUser(req))
     res.status(200).json(data);
   } catch (error) {
     handleError(error, res);

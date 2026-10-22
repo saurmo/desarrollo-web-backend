@@ -4,6 +4,7 @@ import { AuthUseCase } from "../../application/auth.use-case.ts";
 import { UserPgRepository } from "../../infrastructure/repository/users.pg.repository.ts";
 import { BcryptService } from "../../infrastructure/services/bcrypt.service.ts";
 import { JwtService } from "../../infrastructure/services/jwt.service.ts";
+import { authenticate } from "../middlewares/auth.middleware.ts";
 
 const router = Router();
 
@@ -20,9 +21,7 @@ const jwtService = new JwtService();
 router.post('/login', authController.login);
 router.post('/register', authController.register); // Crear un usuario en base de datos
 
-// Ejemplo de ruta protegida usando el middleware de verificación
-// router.get('/me', authenticateToken, (req, res) => {
-//   res.json({ data: (req as any).user });
-// });
+// Ruta protegida: devuelve el usuario del token. Sin token o con token inválido responde 401.
+router.get('/me', authenticate, authController.me);
 
 export default router;

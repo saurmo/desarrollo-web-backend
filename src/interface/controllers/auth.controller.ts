@@ -1,7 +1,7 @@
 import type { Request, Response } from 'express';
 import type { AuthUseCase } from '../../application/auth.use-case.ts';
-import { BadRequest } from '../../application/errors/bad-request.error.ts';
-import { ConflictError } from '../../application/errors/conflict.error.ts';
+import { requireUser } from '../middlewares/auth.middleware.ts';
+import { handleError } from '../middlewares/error.handler.ts';
 
 export class AuthController {
 
@@ -13,7 +13,7 @@ export class AuthController {
 
   login = async (req: Request, res: Response): Promise<void> => {
     try {
-      const { email, password } = req.body;
+      const { email, password } = req.body ?? {};
       if (!email || !password) {
         res.status(400).json({ error: 'El email y la contraseña son obligatorios' });
         return;
@@ -21,15 +21,19 @@ export class AuthController {
 
       const result = await this.authUseCase.loginUser({ email, password });
       res.status(200).json({ data: result });
-    } catch (error: any) {
-      if (error.message === 'Credenciales inválidas' || error.message === 'El usuario se encuentra inactivo') {
-        res.status(401).json({ error: error.message });
-        return;
-      }
-
-      res.status(500).json({ error: 'Error interno del servidor' });
+    } catch (error) {
+      handleError(error, res);
     }
+  };
 
+  // GET /api/auth/me — devuelve el usuario del token (requiere authenticate)
+  me = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const result = await this.authUseCase.getProfile(requireUser(req).id);
+      res.status(200).json(result);
+    } catch (error) {
+      handleError(error, res);
+    }
   };
 
   register = async (req: Request, res: Response): Promise<void> => {
@@ -37,17 +41,8 @@ export class AuthController {
       const payload = req.body;
       const result = await this.authUseCase.registerUser(payload);
       res.status(200).json({ data: result });
-    } catch (error: any) {
-      if (error instanceof BadRequest) {
-        res.status(400).json(error.print());
-        return
-      }
-      if (error instanceof ConflictError) {
-        res.status(409).json({ error: error.message });
-        return
-      }
-      console.error(error)
-      res.status(500).json({ error: 'Error interno del servidor' });
+    } catch (error) {
+      handleError(error, res);
     }
   };
 

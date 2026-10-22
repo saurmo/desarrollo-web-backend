@@ -88,8 +88,8 @@ CREATE TYPE user_role AS ENUM ('admin', 'user', 'owner');
 -- 2. Creación de la tabla de usuarios
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
-    nombre VARCHAR(100) NOT NULL,
-    identificacion VARCHAR(20) UNIQUE NOT NULL,
+    name VARCHAR(100) NOT NULL,
+    identification VARCHAR(20) UNIQUE NOT NULL,
     role user_role NOT NULL DEFAULT 'user',
     phone VARCHAR(20),
     email VARCHAR(150) UNIQUE NOT NULL,

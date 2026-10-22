@@ -3,6 +3,8 @@ import express, { type Express, type Request, type Response } from 'express';
 import listingRoutes from "./interface/routers/listings.router.ts"
 import usersRoutes from "./interface/routers/users.router.ts"
 import authRoutes from "./interface/routers/auth.router.ts"
+import categoriesRoutes from "./interface/routers/categories.router.ts"
+import { errorMiddleware, notFoundHandler } from "./interface/middlewares/global.handlers.ts"
 import cors from "cors"
 
 const app: Express = express();
@@ -25,6 +27,11 @@ app.use(cors({
 app.use('/api/auth', authRoutes );
 app.use('/api/listings', listingRoutes);
 app.use('/api/users', usersRoutes);
+app.use('/api/categories', categoriesRoutes);
+
+// Siempre al final: primero la ruta que no existe (404) y luego los errores no capturados
+app.use(notFoundHandler);
+app.use(errorMiddleware);
 
 const PORT=process.env["PORT"] || 3001
 app.listen(PORT,()=>{

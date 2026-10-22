@@ -15,8 +15,8 @@ export class UserPgRepository implements IUserRepository {
 
     const createdUser = await prisma.users.create({
       data: {
-        nombre: data.name,
-        identificacion: data.identification,
+        name: data.name,
+        identification: data.identification,
         role: data.role,
         phone: data.phone,
         email: data.email,
@@ -30,17 +30,19 @@ export class UserPgRepository implements IUserRepository {
   }
 
   async findAll(filters: UserFilterOptions): Promise<{ total: number; data: User[] }> {
-    const total = await prisma.users.count({
-      where: {
-        status: filters.status,
-      }
-    })
+    // Filtros opcionales: solo se agregan al where si vienen
+    const where = {
+      status: filters.status,
+      ...(filters.role && { role: filters.role as 'admin' | 'user' | 'owner' }),
+      ...(filters.identification && { identification: filters.identification }),
+    }
+    const total = await prisma.users.count({ where })
     const users = await prisma.users.findMany({
+      where,
+      // Sin orden, la base no garantiza el mismo orden entre páginas y se repiten o se saltan filas
+      orderBy: { id: 'asc' },
       take: filters?.limit ?? 10,
       skip: filters?.offset ?? 0,
-      where: {
-        status: filters.status,
-      }
     });
     const usersMap = users.map((user) => this.mapToDomain(user));
     return { total, data: usersMap };
@@ -70,8 +72,8 @@ export class UserPgRepository implements IUserRepository {
       const updatedUser = await prisma.users.update({
         where: { id },
         data: {
-          ...(data.name && { nombre: data.name }),
-          ...(data.identification && { identificacion: data.identification }),
+          ...(data.name && { name: data.name }),
+          ...(data.identification && { identification: data.identification }),
           ...(data.role && { role: data.role }),
           ...(data.phone !== undefined && { phone: data.phone }),
           ...(data.email && { email: data.email }),
@@ -99,12 +101,12 @@ export class UserPgRepository implements IUserRepository {
     }
   }
 
-  // Mapeador privado para adaptar las columnas de la DB (español) al modelo TypeScript (inglés)
+  // Mapeador privado: convierte la fila de la base de datos (snake_case) al modelo de dominio (camelCase)
   private mapToDomain(rawUser: any) {
     return {
       id: rawUser.id,
-      name: rawUser.nombre,
-      identification: rawUser.identificacion,
+      name: rawUser.name,
+      identification: rawUser.identification,
       role: rawUser.role,
       phone: rawUser.phone,
       email: rawUser.email,

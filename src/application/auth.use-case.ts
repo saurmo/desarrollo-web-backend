@@ -4,6 +4,8 @@ import type { IUserRepository } from "../domain/repository/IUser.repository.ts";
 import type { BcryptService } from "../infrastructure/services/bcrypt.service.ts";
 import type { JwtService } from "../infrastructure/services/jwt.service.ts";
 import { BadRequest } from "./errors/bad-request.error.ts";
+import { UnauthorizedError } from "./errors/unauthorized.error.ts";
+import { withoutPassword } from "./user-mapper.ts";
 
 export class AuthUseCase {
   private userRepository: IUserRepository
@@ -23,17 +25,17 @@ export class AuthUseCase {
   async loginUser(dto: LoginDTO): Promise<AuthResponseDTO> {
     const user = await this.userRepository.findByEmail(dto.email);
     if (!user) {
-      throw new BadRequest('Credenciales inválidas', {});
+      throw new UnauthorizedError('Credenciales inválidas');
     }
 
     if (user.status !== 'ACTIVE') {
-      throw new BadRequest('El usuario se encuentra inactivo', {});
+      throw new UnauthorizedError('El usuario se encuentra inactivo');
     }
 
 
     const isPasswordValid = await this.bcryptService.decrypt(user.password!, dto.password,);
     if (!isPasswordValid) {
-      throw new BadRequest('Credenciales inválidas', {});
+      throw new UnauthorizedError('Credenciales inválidas');
     }
 
     const token = this.jwtService.generateToken(user);
@@ -49,6 +51,15 @@ export class AuthUseCase {
     };
   }
 
+
+  // Perfil del usuario del token. Si ya no existe o fue desactivado, el token deja de servir (401).
+  async getProfile(userId: number) {
+    const user = await this.userRepository.findById(userId);
+    if (!user) {
+      throw new UnauthorizedError('El usuario ya no está activo');
+    }
+    return { data: withoutPassword(user) };
+  }
 
   async registerUser(payload: Record<string, unknown>) {
     // validacion de datos
