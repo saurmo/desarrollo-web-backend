@@ -5,6 +5,17 @@ import type { AuthUser, UserRole } from '../../domain/models/User.ts';
 import { JwtService } from '../../infrastructure/services/jwt.service.ts';
 import { handleError } from './error.handler.ts';
 
+// Agrega la propiedad "user" a la petición de Express; la llena authenticate cuando el token es válido.
+// Está aquí y no en un archivo .d.ts aparte porque un .d.ts que nadie importa no entra en las
+// compilaciones que parten de app.ts (como la de Vercel) y TypeScript no encontraría req.user.
+declare global {
+  namespace Express {
+    interface Request {
+      user?: AuthUser;
+    }
+  }
+}
+
 const jwtService = new JwtService();
 
 /**
